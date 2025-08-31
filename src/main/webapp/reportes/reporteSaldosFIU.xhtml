@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : reporteSaldosFIU.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Reporte de Financiamiento (FIU)</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+            <p:panelGrid columns="8">
+
+              <h:outputText value="Contrato:"/>
+              <h:inputText id="contrato2" value="#{reporteSaldosFIU.contrato}">
+                <p:ajax event="blur"
+                        listener="#{reporteComparativo.updateCalendar()}"
+                        update="@this"/>
+              </h:inputText>
+
+              <h:outputText value="Cliente:  "/>
+              <h:inputText id="cliente2" value="#{reporteSaldosFIU.cliente}">
+                <p:ajax event="blur"
+                        listener="#{reporteSaldosFIU.updateCalendar()}"
+                        update="@this"/>
+              </h:inputText>
+
+              <h:outputText value="Fecha: "/>
+              <p:calendar id="fechaConsulta"
+                          value="#{reporteSaldosFIU.fechaConsulta}"
+                          locale="es"
+                          navigator="true"
+                          showButtonPanel="true"
+                          autocomplete="off"
+                          pattern="MMM d, yyyy">
+                <p:ajax event="dateSelect"
+                        listener="#{reporteSaldosFIU.updateCalendar()}"
+                        update="@this"/>
+              </p:calendar>
+
+              <p:commandButton id="consultar" value="Consultar"
+                               action="#{reporteSaldosFIU.consultar}"/>
+
+              <h:commandButton
+                      title="Descargar excel"
+                      image="../resources/img/excel.png"
+                      ajax="false"
+                      styleClass="border:0;">
+                <p:fileDownload value="#{reporteSaldosFIU.excelResource}"/>
+              </h:commandButton>
+
+            </p:panelGrid>
+
+            <p:commandButton
+                value="Exportar"
+                ajax="false"
+                styleClass="color:blue; text-decoration:underline;">
+              <p:fileDownload value="#{reporteSaldosFIU.excelResource}"/>
+
+              <p:dataTable id="dataTable1" var="row"
+                           binding="#{reporteSaldosFIU.htmlDataTable}"
+                           value="#{reporteSaldosFIU.listaSaldos}"
+                           rows="#{reporteSaldosFIU.defaultRows}"
+                           paginator="#{reporteSaldosFIU.paginatorVisible}"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                           currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                <p:column headerText="Número Contrato" sortOrder="asc">
+                  <h:outputText value="#{row.contractNumber}"/>
+                </p:column>
+                <p:column headerText="Fecha">
+                  <h:outputText value="#{row.dt04Dt}"/>
+                </p:column>
+                <p:column headerText="Importe Cubierto">
+                  <h:outputText value="#{row.financingBase}"/>
+                </p:column>
+                <p:column headerText="FIU Efectivo">
+                  <h:outputText value="#{row.fiucash}"/>
+                </p:column>
+                <p:column headerText="Importe Financiable Máx">
+                  <h:outputText value="#{row.fundableAmount}"/>
+                </p:column>
+                <p:column headerText="Portafolio">
+                  <h:outputText value="#{row.coveredAmount}"/>
+                </p:column>
+                <p:column headerText="Disponible">
+                  <h:outputText value="#{row.availability}"/>
+                </p:column>
+              </p:dataTable>
+            </p:commandButton>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12/11/2013 11:15:16 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiFacturasDetalle" schema="FACTIMX" table="FI_FACTURAS_DETALLE">
+    <composite-id class="com.bancomext.service.mapping.FiFacturasDetalleId" name="id">
+      <key-property name="secuencia" type="big_decimal">
+        <column name="SECUENCIA" precision="12" scale="0"/>
+      </key-property>
+      <key-property name="secuenciaimx" type="string">
+        <column length="20" name="SECUENCIAIMX"/>
+      </key-property>
+      <key-property name="codigoconcepto" type="string">
+        <column length="6" name="CODIGOCONCEPTO"/>
+      </key-property>
+    </composite-id>
+    <property name="concepto" type="string">
+      <column length="75" name="CONCEPTO"/>
+    </property>
+    <property name="codigodeudor" type="string">
+      <column length="12" name="CODIGODEUDOR"/>
+    </property>
+    <property name="deudor" type="string">
+      <column length="75" name="DEUDOR"/>
+    </property>
+    <property name="plazo" type="short">
+      <column name="PLAZO" precision="4" scale="0"/>
+    </property>
+    <property name="periodo" type="string">
+      <column length="15" name="PERIODO"/>
+    </property>
+    <property name="tasa" type="big_decimal">
+      <column name="TASA" precision="10" scale="6"/>
+    </property>
+    <property name="importe" type="big_decimal">
+      <column name="IMPORTE" precision="22"/>
+    </property>
+    <property name="importeiva" type="big_decimal">
+      <column name="IMPORTEIVA" precision="22"/>
+    </property>
+    <property name="totalimporte" type="big_decimal">
+      <column name="TOTALIMPORTE" precision="22"/>
+    </property>
+    <property name="totalvalorizado" type="big_decimal">
+      <column name="TOTALVALORIZADO" precision="22"/>
+    </property>
+    <property name="porcIva" type="big_decimal">
+      <column name="PORC_IVA" precision="10" scale="6"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

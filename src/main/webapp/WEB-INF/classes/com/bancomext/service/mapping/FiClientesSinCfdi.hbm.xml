@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 28/07/2015 11:07:05 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiClientesSinCfdi" schema="FACTIMX" table="FI_CLIENTES_SIN_CFDI">
+    <id name="id" type="long">
+      <column name="CODIGO_CLIENTE" precision="10" scale="0"/>
+    </id>
+    <property name="descripcionCliente" type="string">
+      <column length="300" name="DESCRIPCION_CLIENTE" not-null="true"/>
+    </property>
+    <property name="adicionadoPor" type="string">
+      <column length="20" name="ADICIONADO_POR"/>
+    </property>
+    <property name="fechaAdicion" type="date">
+      <column length="7" name="FECHA_ADICION"/>
+    </property>
+    <property name="modificadoPor" type="string">
+      <column length="20" name="MODIFICADO_POR"/>
+    </property>
+    <property name="fechaModificacion" type="date">
+      <column length="7" name="FECHA_MODIFICACION"/>
+    </property>
+  </class>
+</hibernate-mapping>

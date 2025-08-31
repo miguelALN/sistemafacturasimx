@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : cargaFacturas.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+    </h:form>
+    <br/>
+    <fieldset>
+      <legend>Envio Correos para CFDI</legend>
+      <p:outputPanel layout="block" id="pgResultado">
+
+        <p:outputPanel layout="block" id="pgInfo">
+
+          <p:outputPanel layout="block" scrollHeight="500px">
+
+            <p:tabView width="560px" height="400" id="panelTabSet1" tabPlacement="Top" partialSubmit="true">
+              <p:ajax event="tabChange" listener="#{cargaFacturas.validarInformacionTab}"/>
+
+              <p:tab id="panelTab1" title="Carga" style="top:-100px;">
+                <h:form id="uploadForm" enctype="multipart/form-data">
+                  <h:panelGrid columns="3">
+                    <h:outputLabel for="file" value="Cargar el archivo"/>
+                    <p:fileUpload title="Explorar"
+                                  id="file"
+                                  value="#{cargaFacturas.uploadedFile}"
+                                  required="true"
+                                  requiredMessage="No se ha seleccionado un archivo"
+                                  mode="simple"
+                                  fileUploadListener="#{cargaFacturas.fileUploadListener}"/>
+                    <h:commandButton id="btnSubirArchivo"
+                                     value="Subir Archivo"
+                                     ajax="false"
+                                     action="#{cargaFacturas.subirArchivo}"
+                                     styleClass="submit ui-button-secondary"/>
+                  </h:panelGrid>
+                </h:form>
+              </p:tab>
+
+              <p:tab id="panelTab2" title="Archivos Cargados">
+                <p:dataTable id="tableIn" var="row"
+                             style="vertical-align:top; "
+                             value="#{cargaFacturas.listaTablaIn}"
+                             paginator="#{cargaFacturas.paginatorVisibleIn}"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                  <p:column headerText="Archivos">
+                    <h:outputText value="#{row.elemento}" style="text-align:center;"/>
+                  </p:column>
+                </p:dataTable>
+              </p:tab>
+
+              <p:tab id="panelTab3" title="Archivos Procesados">
+
+                <p:dataTable id="tableOut" var="row"
+                             value="#{cargaFacturas.listaTablaOut}"
+                             style="vertical-align:top; "
+                             paginator="#{cargaFacturas.paginatorVisibleOut}"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                  <p:column headerText="Archivos">
+                    <h:outputText value="#{row.elemento}" style="text-align:center;"/>
+                  </p:column>
+                </p:dataTable>
+
+              </p:tab>
+              <p:tab id="panelTab4" title="Archivos No cargados">
+                <p:dataTable id="tableError" var="row"
+                             value="#{cargaFacturas.listaTablaError}"
+                             style="vertical-align:top; "
+                             paginator="#{cargaFacturas.paginatorVisibleError}"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                  <p:column headerText="Archivos">
+                    <h:outputText value="#{row.elemento}" style="text-align:center;"/>
+                  </p:column>
+                </p:dataTable>
+              </p:tab>
+            </p:tabView>
+          </p:outputPanel>
+        </p:outputPanel>
+      </p:outputPanel>
+    </fieldset>
+  </div>
+</h:body>
+</html>

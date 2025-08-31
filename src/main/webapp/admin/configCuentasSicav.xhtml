@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : configCuentasSicav.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <fieldset>
+        <legend>Configuración de Cuentas reporte comparativo SICAV</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <!--p:message for="guardar" style="color:blue; font-size:12px;text-align:justify;"/-->
+          <p:outputPanel layout="block" scrollHeight="290px">
+            <p:panelGrid columns="1">
+              <!--p:message for="consultar" id="otMsg" style="color:blue; font-size:11px;"/-->
+            </p:panelGrid>
+
+            <p:panelGrid columns="6" width="45%">
+              <h:outputText id="cuenta01" value="Cuenta:"/>
+              <h:inputText id="cuenta1" maxlength="4" value="#{configCuentasSicav.cuentaF}"
+                           style="width:30px;"/>
+              <h:inputText id="subcuenta1" maxlength="2" value="#{configCuentasSicav.subcuentaF}"
+                           style="width:20px;"/>
+              <h:inputText id="subsubcuenta1" maxlength="2"
+                           value="#{configCuentasSicav.subsubcuentaF}" style="width:20px;"/>
+              <h:inputText id="subsubsubcuenta1" maxlength="2"
+                           value="#{configCuentasSicav.subsubsubcuentaF}" style="width:20px;"/>
+              <p:commandButton action="#{configCuentasSicav.consultar}" id="consultar"
+                               value="Filtrar"/>
+            </p:panelGrid>
+
+            <p:panelGrid columns="3">
+              <p:commandButton action="#{configCuentasSicav.limpiar}" id="limpiar"
+                               value="Limpiar Filtros"/>
+              <p:commandButton action="#{configCuentasSicav.agregar}" id="agregar"
+                               value="Agregar"/>
+            </p:panelGrid>
+
+            <p:dataTable id="dataTable1" var="row" scrollFooter="true"
+                         rows="#{configCuentasSicav.defaultRows}"
+                         binding="#{configCuentasSicav.htmlDataTable}"
+                         value="#{configCuentasSicav.listaComparativo}"
+                         paginator="#{configCuentasSicav.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column id="column1" headerText="Cuenta" sortOrder="asc">
+                <h:outputText value="#{row.id.cta}"/>
+              </p:column>
+              <p:column id="column2" headerText="SCuenta">
+                <h:outputText value="#{row.id.scta}"/>
+              </p:column>
+              <p:column id="column3" headerText="SSCuenta">
+                <h:outputText value="#{row.id.sscta}"/>
+              </p:column>
+              <p:column id="column4" headerText="SSSCuenta">
+                <h:outputText value="#{row.id.ssscta}"/>
+              </p:column>
+
+              <!--TODO  REA Review this button-->
+              <p:column headerText="Eliminar" style="text-align:center">
+                <p:commandLink action="#{configCuentasSicav.eliminar}"
+                               panelConfirmation=":::confirmarEliminar">
+                  <p:graphicImage icon="pi pi-trash" width="20" height="20"
+                                  title="Eliminar" style="border:none"/>
+                  <f:param name="rowIndex" value="#{configCuentasSicav.htmlDataTable.rowIndex}"/>
+                </p:commandLink>
+              </p:column>
+
+            </p:dataTable>
+          </p:outputPanel>
+        </p:outputPanel>
+      </fieldset>
+
+      <p:confirmDialog acceptLabel="Eliminar" cancelLabel="Cancelar" id="confirmarEliminar"
+                       message="Confirme Acción Eliminar" rendered="true" title="Eliminar Rol"/>
+
+
+      <p:dialog id="ppRol" modal="true" autoCentre="true"
+                title="Datos Rol" visible="#{configCuentasSicav.ppRolVisible}">
+        <f:facet name="header">
+          <p:panelGrid id="pgdHeader" columns="1"
+                       style="display: block; height: 24px; position: relative; text-align:right; width: 100%">
+            <p:commandButton action="#{configCuentasSicav.closePanel}" id="closePopupBtn"
+                             alt="Cerrar" image="../resources/img/cerrar.png"
+                             style="position: relative;" value="submit" title="Cerrar"/>
+          </p:panelGrid>
+        </f:facet>
+
+        <f:facet name="body">
+          <h:panelGroup>
+            <fieldset style="width:auto">
+              <legend>Agregar Cuenta</legend>
+              <br/>
+              <p:message for="btnGuardar" style="color:red; font-size:12px;text-align:justify;"/>
+
+              <p:panelGrid columns="2">
+                <h:outputText id="cuenta02" style="position: relative" value="* Cuenta: "/>
+                <h:inputText id="cuenta2" size="15" maxlength="4" style="position: relative"
+                             value="#{configCuentasSicav.cuenta}"/>
+                <h:outputText id="subcuenta" style="position: relative" value="* Sub-Cuenta: "/>
+                <h:inputText id="subcuenta2" size="15" style="position: relative" maxlength="2"
+                             value="#{configCuentasSicav.subcuenta}"/>
+                <h:outputText id="subsubcuenta" style="position: relative" value="* Subsub-Cuenta: "/>
+                <h:inputText id="subsubcuenta2" size="15" style="position: relative" maxlength="2"
+                             value="#{configCuentasSicav.subsubcuenta}"/>
+                <h:outputText id="subsubsubcuenta" style="position: relative" value="* Subsubsub-Cuenta: "/>
+                <h:inputText id="subsubsubcuenta2" size="15" style="position: relative" maxlength="2"
+                             value="#{configCuentasSicav.subsubsubcuenta}"/>
+
+              </p:panelGrid>
+              <p:panelGrid columns="5">
+                <p:commandButton value="Guardar" id="btnGuardar"
+                                 action="#{configCuentasSicav.guardarPopup}"/>
+                <!--binding="#{configCuentasSicav.btnGuardar}" -->
+                <p:commandButton value="Cancelar" action="#{configCuentasSicav.closePanel}"/>
+              </p:panelGrid>
+              <p:outputPanel layout="block" style="text-align:center;">
+                <p/>
+                <h:outputText value="Los campos marcados con * son mandatorios"/>
+              </p:outputPanel>
+            </fieldset>
+          </h:panelGroup>
+        </f:facet>
+      </p:dialog>
+    </h:form>
+  </div>
+</h:body>
+</html>

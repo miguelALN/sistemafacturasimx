@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 28/07/2015 11:07:05 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCierreAntesDespues" schema="FACTIMX" table="FI_CIERRE_ANTES_DESPUES_IMX">
+    <id name="id" type="int">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+
+    <property name="opCode" type="string">
+      <column name="OPCODE"/>
+    </property>
+    <property name="moneda" type="int">
+      <column name="MONEDA"/>
+    </property>
+    <property name="cargo" type="big_decimal">
+      <column name="CARGO"/>
+    </property>
+    <property name="abono" type="big_decimal">
+      <column name="ABONO"/>
+    </property>
+    <property name="diferencia" type="big_decimal">
+      <column name="DIFERENCIA"/>
+    </property>
+    <property name="atributo1" type="string">
+      <column name="ATRB1"/>
+    </property>
+    <property name="atributo2" type="string">
+      <column name="ATRB2"/>
+    </property>
+    <property name="fechaProceso" type="java.util.Date">
+      <column name="FECHA_PROCESO"/>
+    </property>
+  </class>
+</hibernate-mapping>

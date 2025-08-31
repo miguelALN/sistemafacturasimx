@@ -1,0 +1,286 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/05/2015 11:16:47 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiBitacoraImx" schema="FACTIMX" table="FI_BITACORA_IMX">
+    <id name="id" type="long">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+
+    <property name="adicionadoPor" type="string">
+      <column name="ADICIONADO_POR"/>
+    </property>
+
+    <property name="campoA" type="string">
+      <column name="CAMPOA"/>
+    </property>
+
+    <property name="campoB" type="string">
+      <column name="CAMPOB"/>
+    </property>
+
+    <property name="contrato" type="string">
+      <column name="CONTRATO"/>
+    </property>
+
+    <property name="ctaAbono" type="int">
+      <column name="CTA_ABONO"/>
+    </property>
+
+    <property name="ctaCargo" type="int">
+      <column name="CTA_CARGO"/>
+    </property>
+
+    <property name="ctaDestino" type="int">
+      <column name="CTA_DESTINO"/>
+    </property>
+
+    <property name="ctaOrigen" type="int">
+      <column name="CTA_ORIGEN"/>
+    </property>
+
+    <property name="ctaSust1" type="int">
+      <column name="CTA_SUST1"/>
+    </property>
+
+    <property name="ctaSust2" type="int">
+      <column name="CTA_SUST2"/>
+    </property>
+
+    <property name="cuentaAbono" type="string">
+      <column name="CUENTA_ABONO"/>
+    </property>
+
+    <property name="cuentaCargo" type="string">
+      <column name="CUENTA_CARGO"/>
+    </property>
+
+    <property name="cuentaDestino" type="string">
+      <column name="CUENTA_DESTINO"/>
+    </property>
+
+    <property name="cuentaOrigen" type="string">
+      <column name="CUENTA_ORIGEN"/>
+    </property>
+
+    <property name="cuentaSust1" type="string">
+      <column name="CUENTA_SUST1"/>
+    </property>
+
+    <property name="cuentaSust2" type="string">
+      <column name="CUENTA_SUST2"/>
+    </property>
+
+    <property name="depto" type="int">
+      <column name="DEPTO"/>
+    </property>
+
+    <property name="ejecucion" type="string">
+      <column name="EJECUCION"/>
+    </property>
+
+    <property name="feCaa" type="int">
+      <column name="FECAA"/>
+    </property>
+
+    <property name="feCad" type="int">
+      <column name="FECAD"/>
+    </property>
+
+    <property name="feCam" type="int">
+      <column name="FECAM"/>
+    </property>
+
+    <property name="fechaAdicion" type="java.util.Date">
+      <column name="FECHA_ADICION"/>
+    </property>
+
+    <property name="fechaModificacion" type="java.util.Date">
+      <column name="FECHA_MODIFICACION"/>
+    </property>
+
+    <property name="fechaProceso" type="java.util.Date">
+      <column name="FECHA_PROCESO"/>
+    </property>
+
+    <property name="modificadoPor" type="string">
+      <column name="MODIFICADO_POR"/>
+    </property>
+
+    <property name="moneda" type="string">
+      <column name="MONEDA"/>
+    </property>
+
+    <property name="monedaCof" type="string">
+      <column name="MONEDA_COF"/>
+    </property>
+
+    <property name="monedaSust" type="string">
+      <column name="MONEDA_SUST"/>
+    </property>
+
+    <property name="montoAbonoAnt" type="big_decimal">
+      <column name="MONTO_ABONO_ORIGINAL"/>
+    </property>
+
+    <property name="montoCargoAnt" type="big_decimal">
+      <column name="MONTO_CARGO_ORIGINAL"/>
+    </property>
+
+    <property name="montoCofactores" type="big_decimal">
+      <column name="MONTO_COFACTORES"/>
+    </property>
+
+    <property name="montoCofactores2" type="big_decimal">
+      <column name="MONTO_COFACTORES_2"/>
+    </property>
+
+    <property name="montoCtaAbono" type="big_decimal">
+      <column name="MONTO_CTA_ABONO"/>
+    </property>
+
+    <property name="montoCtaCargo" type="big_decimal">
+      <column name="MONTO_CTA_CARGO"/>
+    </property>
+
+    <property name="montoCtaOrigen" type="big_decimal">
+      <column name="MONTO_CTA_ORIGEN"/>
+    </property>
+
+    <property name="montoDestino" type="big_decimal">
+      <column name="MONTO_DESTINO"/>
+    </property>
+
+    <property name="montoSicav" type="big_decimal">
+      <column name="MONTO_SICAV"/>
+    </property>
+
+    <property name="montoSust1" type="big_decimal">
+      <column name="MONTO_SUST1"/>
+    </property>
+
+    <property name="montoSust2" type="big_decimal">
+      <column name="MONTO_SUST2"/>
+    </property>
+
+    <property name="nomCliente" type="string">
+      <column name="NOM_CLIENTE"/>
+    </property>
+
+    <property name="nomCofactor" type="string">
+      <column name="NOM_COFACTOR"/>
+    </property>
+
+    <property name="numPol" type="int">
+      <column name="NUMPOL"/>
+    </property>
+
+    <property name="opeCode" type="string">
+      <column name="OPCODE"/>
+    </property>
+
+    <property name="operacionFiu" type="string">
+      <column name="OPERACION_FIU"/>
+    </property>
+
+    <property name="sctaAbono" type="int" access="field">
+      <column name="SCTA_ABONO"/>
+    </property>
+
+    <property name="sctaCargo" type="int" access="field">
+      <column name="SCTA_CARGO"/>
+    </property>
+
+    <property name="sctaDestino" type="int" access="field">
+      <column name="SCTA_DESTINO"/>
+    </property>
+
+    <property name="sctaOrigen" type="int" access="field">
+      <column name="SCTA_ORIGEN"/>
+    </property>
+
+    <property name="sctaSust1" type="int" access="field">
+      <column name="SCTA_SUST1"/>
+    </property>
+
+    <property name="sctaSust2" type="int" access="field">
+      <column name="SCTA_SUST2"/>
+    </property>
+
+    <property name="ssCtaAbono" type="int">
+      <column name="SSCTA_ABONO"/>
+    </property>
+
+    <property name="ssCtaCargo" type="int">
+      <column name="SSCTA_CARGO"/>
+    </property>
+
+    <property name="ssCtaDestino" type="int">
+      <column name="SSCTA_DESTINO"/>
+    </property>
+
+    <property name="ssCtaOrigen" type="int">
+      <column name="SSCTA_ORIGEN"/>
+    </property>
+
+    <property name="ssctaSust1" type="int">
+      <column name="SSCTA_SUST1"/>
+    </property>
+
+    <property name="ssctaSust2" type="int">
+      <column name="SSCTA_SUST2"/>
+    </property>
+
+    <property name="sssCtaAbono" type="int">
+      <column name="SSSCTA_ABONO"/>
+    </property>
+
+    <property name="sssCtaCargo" type="int">
+      <column name="SSSCTA_CARGO"/>
+    </property>
+
+    <property name="sssCtaDestino" type="int">
+      <column name="SSSCTA_DESTINO"/>
+    </property>
+
+    <property name="sssCtaOrigen" type="int">
+      <column name="SSSCTA_ORIGEN"/>
+    </property>
+
+    <property name="sssctaSust1" type="int">
+      <column name="SSSCTA_SUST1"/>
+    </property>
+
+    <property name="sssctaSust2" type="int">
+      <column name="SSSCTA_SUST2"/>
+    </property>
+
+    <property name="suCcon" type="int">
+      <column name="SUCCON"/>
+    </property>
+
+    <property name="tipoCambio" type="big_decimal">
+      <column name="TIPO_CAMBIO"/>
+    </property>
+
+    <property name="tipoProceso" type="string">
+      <column name="TIPO_PROCESO"/>
+    </property>
+
+    <property name="cuentaSustitucion" type="string">
+      <column name="CUENTA_SUSTITUCION"/>
+    </property>
+
+    <property name="montoSustitucion" type="big_decimal">
+      <column name="MONTO_SUSTITUCION"/>
+    </property>
+
+    <property name="desMon" type="string">
+      <column name="DESMON"/>
+    </property>
+
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/06/2015 11:54:07 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiFiuNegativoReclImxTmp" schema="FACTIMX" table="FI_FIU_NEGATIVO_RECL_IMX_TMP">
+    <id name="id" type="int">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="sucCon" type="int">
+      <column name="SUCCON"/>
+    </property>
+    <property name="depto" type="int">
+      <column name="DEPTO"/>
+    </property>
+    <property name="opCode" type="string">
+      <column name="OPCODE"/>
+    </property>
+    <property name="campoA" type="string">
+      <column name="CAMPOA"/>
+    </property>
+    <property name="numPol" type="int">
+      <column name="NUMPOL"/>
+    </property>
+    <property name="nomCliente" type="string">
+      <column name="NOM_CLIENTE"/>
+    </property>
+    <property name="cuentaOrigen" type="string">
+      <column name="CUENTA_ORIGEN"/>
+    </property>
+    <property name="montoOrigensSivac" type="big_decimal">
+      <column name="MONTO_ORIGEN_SSICAV"/>
+    </property>
+    <property name="cuentaCargo" type="string">
+      <column name="CUENTA_CARGO"/>
+    </property>
+    <property name="montoCargosSivac" type="big_decimal">
+      <column name="MONTO_CARGO_SSICAV"/>
+    </property>
+    <property name="cuentaAbono" type="string">
+      <column name="CUENTA_ABONO"/>
+    </property>
+    <property name="montoAbonosSivac" type="big_decimal">
+      <column name="MONTO_ABONO_SSICAV"/>
+    </property>
+    <property name="saldoSivac" type="big_decimal">
+      <column name="SALDO_SICAV"/>
+    </property>
+    <property name="moneda" type="int">
+      <column name="MONEDA"/>
+    </property>
+    <property name="montoCargoOriginal" type="big_decimal">
+      <column name="MONTO_CARGO_ORIGINAL"/>
+    </property>
+    <property name="montoAbonoOriginal" type="big_decimal">
+      <column name="MONTO_ABONO_ORIGINAL"/>
+    </property>
+    <property name="fecAd" type="int">
+      <column name="FECAD"/>
+    </property>
+    <property name="fecAm" type="int">
+      <column name="FECAM"/>
+    </property>
+    <property name="fecAa" type="int">
+      <column name="FECAA"/>
+    </property>
+    <property name="ctaOrigen" type="int">
+      <column name="CTA_ORIGEN"/>
+    </property>
+    <property name="sctaOrigen" type="int">
+      <column name="SCTA_ORIGEN"/>
+    </property>
+    <property name="ssCtaOrigen" type="int">
+      <column name="SSCTA_ORIGEN"/>
+    </property>
+    <property name="sssCtaOrigen" type="int">
+      <column name="SSSCTA_ORIGEN"/>
+    </property>
+    <property name="ctaCargo" type="int">
+      <column name="CTA_CARGO"/>
+    </property>
+    <property name="sctaCargo" type="int" access="field">
+      <column name="SCTA_CARGO"/>
+    </property>
+    <property name="ssCtaCargo" type="int">
+      <column name="SSCTA_CARGO"/>
+    </property>
+    <property name="sssCtaCargo" type="int">
+      <column name="SSSCTA_CARGO"/>
+    </property>
+    <property name="ctaAbono" type="int">
+      <column name="CTA_ABONO"/>
+    </property>
+    <property name="sctaAbono" type="int">
+      <column name="SCTA_ABONO"/>
+    </property>
+    <property name="ssCtaAbono" type="int">
+      <column name="SSCTA_ABONO"/>
+    </property>
+    <property name="sssCtaAbono" type="int">
+      <column name="SSSCTA_ABONO"/>
+    </property>
+    <property name="mensaje" type="string">
+      <column name="MENSAJE"/>
+    </property>
+
+    <property name="atributo1" type="string">
+      <column name="ATRIBUTO1"/>
+    </property>
+    <property name="atributo2" type="string">
+      <column name="ATRIBUTO2"/>
+    </property>
+  </class>
+</hibernate-mapping>

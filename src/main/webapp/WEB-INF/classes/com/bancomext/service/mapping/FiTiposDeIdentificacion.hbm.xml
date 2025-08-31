@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12/11/2013 11:15:16 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiTiposDeIdentificacion" schema="FACTIMX" table="FI_TIPOS_DE_IDENTIFICACION">
+    <id name="codigoTipoIdentificacion" type="short">
+      <column name="CODIGO_TIPO_IDENTIFICACION" precision="2" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="descripcion" type="string">
+      <column length="30" name="DESCRIPCION" not-null="true"/>
+    </property>
+    <property name="formato" type="string">
+      <column length="16" name="FORMATO" not-null="true"/>
+    </property>
+    <property name="documentacionDeFormato" type="string">
+      <column length="40" name="DOCUMENTACION_DE_FORMATO"/>
+    </property>
+    <property name="personaNatural" type="string">
+      <column length="1" name="PERSONA_NATURAL" not-null="true"/>
+    </property>
+    <property name="adicionadoPor" type="string">
+      <column length="10" name="ADICIONADO_POR"/>
+    </property>
+    <property name="fechaAdicion" type="date">
+      <column length="7" name="FECHA_ADICION"/>
+    </property>
+    <property name="modificadoPor" type="string">
+      <column length="10" name="MODIFICADO_POR"/>
+    </property>
+    <property name="fechaModificacion" type="date">
+      <column length="7" name="FECHA_MODIFICACION"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : login.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head id="head1">
+  <meta content="text/html; charset=UTF-8"/>
+  <title>Bancomext LOGIN</title>
+  <link rel="stylesheet" type="text/css" href="resources/css/master.css" media="screen"/>
+  <style type="text/css">
+    .dashboarCol1 {
+      vertical-align: top;
+      width: 25%
+    }
+
+    .dashboardCol2 {
+      vertical-align: top;
+      width: 50%
+    }
+
+    .dashboardCol3 {
+      vertical-align: top;
+      width: 25%
+    }
+  </style>
+</h:head>
+
+<h:body id="body1">
+  <div style="text-align: -webkit-center">
+    <div class="top_s">Facturas iMX v2.0</div>
+    <div class="lbg">
+      <div class="llogo">
+        <br/>
+        <img alt="" src="resources/img/login/loggo.png" width="400"/>
+      </div>
+      <h:form id="form1">
+        <p:outputPanel layout="block" id="pGLogin" style="position: relative;margin:0 auto;">
+          <p:outputPanel layout="block" id="pg2" style="position: relative;margin:0 auto;">
+            <p:panelGrid cellpadding="10px;" cellspacing="3px;" columns="1"
+                         style="margin:0 auto;
+                         background-image: url(resources/img/login/logsrc2.PNG);
+                         background-repeat: no-repeat;height:200px;width:40%;">
+              <p:outputPanel layout="block" style="top:20px; text-align: center;">
+                <h:outputText id="labelLogin"
+                              value="Ingrese los datos requeridos DEV:"
+                              styleClass="title"/>
+              </p:outputPanel>
+              <p:outputPanel layout="block" style="width:100%;">
+                <h:panelGroup>
+                  <p:panelGrid columns="3" id="idGridLogin" style="width:auto"
+                               columnClasses="dashboarCol1,dashboardCol2,dashboardCol3">
+                    <h:outputText id="outputText1" value="Usuario:"/>
+                    <h:inputText id="usuario"
+                                 action="#{login.checkUserAction}"
+                                 maxlength="20"
+                                 required="true"
+                                 style="width:200px"
+                                 value="#{login.strUsuario}"/>
+                    <p:message for="usuario" id="errorUsuario"
+                               style="color: red; font-size: 11px; height: 20px;"/>
+                    <h:outputText id="outputText2" value="Contraseña:"/>
+                    <h:inputSecret id="claveText"
+                                   action="#{login.checkUserAction}"
+                                   redisplay="true"
+                                   required="true"
+                                   style="width:200px"
+                                   value="#{login.clave}"/>
+                    <p:message id="errorClave"
+                               for="claveText"
+                               style="color: red; font-size: 11px; height: 20px;"/>
+                  </p:panelGrid>
+                </h:panelGroup>
+                <h:panelGroup>
+                </h:panelGroup>
+              </p:outputPanel>
+              <p:outputPanel layout="block" style="top:20px; text-align: center;">
+                <h:commandButton id="loginbutton"
+                                 action="#{login.checkUserAction}"
+                                 styleClass="lbtn"
+                                 value="Ingresar"
+                                 binding="#{login.loginButton}"/>
+              </p:outputPanel>
+            </p:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+        <p:outputPanel layout="block" style="text-align:center">
+          <p:message for="loginbutton" style="color:red; font-size:11px;"/>
+        </p:outputPanel>
+      </h:form>
+    </div>
+  </div>
+  <div class="dr">
+    Bancomext © Todos los derechos reservados
+  </div>
+</h:body>
+</html>

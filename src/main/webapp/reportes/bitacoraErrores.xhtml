@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : bitacoraErrores.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <fieldset>
+        <legend>Bitacora Errores</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <!--p:message for="btnFiltrar" style="color:red; font-size:11px;text-align:justify;"/-->
+          <p:outputPanel layout="block" scrollHeight="280px">
+
+            <p:commandButton
+                value="#{bitacoraErrores.nombreArchivoFacturas}"
+                icon="../resources/img/excel.png"
+                ajax="false"
+                onclick="PrimeFaces.monitorDownload(start, stop);"
+                styleClass="border:0;">
+              <p:fileDownload value="#{bitacoraErrores.excelResource}"/>
+            </p:commandButton>
+            <p:commandButton
+                label="Exportar"
+                value="#{bitacoraErrores.nombreArchivoFacturas}"
+                ajax="false"
+                onclick="PrimeFaces.monitorDownload(start, stop);"
+                styleClass="color:blue; text-decoration:underline;">
+              <p:fileDownload value="#{bitacoraErrores.excelResource}"/>
+            </p:commandButton>
+
+            <p:dataTable id="dtInfo" var="row"
+                         binding="#{bitacoraErrores.htmlDataTableCFDVerificacion}"
+                         value="#{bitacoraErrores.listaTablaCFDVerificacion}"
+                         rows="#{bitacoraErrores.defaultRows}"
+                         style="vertical-align:top; "
+                         paginator="#{bitacoraErrores.paginatorVisibleCFDVerificacion}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Folio">
+                <h:outputText value="#{row.idFolio}"
+                              style="text-align:center;"/>
+              </p:column>
+              <p:column headerText="Fecha Valor" sortOrder="asc">
+                <h:outputText value="#{row.fiFacturasEncabezado.id.fechaValor}"
+                              style="text-align:center;">
+                  <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+              </p:column>
+              <p:column headerText="Estatus">
+                <h:outputText value="#{row.status}"
+                              style="text-align:center;"/>
+              </p:column>
+              <p:column headerText="Observaciones">
+                <h:outputText value="#{row.statusConciliado}"
+                              style="text-align:center;"/>
+              </p:column>
+              <p:column headerText="Fecha Generación">
+                <h:outputText value="#{row.fecha}"
+                              style="text-align:center;">
+                  <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+              </p:column>
+              <p:column headerText="Producto">
+                <h:outputText value="#{row.fiFacturasEncabezado.tipoCredito}"
+                              style="text-align:center;"/>
+              </p:column>
+              <p:column headerText="Campo A">
+                <h:outputText value="#{row.fiFacturasEncabezado.id.numAcreditado}"
+                              style="text-align:center;"/>
+              </p:column>
+              <p:column headerText="Campo B">
+                <h:outputText value="#{row.fiFacturasEncabezado.campoB}"
+                              style="text-align:center;"/>
+              </p:column>
+              <p:column headerText="Moneda">
+                <h:outputText value="#{row.fiFacturasEncabezado.codigoMoneda}"
+                              style="text-align:center;"/>
+              </p:column>
+              <p:column headerText="Importe">
+                <h:outputText value="#{row.fiFacturasEncabezado.importe}"
+                              style="text-align:center;"/>
+              </p:column>
+            </p:dataTable>
+          </p:outputPanel>
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

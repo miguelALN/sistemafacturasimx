@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16/12/2013 03:16:11 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCfdCifrasControl" schema="FACTIMX" table="FI_CFD_CIFRAS_CONTROL">
+    <composite-id name="id" class="com.bancomext.service.mapping.FiCfdCifrasControlId">
+      <key-property name="fechaEmision" type="date">
+        <column name="FECHA_EMISION" length="7"/>
+      </key-property>
+      <key-property name="producto" type="string">
+        <column name="PRODUCTO" length="15"/>
+      </key-property>
+      <key-property name="tpocredito" type="string">
+        <column name="TPOCREDITO" length="150"/>
+      </key-property>
+    </composite-id>
+    <property name="tipoCartera" type="string">
+      <column name="TIPO_CARTERA" length="30"/>
+    </property>
+    <property name="total" type="big_decimal">
+      <column name="TOTAL" precision="22" scale="0"/>
+    </property>
+    <property name="totalInformativo" type="big_decimal">
+      <column name="TOTAL_INFORMATIVO" precision="22" scale="0"/>
+    </property>
+    <property name="totalFiscal" type="big_decimal">
+      <column name="TOTAL_FISCAL" precision="22" scale="0"/>
+    </property>
+    <property name="cfdTotal" type="big_decimal">
+      <column name="CFD_TOTAL" precision="22" scale="0"/>
+    </property>
+    <property name="cfdTotalInforma" type="big_decimal">
+      <column name="CFD_TOTAL_INFORMA" precision="22" scale="0"/>
+    </property>
+    <property name="cfdTotalFiscal" type="big_decimal">
+      <column name="CFD_TOTAL_FISCAL" precision="22" scale="0"/>
+    </property>
+    <property name="orden" type="big_decimal">
+      <column name="ORDEN" precision="22" scale="0"/>
+    </property>
+    <property name="fechaProceso" type="date">
+      <column name="FECHA_PROCESO" length="7" not-null="true">
+        <comment>Fecha de generacion del registro</comment>
+      </column>
+    </property>
+    <property name="totalVerificacion" type="big_decimal">
+      <column name="TOTAL_VERIFICACION" precision="22" scale="0">
+        <comment>Total de Registros Verificados manualmente</comment>
+      </column>
+    </property>
+    <property name="totalEsperado" type="big_decimal">
+      <column name="TOTAL_ESPERADO" precision="22" scale="0">
+        <comment>Facturas referente a las cuentas xxx de SICAV</comment>
+      </column>
+    </property>
+    <property name="pendientes" type="big_decimal">
+      <column name="PENDIENTES" precision="22" scale="0">
+        <comment>DIFERENCIA TOTAL_ESPERADO y TOTAL</comment>
+      </column>
+    </property>
+    <property name="motivoError" type="string">
+      <column name="MOTIVO_ERROR" length="300">
+        <comment>Razon por la que no esta conciliado</comment>
+      </column>
+    </property>
+    <property name="totalError" type="big_decimal">
+      <column name="TOTAL_ERROR" precision="22" scale="0">
+        <comment>Registros con error</comment>
+      </column>
+    </property>
+  </class>
+</hibernate-mapping>

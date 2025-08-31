@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : cofactor.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Cofactores</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:outputPanel layout="block" scrollHeight="500px">
+            <p:message for="btnActualiza" id="btnActualiza" style="color:blue; font-size:11px;"/>
+            <p:message for="btnAgregar" id="btnAgregar" style="color:blue; font-size:11px;"/>
+            <p:message for="btnElimina" id="btnElimina" style="color:red; font-size:11px;"/>
+            <p:dataTable id="infoCofactor"
+                         widgetVar="drCofactor"
+                         columnWidths="300px"
+                         binding="#{parCofactores.htmlDataTable}"
+                         value="#{parCofactores.listaCofactores}"
+                         var="row"
+                         rows="#{parCofactores.defaultRows}"
+                         paginator="#{parCofactores.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+
+              <p:column headerText="editar">
+
+                <p:commandButton title="Editar"
+                                 action="#{parCofactores.muestraEdicion}"
+                                 icon="pi pi-pencil"
+                                 styleClass="rounded-button edit-button ui-button-outlined"
+                                 oncomplete="PF('agregarDialog').show()"
+                                 process="@this"
+                                 update=":form1:ppCancelacion-prov-int-content"
+                                 style="height: 20px; width: 15px">
+
+                  <f:setPropertyActionListener value="#{parCofactores.htmlDataTable.rowIndex}"
+                                               target="#{parCofactores.rowIndex}"/>
+
+                </p:commandButton>
+
+              </p:column>
+
+              <p:column headerText="Nombre"
+                        sortBy="#{row.nombre}"
+                        filterBy="#{row.nombre}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('drCofactor').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.nombre}" style="font-style:normal; font-size:10px;"/>
+              </p:column>
+
+              <p:column headerText="Campo B"
+                        sortBy="#{row.campoB}"
+                        filterBy="#{row.campoB}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('drCofactor').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.campoB}" style="font-style:normal; font-size:10px;"/>
+              </p:column>
+
+              <!--TODO REA Review this button -->
+              <p:column headerText="Eliminar"
+                        style="text-align:center">
+                <p:commandButton title="Eliminar"
+                                 icon="pi pi-trash"
+                                 styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                 process="@this"
+                                 onclick="PF('borrarDialog').show()"
+                                 style="height: 20px; width: 15px">
+                  <f:setPropertyActionListener value="#{row.id}" target="#{parCofactores.id}"/>
+                </p:commandButton>
+
+              </p:column>
+
+            </p:dataTable>
+            <p:confirmDialog acceptLabel="Eliminar"
+                             cancelLabel="Cancelar"
+                             id="confirmarEli"
+                             message="Confirme Acción Eliminar"
+                             rendered="true"
+                             title="Eliminar Cofactores"/>
+
+            <p:outputPanel layout="block" style="position: relative;">
+
+              <p:panelGrid columns="1">
+                <p:commandButton value="Agregar"
+                                 action="#{parCofactores.openPanel}"
+                                 oncomplete="PF('agregarDialog').show()"
+                                 process="@this, :form1:ppCancelacion-prov-int-content"
+                                 update=":form1:ppCancelacion-prov-int-content">
+                  <p:resetInput target=":form1:ppCancelacion-prov-int-content"/>
+                </p:commandButton>
+              </p:panelGrid>
+            </p:outputPanel>
+
+            <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+            <p:dialog id="ppCancelacionProvInt"
+                      modal="true"
+                      autoCentre="true"
+                      title="Parametrizacion"
+                      visible="#{parCofactores.popUpAltaEdita}"
+                      widgetVar="agregarDialog">
+
+              <p:outputPanel id="ppCancelacion-prov-int-content" class="ui-fluid">
+
+                <h:panelGroup>
+                  <fieldset style="width:auto">
+                    <legend>Alta Edicion Cofactores.</legend>
+                    <br/>
+                    <p:card style="width:400px;">
+                      <p:message for="btnErrorAgregar" style="color:red; font-size:12px;text-align:justify;"/>
+                      <p:panelGrid columns="2" style="padding-top: 5px">
+
+                        <h:outputText value="* NOMBRE"/>
+                        <h:inputText maxlength="250" value="#{parCofactores.nombre}"/>
+
+                        <h:outputText value="* CAMPO B"/>
+                        <h:inputText maxlength="8" value="#{parCofactores.campoB}"/>
+
+                      </p:panelGrid>
+                      <br></br>
+                      <p:panelGrid columns="5">
+                        <p:commandButton id="btnErrorAgregar"
+                                         value="Guardar"
+                                         action="#{parCofactores.agregarAjuste}"
+                                         rendered="#{parCofactores.btnAltaEdita}"
+                                         process=":form1:ppCancelacion-prov-int-content"
+                                         update=":form1:ppCancelacion-prov-int-content, :form1:infoCofactor"/>
+                        <p:commandButton value="Modificar"
+                                         action="#{parCofactores.modificaAjuste}"
+                                         rendered="#{!parCofactores.btnAltaEdita}"
+                                         process=":form1:ppCancelacion-prov-int-content"
+                                         update=":form1:infoCofactor, :form1:ppCancelacion-prov-int-content"/>
+                        <p:commandButton value="Cancelar" action="#{parCofactores.closePanel}"/>
+
+                      </p:panelGrid>
+                      <p:outputPanel layout="block" style="text-align:center;">
+                        <p/>
+                        <h:outputText value="Los campos marcados con * son mandatorios"/>
+                      </p:outputPanel>
+
+                    </p:card>
+                  </fieldset>
+                </h:panelGroup>
+
+
+              </p:outputPanel>
+
+            </p:dialog>
+          </p:outputPanel>
+        </p:outputPanel>
+      </fieldset>
+
+      <p:confirmDialog widgetVar="borrarDialog"
+                       showEffect="fade"
+                       width="300"
+                       message="¿Desea borrar el cofactor?"
+                       header="Confirmar"
+                       severity="warn">
+        <p:commandButton value="Si"
+                         actionListener="#{parCofactores.eliminarAjuste}"
+                         process="@this"
+                         oncomplete="PF('borrarDialog').hide()"
+                         update=":form1:infoCofactor"/>
+        <p:commandButton value="No"
+                         onclick="PF('borrarDialog').hide()"
+                         styleClass="ui-button-secondary"
+                         type="button"/>
+      </p:confirmDialog>
+
+    </h:form>
+  </div>
+</h:body>
+</html>

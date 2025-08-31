@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 28/11/2013 03:48:37 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCatCuentasSicav" schema="FACTIMX" table="FI_CAT_CUENTAS_SICAV">
+    <composite-id name="id" class="com.bancomext.service.mapping.FiCatCuentasSicavId">
+      <key-property name="cta" type="string">
+        <column name="CTA" length="4"/>
+      </key-property>
+      <key-property name="scta" type="string">
+        <column name="SCTA" length="2"/>
+      </key-property>
+      <key-property name="sscta" type="string">
+        <column name="SSCTA" length="2"/>
+      </key-property>
+      <key-property name="ssscta" type="string">
+        <column name="SSSCTA" length="2"/>
+      </key-property>
+    </composite-id>
+
+  </class>
+</hibernate-mapping>

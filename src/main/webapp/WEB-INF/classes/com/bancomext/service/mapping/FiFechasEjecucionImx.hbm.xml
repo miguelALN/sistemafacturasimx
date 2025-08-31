@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26/06/2015 09:23:55 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiFechasEjecucionImx" schema="FACTIMX" table="FI_FECHAS_EJECUCION_IMX">
+    <id name="id" type="int">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fecPrimerDiaHabilMes" type="java.util.Date">
+      <column name="FEC_PRIMER_DIA_HABIL_MES"/>
+    </property>
+    <property name="dia" type="int">
+      <column name="DIA"/>
+    </property>
+    <property name="mes" type="int">
+      <column name="MES"/>
+    </property>
+    <property name="anio" type="int">
+      <column name="ANIO"/>
+    </property>
+
+    <property name="fecUltimoDiaHabilMes" type="java.util.Date">
+      <column name="FEC_ULTIMO_DIA_HABIL_MES"/>
+    </property>
+
+    <property name="diaH" type="int">
+      <column name="DIAH"/>
+    </property>
+
+    <property name="mesH" type="int">
+      <column name="MESH"/>
+    </property>
+
+    <property name="anioH" type="int">
+      <column name="ANIOH"/>
+    </property>
+
+
+  </class>
+</hibernate-mapping>

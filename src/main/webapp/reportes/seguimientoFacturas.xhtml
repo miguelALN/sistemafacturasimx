@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : seguimientoFacturas.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <script type="text/javascript" src="../resources/js/PrimeFacesLocale.js"></script>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+  <style type="text/css">
+    .panelCol1 {
+      text-align: right;
+      width: 20%
+    }
+
+    .panelCol2 {
+      text-align: left;
+      width: 30%
+    }
+
+    .panelCol3 {
+      text-align: right;
+      width: 20%
+    }
+
+    .panelCol4 {
+      text-align: left;
+      width: 30%
+    }
+  </style>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <br/>
+      <fieldset>
+        <legend>Seguimiento Estatus Facturas</legend>
+        <p:outputPanel id="pgInfo">
+
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:panelGrid columns="4" layout="grid" contentStyleClass="ui-fluid" style="width: 90%"
+                           columnClasses="panelCol1, panelCol2, panelCol3, panelCol4">
+                <h:outputText value="Fecha Valor Inicial"/>
+                <p:calendar id="fechaInicial"
+                            value="#{seguimientoFacturas.fechaInicial}"
+                            locale="es"
+                            navigator="true"
+                            showButtonPanel="true"
+                            autocomplete="off"
+                            pattern="MMM d, yyyy"/>
+                <h:outputText value="Fecha Valor Final"/>
+                <p:calendar id="fechaFinal"
+                            value="#{seguimientoFacturas.fechaFinal}"
+                            locale="es"
+                            navigator="true"
+                            showButtonPanel="true"
+                            autocomplete="off"
+                            pattern="MMM d, yyyy"/>
+              </p:panelGrid>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <p:commandButton value="Filtrar" action="#{seguimientoFacturas.filtrarSegumientoFacturas()}"
+                               update=":form1:pgInfo"/>
+
+              <h:commandButton title="Descargar en Excel"
+                               image="../resources/img/excel.png"
+                               rendered="#{not empty seguimientoFacturas.listaCfds}"
+                               action="#{seguimientoFacturas.descargarArchivo}"/>
+            </p:toolbarGroup>
+          </p:toolbar>
+
+          <p:panelGrid id="pngCdfis" columns="1" style="width: 100%">
+
+            <p:dataTable id="dt-cfdis"
+                         rendered="#{not empty seguimientoFacturas.listaCfds}"
+                         widgetVar="dtCfdis"
+                         var="cfdi"
+                         value="#{seguimientoFacturas.listaCfds}"
+                         reflow="true"
+                         selection="#{seguimientoFacturas.cfdsSeleccionados}"
+                         rowSelectMode="add"
+                         rowKey="#{cfdi.serieFolio}"
+                         tableStyle="width:auto"
+                         rows="#{seguimientoFacturas.defaultRows}"
+                         paginator="#{seguimientoFacturas.paginadorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:ajax event="rowSelect" listener="#{seguimientoFacturas.procesarSeleccion()}"
+                      update=":form1:boton-cancelar :form1:boton-verificar :form1:boton-enviar"
+                      process="@this" partialSubmit="true"/>
+
+              <p:ajax event="rowUnselect" listener="#{seguimientoFacturas.procesarSeleccion()}"
+                      update=":form1:boton-cancelar :form1:boton-verificar :form1:boton-enviar"
+                      process="@this" partialSubmit="true"/>
+
+              <p:ajax event="rowSelectCheckbox" listener="#{seguimientoFacturas.procesarSeleccion()}"
+                      update=":form1:boton-cancelar :form1:boton-verificar :form1:boton-enviar"
+                      process="@this" partialSubmit="true"/>
+
+              <p:ajax event="rowUnselectCheckbox" listener="#{seguimientoFacturas.procesarSeleccion()}"
+                      update=":form1:boton-cancelar :form1:boton-verificar :form1:boton-enviar"
+                      process="@this" partialSubmit="true"/>
+
+              <p:ajax event="toggleSelect" listener="#{seguimientoFacturas.procesarSeleccion()}"
+                      update=":form1:boton-cancelar :form1:boton-verificar :form1:boton-enviar"
+                      process="@this" partialSubmit="true"/>
+
+              <p:column selectionMode="multiple" width="10px"></p:column>
+
+              <p:column headerText="Fecha Valor."
+                        sortBy="#{cfdi.fechaValorFormat}"
+                        filterBy="#{cfdi.fechaValorFormat}"
+                        filterMatchMode="contains"
+                        filterStyle="width:50px;height: 20px"
+                        sortOrder="desc"
+                        width="50px">
+                <h:outputText value="#{cfdi.fechaValorFormat}"/>
+              </p:column>
+
+              <p:column headerText="Campo A"
+                        sortBy="#{cfdi.codigoCliente}"
+                        filterBy="#{cfdi.codigoCliente}"
+                        filterMatchMode="contains"
+                        filterStyle="width:50; height: 20px"
+                        width="50px">
+                <h:outputText value="#{cfdi.codigoCliente}"/>
+              </p:column>
+              <p:column headerText="Nombre Cliente"
+                        sortBy="#{cfdi.nombreCliente}"
+                        filterBy="#{cfdi.nombreCliente}"
+                        filterMatchMode="contains"
+                        filterStyle="width:270px; height: 20px"
+                        width="270px">
+
+                <h:outputText value="#{cfdi.nombreCliente}"/>
+              </p:column>
+              <p:column headerText="Contrato"
+                        sortBy="#{cfdi.contrato}"
+                        filterBy="#{cfdi.contrato}"
+                        filterMatchMode="contains"
+                        filterStyle="width:30px; height: 20px"
+                        width="30px">
+                <h:outputText value="#{cfdi.contrato}"/>
+              </p:column>
+              <p:column headerText="Moneda"
+                        sortBy="#{cfdi.moneda}"
+                        filterBy="#{cfdi.moneda}"
+                        filterMatchMode="contains"
+                        filterStyle="width:30px; height: 20px"
+                        width="30px">
+                <h:outputText value="#{cfdi.moneda}"/>
+              </p:column>
+              <p:column headerText="Producto"
+                        sortBy="#{cfdi.producto}"
+                        filterBy="#{cfdi.producto}"
+                        filterMatchMode="contains"
+                        filterStyle="width:130px;height: 20px"
+                        width="130px">
+                <h:outputText value="#{cfdi.producto}"/>
+              </p:column>
+              <p:column headerText="Folio"
+                        sortBy="#{cfdi.serieFolio}"
+                        filterBy="#{cfdi.serieFolio}"
+                        filterMatchMode="contains"
+                        filterStyle="width:50px; height: 20px"
+                        width="50px">
+                <h:outputText value="#{cfdi.serieFolio}"/>
+              </p:column>
+              <p:column headerText="Total"
+                        sortBy="#{cfdi.total}"
+                        filterBy="#{cfdi.total}"
+                        filterMatchMode="contains"
+                        filterStyle="width:30px; height: 20px"
+                        width="30px">
+                <h:outputText value="#{cfdi.total}"/>
+              </p:column>
+              <p:column headerText="Estatus Verificado"
+                        sortBy="#{cfdi.statusVerificado}"
+                        filterBy="#{cfdi.statusVerificado}"
+                        filterMatchMode="contains"
+                        filterStyle="width:50px; height: 20px"
+                        width="50px">
+                <h:outputText value="#{cfdi.statusVerificado}"
+                              style="#{(cfdi.statusVerificado.equals('CANCELADO')) ? 'color:red' : ''}"/>
+              </p:column>
+              <p:column headerText="Fecha Verificación"
+                        sortBy="#{cfdi.fechaVerificacion}"
+                        filterBy="#{cfdi.fechaVerificacion}"
+                        filterMatchMode="contains"
+                        filterStyle="width:50px; height: 20px"
+                        width="50px">
+                <h:outputText value="#{cfdi.fechaVerificacion}"/>
+              </p:column>
+              <p:column headerText="Fecha Ingreso GACD"
+                        sortBy="#{cfdi.fechaIngresoGacd}"
+                        filterBy="#{cfdi.fechaIngresoGacd}"
+                        filterMatchMode="contains"
+                        filterStyle="width:50px; height: 20px"
+                        width="50px">
+                <h:outputText value="#{cfdi.fechaIngresoGacd}"/>
+              </p:column>
+              <p:column headerText="Fecha SAT"
+                        sortBy="#{cfdi.fechaSatGacd}"
+                        filterBy="#{cfdi.fechaSatGacd}"
+                        filterMatchMode="contains"
+                        filterStyle="width:30px; height: 20px"
+                        width="30px">
+                <h:outputText value="#{cfdi.fechaSatGacd}"/>
+              </p:column>
+              <p:column headerText="Fecha Envío Cliente"
+                        sortBy="#{cfdi.fechaEnvioCliente}"
+                        filterBy="#{cfdi.fechaEnvioCliente}"
+                        filterMatchMode="contains"
+                        filterStyle="width: 50px; height: 20px"
+                        width="50px">
+                <h:outputText value="#{cfdi.fechaEnvioCliente}"/>
+              </p:column>
+              <p:column headerText="Folio SAT"
+                        sortBy="#{cfdi.folioSAT}"
+                        filterBy="#{cfdi.folioSAT}"
+                        filterMatchMode="contains"
+                        filterStyle="width: 130px; height: 20px"
+                        width="130px">
+                <h:outputText value="#{cfdi.folioSAT}"/>
+              </p:column>
+              <p:column headerText="Status"
+                        sortBy="#{cfdi.status}"
+                        filterBy="#{cfdi.status}"
+                        filterMatchMode="contains"
+                        filterStyle="width: 150px; height: 20px"
+                        width="150px">
+                <h:outputText value="#{cfdi.status}"/>
+              </p:column>
+              <p:column headerText="Acción">
+                <h:outputText value="#{cfdi.accion}"/>
+              </p:column>
+            </p:dataTable>
+          </p:panelGrid>
+
+
+        </p:outputPanel>
+
+        <p:panelGrid columns="4" layout="grid" contentStyleClass="ui-fluid" style="width: 90%">
+
+          <p:commandButton value="Limpiar"
+                           action="#{seguimientoFacturas.limpiarTabla()}"
+                           update=":form1:pgInfo"/>
+          <p:commandButton id="boton-cancelar"
+                           value="#{seguimientoFacturas.labelBotonCancelar}"
+                           action="#{seguimientoFacturas.validarCancelacion()}"/>
+          <p:commandButton id="boton-verificar"
+                           value="#{seguimientoFacturas.labelBotonVerificar}"
+                           action="#{seguimientoFacturas.validarVerificacion}"
+                           update="@this"/>
+          <p:commandButton id="boton-enviar"
+                           value="#{seguimientoFacturas.labelBotonEnviar}"
+                           action="#{seguimientoFacturas.enviarCFDI()}"
+                           update="@this"/>
+        </p:panelGrid>
+
+      </fieldset>
+    </h:form>
+
+    <h:form id="dialogs">
+
+      <p:dialog header="Confirmación de usuario" showEffect="fade" modal="true" widgetVar="usuarioDialog"
+                responsive="true">
+        <p:outputPanel id="confirma-usuario-content" class="ui-fluid">
+          <p:panelGrid columns="3">
+            <p:outputLabel for="usuario" value="Usuario:"/>
+            <p:inputText id="usuario" maxlength="20" style="width:200px" disabled="true"
+                         value="#{seguimientoFacturas.usuario}"/>
+            <p:message for="usuario"/>
+            <p:outputLabel for="claveText" value="Password:"/>
+            <h:inputSecret id="claveText" redisplay="true" style="width:200px" required="true"
+                           value="#{seguimientoFacturas.password}"/>
+            <p:message for="claveText"/>
+            <p:outputLabel for="motivo" value="Motivo:"/>
+            <h:inputText id="motivo" style="width:200px" value="#{seguimientoFacturas.motivo}"/>
+            <p:message for="motivo"/>
+          </p:panelGrid>
+        </p:outputPanel>
+
+        <f:facet name="footer">
+          <p:commandButton value="Comprobar Usuario"
+                           actionListener="#{seguimientoFacturas.comprobarUsuario}"
+                           update="confirma-usuario-content"
+                           process="confirma-usuario-content @this"/>
+          <p:commandButton value="Cerrar"
+                           onclick="PF('usuarioDialog').hide()"
+                           type="button"/>
+        </f:facet>
+      </p:dialog>
+
+      <p:confirmDialog widgetVar="alertaCancela" showEffect="fade" width="300"
+                       message="Los folios que estan verficados para esta fecha de emision seran cancelados y no
+                                se podran utilizar de nuevo test. ¿Desea Continuar?"
+                       header="Confirmar Cancelación" severity="warn">
+        <p:commandButton value="Si"
+                         actionListener="#{seguimientoFacturas.cancelarCFD()}"
+                         update=":form1:dt-cfdis"
+                         process="@this"
+                         oncomplete="PF('alertaCancela').hide()"/>
+        <p:commandButton value="No"
+                         onclick="PF('alertaCancela').hide()"
+                         type="button"/>
+      </p:confirmDialog>
+
+
+      <p:confirmDialog widgetVar="alertaVerifica" showEffect="fade" width="300"
+                       message="Va a comenzar el proceso de verificación para CFD. ¿Desea Continuar?"
+                       header="Confirmar Verificación" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check"
+                         actionListener="#{seguimientoFacturas.verificarCFD}"
+                         update=":form1:dt-cfdis"
+                         process="@this"
+                         oncomplete="PF('alertaVerifica').hide()"/>
+        <p:commandButton value="No" icon="pi pi-times" onclick="PF('alertaVerifica').hide()"
+                         styleClass="ui-button-secondary" type="button"/>
+      </p:confirmDialog>
+
+    </h:form>
+  </div>
+</h:body>
+</html>
+

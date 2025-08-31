@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 6/08/2015 01:21:59 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiBitacoraAccionesImx" schema="FACTIMX" table="FI_BITACORA_ACCIONES_IMX">
+    <id name="id" type="big_decimal">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="folio" type="string">
+      <column name="FOLIO"/>
+    </property>
+    <property name="accion" type="string">
+      <column name="ACCION"/>
+    </property>
+    <property name="estatus" type="string">
+      <column name="ESTATUS"/>
+    </property>
+    <property name="adicionadoPor" type="string">
+      <column name="ADICIONADO_POR"/>
+    </property>
+    <property name="fechaAdicion" type="date">
+      <column name="FECHA_ADICION"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

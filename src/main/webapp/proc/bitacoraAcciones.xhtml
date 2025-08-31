@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : bitacoraAcciones.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+
+      <fieldset>
+        <legend>Bitácora de Acciones</legend>
+
+        <p:outputPanel layout="block" id="pgInfo">
+
+          <p:message for="btnMensaje" id="btnMensaje" style="color:blue; font-size:11px;"/>
+
+            <p:panelGrid columns="1">
+
+                <p:panelGrid columns="7">
+
+                  <h:outputText value="Usuario"/>
+                  <h:inputText value="#{bitacoraAcciones.usuario}">
+                    <p:ajax event="blur"
+                            listener="#{bitacoraAcciones.updateCalendar()}"
+                            update="@this"/>
+                  </h:inputText>
+
+                  <p:outputPanel layout="block" id="pgFechas">
+                    <h:outputText value="Fecha Inicial"/>
+                    <p:calendar id="fechaInicial"
+                                value="#{bitacoraAcciones.fechaInicial}"
+                                locale="es"
+                                navigator="true"
+                                showButtonPanel="true"
+                                autocomplete="off"
+                                pattern="MMM d, yyyy">
+                      <p:ajax event="dateSelect"
+                              listener="#{bitacoraAcciones.updateCalendar()}"
+                              update="pgFechas"/>
+                    </p:calendar>
+
+                    <h:outputText value="Fecha Final"/>
+
+                    <p:calendar id="fechaFinal"
+                                value="#{bitacoraAcciones.fechaFinal}"
+                                locale="es"
+                                navigator="true"
+                                showButtonPanel="true"
+                                autocomplete="off"
+                                pattern="MMM d, yyyy">
+                      <p:ajax event="dateSelect"
+                              listener="#{bitacoraAcciones.updateCalendar()}"
+                              update="pgFechas"/>
+                    </p:calendar>
+                  </p:outputPanel>
+
+                  <p:commandButton value="Filtrar"
+                                   action="#{bitacoraAcciones.filtroBitacora}"
+                                   process="@this"
+                                   update=":form1:tableBitacoraAcciones"/>
+                </p:panelGrid>
+            </p:panelGrid>
+
+            <p:panelGrid columns="1">
+              <p:dataTable id="tableBitacoraAcciones" var="row"
+                           value="#{bitacoraAcciones.listaBitacora}"
+                           rows="#{bitacoraAcciones.defaultRows}"
+                           columnWidths="80px,80px,170px,100px,60px"
+                           paginator="#{bitacoraAcciones.paginatorVisible}"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                           currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                <p:column headerText="Fecha">
+                  <h:outputText value="#{row.fechaAdicion}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+                <p:column headerText="Folio">
+                  <h:outputText value="#{row.folio}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+                <p:column headerText="Estatus">
+                  <h:outputText value="#{row.estatus}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+                <p:column headerText="Accion">
+                  <h:outputText value="#{row.accion}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+                <p:column headerText="Usuario">
+                  <h:outputText value="#{row.adicionadoPor}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+              </p:dataTable>
+            </p:panelGrid>
+
+          </p:outputPanel>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

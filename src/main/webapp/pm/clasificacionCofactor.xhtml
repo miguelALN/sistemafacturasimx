@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : clasificacionCofactor.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Clasificaci&#243;n de C&#243;factor</legend>
+        <h:panelGroup id="pgInfo">
+          <h:panelGroup scrollHeight="500px">
+            <p:message for="btnProcedimiento" id="btnProcedimiento" style="color:blue; font-size:11px;"/>
+            <p:message for="btnActualiza" id="btnActualiza" style="color:blue; font-size:11px;"/>
+            <p:message for="btnAgregar" id="btnAgregar" style="color:blue; font-size:11px;"/>
+            <p:message for="btnErrorProc" id="btnErrorProc" style="color:red; font-size:11px;"/>
+            <p:message for="btnElimina" id="btnElimina" style="color:red; font-size:11px;"/>
+            <p:dataTable id="inforClasificacionCofactor" var="row"
+                         value="#{clasificacionCofactor.listaClasificacionCofactor}"
+                         rows="#{clasificacionCofactor.defaultRows}"
+                         columnWidths="60px,350px,65px,65px,65px,40px,30px,30px"
+                         paginator="#{clasificacionCofactor.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+              <p:column headerText="Campo A"
+                        sortBy="#{row.campoA}"
+                        filterBy="#{row.campoA}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+              <h:outputText value="#{row.campoA}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Nombre Cliente"
+                        sortBy="#{row.cliente}"
+                        filterBy="#{row.cliente}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cliente}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta de Origen SICAV"
+                        sortBy="#{row.cuentaOrigen}"
+                        filterBy="#{row.cuentaOrigen}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cuentaOrigen}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Saldo de SICAV"
+                        sortBy="#{row.saldoSicavFor}"
+                        filterBy="#{row.saldoSicavFor}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.saldoSicavFor}"
+                              style="font-style:normal; font-size:10px; text-align: right;"/>
+              </p:column>
+              <p:column headerText="Saldo Cofactor"
+                        sortBy="#{row.e102142For}"
+                        filterBy="#{row.e102142For}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.e102142For}"
+                              style="font-style:normal; font-size:10px; text-align: right;"/>
+              </p:column>
+              <p:column headerText="Num. Cofactor"
+                        sortBy="#{row.numCof}"
+                        filterBy="#{row.numCof}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.numCof}"
+                              style="font-style:normal; font-size:10px; text-align: center;"/>
+              </p:column>
+              <!--TODO REA validate this Button-->
+              <p:column headerText="Editar">
+                <p:linkButton action="#{clasificacionCofactor.detalleCofactor}"
+                              id="editaF1"
+                              style="color: #990033; text-decoration: underline">
+                  <p:graphicImage rendered="#{row.diferencia}"
+                                  url="../resources/img/incorrecto.jpg"
+                                  width="20" height="20" title="Modificar"
+                                  style="border:none; text-align: center;"/>
+                  <p:graphicImage rendered="#{!row.diferencia}"
+                                  url="../resources/img/correcto.png"
+                                  width="20" height="20" title="Modificar"
+                                  style="border:none; text-align: center;"/>
+                  <f:param name="campoA" value="#{row.campoA}"/>
+                  <f:param name="saldoSicavFor" value="#{row.saldoSicavFor}"/>
+                  <f:param name="saldoSicav" value="#{row.saldoSicav}"/>
+                  <f:param name="rowIndex"
+                           value="#{clasificacionCofactor.htmlDataTable.rowIndex}"/>
+                </p:linkButton>
+              </p:column>
+            </p:dataTable>
+
+            <p:dataTable var="rowsS"
+                         value="#{clasificacionCofactor.listaSumaMontos}">
+              <p:column headerText="Monto Sicav">
+                <h:outputText value="#{rowsS.montoSicav}"
+                              style="#{clasificacionCofactor.styleText} text-align:right;"/>
+              </p:column>
+              <p:column headerText="Monto Cofactor">
+                <h:outputText value="#{rowsS.montoCofactor}"
+                              style="#{clasificacionCofactor.styleText} text-align: right;"/>
+              </p:column>
+            </p:dataTable>
+
+            <!-- LISTA COFACTORES FALTANTES -->
+            <p:dataTable var="rowCof"
+                         value="#{clasificacionCofactor.listaCofactoresFaltantes}"
+                         rendered="#{!clasificacionCofactor.btnEjecutarProceso}">
+              <p:column headerText="Cofactores">
+                <p:linkButton id="editaF2"
+                              action="#{clasificacionCofactor.altaCofactores}"
+                              style="color: #990033; text-decoration: underline">
+                  <h:outputText value="#{rowCof.elemento}"/>
+                  <f:param name="nombreCofactor" value="#{rowCof.elemento}"/>
+                </p:linkButton>
+              </p:column>
+            </p:dataTable>
+
+
+            <h:panelGrid>
+              <p:commandButton value="Ejecutar"
+                               action="#{clasificacionCofactor.actualizaExtemporaneas}"
+                               panelConfirmation="confirmarProceso" style="position: relative; left: 20%;"
+                               rendered="#{clasificacionCofactor.btnEjecutarProceso}"/>
+            </h:panelGrid>
+            <p:confirmDialog acceptLabel="Ejecutar" cancelLabel="Cancelar" id="confirmarProceso"
+                             message="Confirme la ejecucion del proceso" rendered="true"
+                             title="Ejecutar proceso SSivac Extemporaneo"/>
+
+
+            <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CLASIFICACION DE COFACTOR -->
+            <p:dialog positionOnLoadOnly="true" id="ppClasificacionCofactor" modal="true"
+                      autoCentre="true" title="Monto Cofactores"
+                      visible="#{clasificacionCofactor.popUpAltaEdita}">
+              <f:facet name="header">
+                <h:panelGrid id="panelCloseClasificacion" columns="1"
+                             style="display: block; height: 24px; position: relative; text-align: right; width: 100%">
+                  <p:commandButton action="#{clasificacionCofactor.closePanel}"
+                                   id="popUpClosePanel" alt="Cerrar" image="../resources/img/cerrar.png"
+                                   style="position: relative;" value="submit" title="Cerrar"/>
+                </h:panelGrid>
+              </f:facet>
+              <f:facet name="body">
+                <h:panelGroup>
+                  <fieldset style="width:auto">
+                    <legend>Detalle Clasificaci&#243;n C&#243;factor</legend>
+                    <br/>
+                    <p:message for="btnErrorAgregar" style="color:red; font-size:12px;text-align:justify;"/>
+                    <h:panelGrid columns="4">
+
+                      <h:outputLabel value="Campo A:"/>
+                      <h:inputText id="campoA" value="#{clasificacionCofactor.campoA}"
+                                   disabled="true"/>
+
+                      <h:outputLabel value="Saldo Sicav:"/>
+                      <h:inputText id="saldoSicav"
+                                   value="#{clasificacionCofactor.saldoSicavCof}"
+                                   disabled="true"/>
+
+                    </h:panelGrid>
+
+                    <h:panelGrid>
+                      <p:dataTable var="row" rows="16"
+                                   value="#{clasificacionCofactor.listaDetalleCofactores}"
+                                   binding="#{clasificacionCofactor.htmlDataTable1}"
+                                   columnWidths="80px,300px,80px">
+
+                        <p:column headerText="Campo B">
+                          <h:outputText value="#{row.numCof}" style="text-align: right;"/>
+                        </p:column>
+                        <p:column headerText="Nombre Cofactor">
+                          <h:commandLink
+                              action="#{clasificacionCofactor.openPanelAjusteCofactor}">
+                            <h:outputText value="#{row.numCof}"/>
+                            <f:param name="campoB" value="#{row.numCof}"/>
+                            <f:param name="e102142Sum" value="#{row.e102142}"/>
+                            <f:param name="rowIndexCof"
+                                     value="#{clasificacionCofactor.htmlDataTable1.rowIndex}"/>
+                          </h:commandLink>
+                        </p:column>
+                        <p:column headerText="Saldo">
+                          <h:outputText value="#{row.e102142For}" style="text-align: right;"/>
+                        </p:column>
+                      </p:dataTable>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="1" style="position: relative; left: 200px;">
+                      <p:commandButton value="Cerrar"
+                                       action="#{clasificacionCofactor.closePanel}"/>
+                    </h:panelGrid>
+                    <h:panelGrid style="position: relative; left: 160px;" columns="2">
+                      <h:outputLabel value="#{clasificacionCofactor.mensaje}"
+                                     style="color:blue;"/>
+                      <h:outputLabel value="#{clasificacionCofactor.mensaje1}"
+                                     style="color:green;"/>
+                    </h:panelGrid>
+                    <h:panelGrid style="position: relative; left: 130px;">
+                      <h:outputLabel value="#{clasificacionCofactor.error}"
+                                     style="color:red;"/>
+                    </h:panelGrid>
+                  </fieldset>
+                </h:panelGroup>
+              </f:facet>
+            </p:dialog>
+
+            <!-- AQUI INICIA VENTANA MODAL PARA LA MODIFICACION DE COFACTOR -->
+            <p:dialog resizable="true" id="modificacionCofactor" modal="true" autoCentre="true"
+                      title="Modificacion Cofactor"
+                      visible="#{clasificacionCofactor.popUpAltaEditaCof}">
+              <f:facet name="header">
+                <h:panelGrid id="pgModificacionCofactor" columns="1"
+                             style="display: block; height: 24px; position: relative; text-align: right; width: 100%">
+                  <p:commandButton action="#{clasificacionCofactor.closePanelCof}"
+                                   id="closePopupBtnCof" alt="Cerrar" image="../resources/img/cerrar.png"
+                                   style="position: relative;" value="submit" title="Cerrar"/>
+                </h:panelGrid>
+              </f:facet>
+              <f:facet name="body">
+                <h:panelGroup>
+                  <fieldset style="width:auto">
+                    <legend>Ajuste Saldo Sicav - Cofactor</legend>
+                    <br/>
+                    <h:panelGrid columns="2">
+                      <h:outputLabel value="Nombre Cofactor"/>
+                      <h:inputText value="#{clasificacionCofactor.campoB}" disabled="true"
+                                   size="50"/>
+
+                      <h:outputLabel value="Saldo Sicav:"/>
+                      <h:inputText id="saldoSIc"
+                                   value="#{clasificacionCofactor.saldoSicavCof}"
+                                   disabled="true" style="text-align: right;"/>
+
+                      <h:outputLabel value="Saldo Cofactor (Ajuste):"/>
+                      <h:inputText id="saldoCOF"
+                                   value="#{clasificacionCofactor.saldoCofactor}"
+                                   style="text-align: right;"/>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" style="position: relative; left: 150px;">
+                      <h:commandButton value="cancelar"
+                                       action="#{clasificacionCofactor.closePanelCof}"/>
+                      <h:commandButton value="Modificar"
+                                       action="#{clasificacionCofactor.modificaMontoCofactor}"/>
+                    </h:panelGrid>
+                    <h:panelGroup style="text-align:center;">
+                      <p/>
+                      <h:outputText value="Los campos marcados con * son mandatorios"/>
+                    </h:panelGroup>
+                  </fieldset>
+                </h:panelGroup>
+              </f:facet>
+            </p:dialog>
+
+
+            <!-- INICIA POP UP PARA DAR DE ALTA LOS COFACTORES DESDE LA PANTALLA DE PROCESO MANUAL -->
+
+            <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+            <p:dialog id="ppCancelacionProvInt" modal="true" autoCentre="true" title="Parametrizacion"
+                      visible="#{clasificacionCofactor.popUpAltaCofactores}">
+              <f:facet name="header">
+                <h:panelGrid id="pgPCancelacionProvInt" columns="1"
+                             style="display: block; height: 24px; position: relative; text-align: right; width: 100%">
+                  <p:commandButton action="#{clasificacionCofactor.closeAltaCofactores}"
+                                   id="closePopupBtn" alt="Cerrar" image="../resources/img/cerrar.png"
+                                   style="position: relative;" value="submit" title="Cerrar"/>
+                </h:panelGrid>
+              </f:facet>
+              <f:facet name="body">
+                <h:panelGroup>
+                  <fieldset style="width:auto">
+                    <legend>Alta Edicion Cofactores.</legend>
+                    <br/>
+                    <p:message id="btnError" for="btnError"
+                               style="color:red; font-size:12px;text-align:justify;"/>
+                    <h:panelGrid columns="2">
+
+                      <h:outputText value="* CAMPO B"/>
+                      <h:inputText maxlength="8" value="#{clasificacionCofactor.campoB}"/>
+
+                      <h:outputText value="* NOMBRE"/>
+                      <h:inputText maxlength="250"
+                                   value="#{clasificacionCofactor.nombreCofactor}" size="60"
+                                   disabled="true"/>
+
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                      <p:commandButton value="Guardar"
+                                       action="#{clasificacionCofactor.agregarCofactor}"/>
+                      <p:commandButton value="Cancelar"
+                                       action="#{clasificacionCofactor.closeAltaCofactores}"/>
+                    </h:panelGrid>
+                    <h:panelGroup style="text-align:center;">
+                      <p/>
+                      <h:outputText value="Los campos marcados con * son mandatorios"/>
+                    </h:panelGroup>
+                  </fieldset>
+                </h:panelGroup>
+              </f:facet>
+            </p:dialog>
+
+
+          </h:panelGroup>
+        </h:panelGroup>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>
+    
+
+

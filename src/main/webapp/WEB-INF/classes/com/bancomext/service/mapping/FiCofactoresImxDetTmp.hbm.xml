@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/07/2015 11:56:34 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCofactoresImxDetTmp" schema="FACTIMX" table="FI_COFACTORES_IMX_DET_TMP">
+    <id name="id" type="int">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+
+    <property name="clientRefInd" type="string">
+      <column name="CLIENT_REFINDIVIDU"/>
+    </property>
+
+    <property name="campoA" type="string">
+      <column name="CAMPOA"/>
+    </property>
+
+    <property name="contrato" type="string">
+      <column name="CONTRATO"/>
+    </property>
+
+    <property name="nomCliente" type="string">
+      <column name="NOM_CLIENTE"/>
+    </property>
+
+    <property name="nomCofactor" type="string">
+      <column name="NOM_COFACTOR"/>
+    </property>
+
+    <property name="e102142Sum" type="big_decimal">
+      <column name="E102142_SUM"/>
+    </property>
+
+    <property name="e102128Sum" type="big_decimal">
+      <column name="E102128_SUM"/>
+    </property>
+
+    <property name="atributo1" type="string">
+      <column name="ATRIBUTO1"/>
+    </property>
+
+    <property name="atributo2" type="string">
+      <column name="ATRIBUTO2"/>
+    </property>
+
+    <property name="saldoAux1" type="big_decimal">
+      <column name="SALDO_AUX1"/>
+    </property>
+
+    <property name="saldoAux2" type="big_decimal">
+      <column name="SALDO_AUX2"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

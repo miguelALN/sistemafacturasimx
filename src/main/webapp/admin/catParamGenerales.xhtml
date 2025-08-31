@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : catParamGenerales.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Parámetros Generales</legend>
+        <p:outputPanel id="paramGrales" layout="block">
+          <p:panelGrid id="panelCampos" columns="2" style="text-align:center;">
+            <p:outputLabel for="diasReproceso" value="Días de Reproceso:"/>
+            <p:spinner id="diasReproceso"
+                       value="#{catParamGenerales.parametroGeneral.diasReproceso}"
+                       disabled="#{not catParamGenerales.editables}"
+                       step="1" min="1" max="1500"
+                       thousandSeparator=""
+                       style="width:100px;">
+              <p:ajax event="change" listener="#{catParamGenerales.changeEvent}"/>
+            </p:spinner>
+
+            <p:outputLabel for="diasCifrasCtrl" value="Días de Cifras Control:"/>
+
+            <p:spinner id="diasCifrasCtrl"
+                       value="#{catParamGenerales.parametroGeneral.diasCifrasCtrl}"
+                       disabled="#{not catParamGenerales.editables}"
+                       step="1" min="1" max="1500"
+                       thousandSeparator=""
+                       style="width:100px;">
+              <p:ajax event="change" listener="#{catParamGenerales.changeEvent}"/>
+            </p:spinner>
+
+            <p:outputLabel value="Correo:" for="correo"/>
+            <p:selectOneMenu id="correo"
+                             partialSubmit="true"
+                             value="#{catParamGenerales.cuerpoCorreos.correo}"
+                             disabled="#{catParamGenerales.editables}">
+              <f:selectItem itemValue="0" itemLabel="-- Seleccione --"/>
+              <f:selectItem itemValue="CORREOS_CFDI" itemLabel="Envío Correos CFDI"/>
+              <f:selectItem itemValue="CORREOS_RESUMEN_FACTURACION_MENSUAL"
+                            itemLabel="Envío Correos Resumen Fac. Mensual"/>
+              <p:ajax event="change" update=":form1:paramGrales"
+                      listener="#{catParamGenerales.actualizarCampos}"/>
+            </p:selectOneMenu>
+
+            <p:outputLabel value="Asunto:" for="asunto"/>
+            <p:inputText id="asunto" style="width:500px"
+                         value="#{catParamGenerales.cuerpoCorreos.asunto}"
+                         disabled="#{not catParamGenerales.editables}">
+              <p:ajax event="change" listener="#{catParamGenerales.changeEvent}"/>
+            </p:inputText>
+
+            <p:outputLabel value="Cuerpo:" for="cuerpo"/>
+            <p:inputTextarea id="cuerpo" rows="12" cols="80"
+                             value="#{catParamGenerales.cuerpoCorreos.cuerpo}"
+                             disabled="#{not catParamGenerales.editables}">
+              <p:ajax event="change" listener="#{catParamGenerales.changeEvent}"/>
+            </p:inputTextarea>
+          </p:panelGrid>
+
+          <div style="text-align: -webkit-center; padding: 15px;">
+              <p:commandButton value="Modificar"
+                               styleClass="submit ui-button-secondary"
+                               update=":form1:paramGrales"
+                               actionListener="#{catParamGenerales.switchEdicion}"
+                               rendered="#{not catParamGenerales.editables}"
+                               process="@this"/>
+
+              <p:commandButton value="Guardar"
+                               styleClass="submit ui-button-success"
+                               onclick="PF('confirmarModificar').show()"
+                               rendered="#{catParamGenerales.editables}"
+                               process="@this"/>
+          </div>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+    <h:form id="dialogs">
+      <p:confirmDialog widgetVar="confirmarModificar" showEffect="fade" width="300"
+                       message="¿Realmente desea modificar?" header="Confirmar" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check"
+                         actionListener="#{catParamGenerales.guardar}"
+                         process="@this"
+                         oncomplete="PF('confirmarModificar').hide()"/>
+        <p:commandButton value="No" icon="pi pi-times"
+                         actionListener="#{catParamGenerales.switchEdicion}"
+                         oncomplete="PF('confirmarModificar').hide()"
+                         styleClass="ui-button-secondary"
+                         update=":form1:paramGrales"/>
+      </p:confirmDialog>
+    </h:form>
+  </div>
+</h:body>
+</html>

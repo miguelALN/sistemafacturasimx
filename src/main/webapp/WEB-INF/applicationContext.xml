@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName" value="jdbcFacturasIMX2CBANK11"/>
+  </bean>
+
+  <!-- Hibernate SessionFactory Definition -->
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.Oracle9iDialect</prop>
+        <prop key="hibernate.show_sql">true</prop>
+        <prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+        <prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
+        <prop key="show_sql">true</prop>
+        <prop key="format_sql">true</prop>
+        <prop key="use_sql_comments">true</prop>
+      </props>
+    </property>
+
+    <property name="mappingResources">
+      <list>
+        <value>com/bancomext/service/mapping/FiAccesos.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiBitacoraAccionesImx.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiBitacoraCfdi.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiBitacoraExtemporImx.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiBitacoraImx.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCancelacionImxTmp.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCapitalizacionImxTmp.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCatCuentasExtraccion.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCatCuentasSicav.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCatRoles.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCfdCifrasControl.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCfdEstadoCuenta.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCfdFolios.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCfdHistoricoFolios.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCfdVerificacion.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCfdVerificacionBitaErr.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCierreAntesDespues.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiClientesSinCfdi.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCofactoresImx.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCofactoresImxDetTmp.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCofactoresImxTmp.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCorreosPorCliente.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCorreosPorReporte.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiCuerpoCorreos.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiExtraeFacturasCliente.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiFacturasDetalle.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiFacturasEncabezado.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiFechasEjecucionImx.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiFiuNegativoReclImxTmp.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiFiuNegativoRestImxTmp.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiGposCorreo.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiGposReporte.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiHisRepComparativo.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiLogErrores.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiModulosMenu.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiParamGenerales.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiParamRoles.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiParametrizacionImx.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiProcesoAutManImx.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiRechazoFacturasImx.hbm.xml</value>
+        <value>com/bancomext/service/mapping/FiTiposDeIdentificacion.hbm.xml</value>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Spring Data Access Exception Translator Defintion -->
+  <bean id="jdbcExceptionTranslator" class="org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
+  <!-- Hibernate Template Defintion -->
+  <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="jdbcExceptionTranslator" ref="jdbcExceptionTranslator"/>
+  </bean>
+
+  <!-- Hibernate Transaction Manager Definition -->
+  <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+
+  <!-- DAOs -->
+  <bean id="genericDAO" class="com.bancomext.dao.GenericDAO">
+    <property name="hibernateTemplate" ref="hibernateTemplate"/>
+  </bean>
+
+  <!-- Services -->
+  <bean id="genericService" class="com.bancomext.service.GenericService">
+    <property name="genericDAO" ref="genericDAO"/>
+  </bean>
+
+</beans>

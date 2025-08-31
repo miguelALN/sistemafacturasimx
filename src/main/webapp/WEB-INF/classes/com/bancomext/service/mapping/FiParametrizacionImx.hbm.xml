@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 4/05/2015 09:16:35 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiParametrizacionImx" schema="FACTIMX" table="FI_PARAMETRIZACION_IMX">
+    <id name="id" type="int">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="opCode" type="string">
+      <column name="OPCODE"/>
+    </property>
+    <property name="ctaOrigen" type="int">
+      <column name="CTA_ORIGEN"/>
+    </property>
+    <property name="sctaOrigen" type="int" access="field">
+      <column name="SCTA_ORIGEN"/>
+    </property>
+    <property name="ssCtaOrigen" type="int">
+      <column name="SSCTA_ORIGEN"/>
+    </property>
+    <property name="sssCtaOrigen" type="int">
+      <column name="SSSCTA_ORIGEN"/>
+    </property>
+    <property name="ctaCargo" type="int">
+      <column name="CTA_CARGO"/>
+    </property>
+    <property name="sctaCargo" type="int" access="field">
+      <column name="SCTA_CARGO"/>
+    </property>
+    <property name="ssCtaCargo" type="int">
+      <column name="SSCTA_CARGO"/>
+    </property>
+    <property name="sssCtaCargo" type="int">
+      <column name="SSSCTA_CARGO"/>
+    </property>
+    <property name="ctaAbono" type="int">
+      <column name="CTA_ABONO"/>
+    </property>
+    <property name="sctaAbono" type="int" access="field">
+      <column name="SCTA_ABONO"/>
+    </property>
+    <property name="ssCtaAbono" type="int">
+      <column name="SSCTA_ABONO"/>
+    </property>
+    <property name="sssCtaAbono" type="int">
+      <column name="SSSCTA_ABONO"/>
+    </property>
+    <property name="ctaSust" type="int">
+      <column name="CTA_SUST"/>
+    </property>
+    <property name="sCtaSust" type="int" access="field">
+      <column name="SCTA_SUST"/>
+    </property>
+    <property name="ssCtaSust" type="int">
+      <column name="SSCTA_SUST"/>
+    </property>
+    <property name="sssCtaSust" type="int">
+      <column name="SSSCTA_SUST"/>
+    </property>
+    <property name="tipoProceso" type="string">
+      <column name="TIPO_PROCESO"/>
+    </property>
+    <property name="modalidad" type="string">
+      <column name="MODALIDAD"/>
+    </property>
+  </class>
+</hibernate-mapping>

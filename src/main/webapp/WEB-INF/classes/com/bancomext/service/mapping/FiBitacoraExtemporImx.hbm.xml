@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 18/09/2015 07:51:12 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiBitacoraExtemporImx" schema="FACTIMX" table="FI_BITACORA_EXTEMPOR_IMX">
+    <id name="id" type="int">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="opCode" type="string">
+      <column name="OPCODE"/>
+    </property>
+    <property name="obsrv2" type="string">
+      <column name="OBSRV2"/>
+    </property>
+    <property name="numPol" type="int">
+      <column name="NUMPOL"/>
+    </property>
+    <property name="moneda" type="int">
+      <column name="MONEDA"/>
+    </property>
+    <property name="cargo" type="big_decimal">
+      <column name="CARGO"/>
+    </property>
+    <property name="abono" type="big_decimal">
+      <column name="ABONO"/>
+    </property>
+    <property name="diferencia" type="big_decimal">
+      <column name="DIFERENCIA"/>
+    </property>
+    <property name="fecaa" type="int">
+      <column name="FECAA"/>
+    </property>
+    <property name="fecam" type="int">
+      <column name="FECAM"/>
+    </property>
+    <property name="fecad" type="int">
+      <column name="FECAD"/>
+    </property>
+    <property name="atrb1" type="string">
+      <column name="ATRB1"/>
+    </property>
+    <property name="atrb2" type="string">
+      <column name="ATRB2"/>
+    </property>
+    <property name="fechaProceso" type="java.util.Date">
+      <column name="FECHA_PROCESO"/>
+    </property>
+  </class>
+</hibernate-mapping>

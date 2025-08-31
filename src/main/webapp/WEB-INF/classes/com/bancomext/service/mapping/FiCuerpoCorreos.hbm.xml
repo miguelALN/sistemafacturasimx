@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 26/08/2015 08:41:04 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCuerpoCorreos" schema="FACTIMX" table="FI_CUERPO_CORREOS">
+    <id name="correo" type="string">
+      <column name="CORREO"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="cuerpo" type="string">
+      <column name="CUERPO"/>
+    </property>
+    <property name="asunto" type="string">
+      <column name="ASUNTO"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,343 @@
+* {
+   margin: 0;
+   padding: 2;
+   min-height: 16px;
+   align-content: end;
+}
+
+body, table {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  color: #000000;
+}
+
+fieldset {
+  border: 0 none;
+}
+
+.fileTreeOutlineClass {
+  background-color: #FFFFFF;
+  border: 1px solid #ABABAB;
+  margin: 10px;
+}
+
+.nodeClass {
+  background-color: #FFFFFF;
+  padding-left: 3px;
+}
+
+.footerClass {
+  border-top: 1px solid #ABABAB;
+  color: #666666;
+  padding: 4px;
+}
+
+.pageHdr {
+  font-weight: bold;
+  height: 80px;
+  background-color: #CDCDCD;
+  padding: 5px;
+  text-align: center;
+}
+
+.pageNavigation {
+  width: 20%;
+  background-color: #DEDEDE;
+  padding: 5px;
+  vertical-align: top;
+}
+
+.pageBody {
+  width: 80%;
+  background-color: #FFFFFF;
+  padding: 5px;
+  vertical-align: top;
+}
+
+.pageFtr {
+  border-top: 1px solid #ABABAB;
+  color: #666666;
+  padding: 4px;
+}
+
+.navFormOutline {
+  background-color: #DEDEDE;
+  margin: 0;
+  width: 100%;
+  padding: 0;
+}
+
+.navItem, .navActvItem, .navOpenItem {
+  color: #333333;
+  text-decoration: none;
+  background-color: #CDCDCD;
+  width: 100%;
+  border: 1px solid #CDCDCD;
+  border-bottom: 1px solid #FFFFFF;
+  padding: 3px 1px 3px 5px;
+  display: block;
+}
+
+.navItem:hover, .navActvItem:hover, .navOpenItem:hover {
+  background-color: #FFFFFF;
+  color: #000000;
+  border: 1px solid #2A6CC2;
+}
+
+.navOpenItem {
+  white-space: nowrap;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navActvItem {
+  width: 100%;
+  background-color: #2A6CC2;
+  color: #FFFFFF;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.navSeparator {
+  width: 100%;
+  height: 1px;
+  padding: 0;
+  margin: 0;
+  background-color: #CDCDCD;
+  border-bottom: 1px solid #DEDEDE;
+}
+
+.tablebg {
+  background-color: #EEF3FB;
+  border: 1px solid #6392C6;
+  width: 70%;
+}
+
+.oddRow {
+  background-color: #FFFFFF;
+}
+
+.evenRow {
+  background-color: #EEF3FB;
+}
+
+.barCol1 {
+  width: 40%;
+  text-align: left;
+}
+
+.barCol2 {
+  width: 15%;
+  text-align: left;
+}
+
+.barCol3 {
+  width: 20%;
+  text-align: left;
+}
+
+.barCol4 {
+  width: 15%;
+  text-align: right;
+}
+
+.barCol5 {
+  width: 15%;
+  text-align: left;
+}
+
+.sclBtnCell-dis {
+  /* the cells behind the scroll buttons */
+  background-color: #FFFFFF;
+  padding: 2px;
+}
+
+.sclBtnCell-dis img {
+  cursor: default;
+}
+
+
+#page-wrap {
+  width: 800px;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+p {
+  margin: 15px 0;
+}
+
+/*
+	LEVEL ONE
+*/
+ul.dropdown {
+  position: relative;
+  z-index: 100;
+}
+
+ul.dropdown li {
+  font-weight: bold;
+  float: left;
+  zoom: 1;
+  background: #00928F;
+}
+
+ul.dropdown a:hover {
+  color: #000;
+}
+
+ul.dropdown a:active {
+  color: #ffa500;
+}
+
+ul.dropdown li a {
+  display: block;
+  padding: 4px 8px;
+  border-right: 1px solid #333;
+  color: #FFFFFF;
+  width: 127px;
+}
+
+ul.dropdown li:last-child a {
+  border-right: none;
+}
+
+/* Doesn't work in IE */
+ul.dropdown li.hover,
+ul.dropdown li:hover {
+  background: #F3D673;
+  color: black;
+  position: relative;
+}
+
+ul.dropdown li.hover a {
+  color: black;
+}
+
+
+/*
+	LEVEL TWO
+*/
+ul.dropdown ul {
+  width: 220px;
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+ul.dropdown ul li {
+  font-weight: normal;
+  background: #f6f6f6;
+  color: #000;
+  border-bottom: 1px solid #00928F;
+  float: none;
+}
+
+/* IE 6 & 7 Needs Inline Block */
+ul.dropdown ul li a {
+  border-right: none;
+  width: 80%;
+  display: inline-block;
+}
+
+/*
+	LEVEL THREE
+*/
+ul.dropdown ul ul {
+  left: 100%;
+  top: 0;
+}
+
+ul.dropdown li:hover > ul {
+  visibility: visible;
+}
+
+body {
+  margin: 25px;
+  font: 11px Verdana, Arial;
+  background: #eee
+}
+
+ul.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0
+}
+
+ul.menu * {
+  margin: 0;
+  padding: 0
+}
+
+ul.menu a {
+  display: block;
+  color: #000;
+  text-decoration: none
+}
+
+ul.menu li {
+  position: relative;
+  float: left;
+  margin-right: 2px
+}
+
+ul.menu ul {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  background: #d1d1d1;
+  display: none;
+  opacity: 0;
+  list-style: none
+}
+
+ul.menu ul li {
+  position: relative;
+  border: 1px solid #aaa;
+  border-top: none;
+  width: 148px;
+  margin: 0
+}
+
+ul.menu ul li a {
+  display: block;
+  padding: 3px 7px 5px;
+  background-color: #d1d1d1
+}
+
+ul.menu ul li a:hover {
+  background-color: #c5c5c5
+}
+
+ul.menu ul ul {
+  left: 148px;
+  top: -1px
+}
+
+ul.menu .menulink {
+  border: 1px solid #aaa;
+  padding: 5px 7px 7px;
+  font-weight: bold;
+  background: url(../img/header.gif);
+  width: 134px
+}
+
+ul.menu .menulink:hover, ul.menu .menuhover {
+  background: url(../img/header_over.gif)
+}
+
+ul.menu .sub {
+  background: #d1d1d1 url(../img/arrow.gif) 136px 8px no-repeat
+}
+
+ul.menu .topline {
+  border-top: 1px solid #aaa
+}

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : configCuentasSicavFIU.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Configuración de Cuentas de Colocación</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:outputPanel layout="block" scrollHeight="400px">
+            <p:panelGrid columns="12">
+              <h:outputText value="Cuenta Imp" style="width:30px;"/>
+              <h:outputText value="SCuenta Imp" style="width:20px;"/>
+              <h:outputText value="SSCuenta Imp" style="width:20px;"/>
+              <h:outputText value="SSSCuenta Imp" style="width:20px;"/>
+              <h:outputText value="Cuenta Exp" style="width:30px;"/>
+              <h:outputText value="SCuenta Exp" style="width:20px;"/>
+              <h:outputText value="SSCuenta Exp" style="width:20px;"/>
+              <h:outputText value="SSSCuenta Exp" style="width:20px;"/>
+              <h:outputText value="Cuenta FIU" style="width:30px;"/>
+              <h:outputText value="SCuenta FIU" style="width:20px;"/>
+              <h:outputText value="SSCuenta FIU" style="width:20px;"/>
+              <h:outputText value="SSSCuenta FIU" style="width:20px;"/>
+
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.ctaImp}" style="width:30px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.sctaImp}" style="width:20px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.ssctaImp}" style="width:20px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.sssctaImp}" style="width:20px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.ctaExp}" style="width:30px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.sctaExp}" style="width:20px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.ssctaExp}" style="width:20px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.sssctaExp}" style="width:20px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.ctaFiu}" style="width:30px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.sctaFiu}" style="width:20px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.ssctaFiu}" style="width:20px;"/>
+              <h:outputText value="#{configCuentasSicavFIU.parametroGeneral.sssctaFiu}" style="width:20px;"/>
+            </p:panelGrid>
+
+            <p:dataTable id="dt-cuentas"
+                         widgetVar="dtCuentas"
+                         var="row"
+                         value="#{configCuentasSicavFIU.listaCuentasSicav}"
+                         reflow="true"
+                         tableStyle="width:auto"
+                         style="position: relative; vertical-align:top"
+                         rows="#{configCuentasSicavFIU.defaultRows}"
+                         paginator="#{configCuentasSicavFIU.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Cuenta"
+                        style="text-align:center"
+                        sortBy="#{row.id.cta}"
+                        filterBy="#{row.id.cta}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.cta}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="SCuenta"
+                        style="text-align:center"
+                        sortBy="#{row.id.scta}"
+                        filterBy="#{row.id.scta}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.scta}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="SSCuenta"
+                        style="text-align:center"
+                        sortBy="#{row.id.sscta}"
+                        filterBy="#{row.id.sscta}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.sscta}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="SSSCuenta"
+                        style="text-align:center"
+                        sortBy="#{row.id.ssscta}"
+                        filterBy="#{row.id.ssscta}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.ssscta}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+
+              <p:column headerText="Eliminar" style="text-align:center" exportable="false">
+                <p:commandButton title="Eliminar"
+                                 icon="pi pi-trash"
+                                 styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                 oncomplete="PF('eliminarDialog').show()"
+                                 process="@this"
+                                 style="height: 20px; width: 15px">
+                  <f:setPropertyActionListener value="#{row}" target="#{configCuentasSicavFIU.cuentaSeleccionada}"/>
+                </p:commandButton>
+              </p:column>
+            </p:dataTable>
+          </p:outputPanel>
+
+          <div style="text-align: -webkit-center; padding: 15px;">
+              <p:commandButton value="Agregar"
+                               actionListener="#{configCuentasSicavFIU.abrirPopupAlta()}"
+                               oncomplete="PF('altaDialog').show()"
+                               update=":dialogs:alta-content">
+                <p:resetInput target=":dialogs:alta-content"/>
+              </p:commandButton>
+          </div>
+
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+
+    <h:form id="dialogs">
+      <p:dialog header="Agregar Cuenta" showEffect="fade" modal="true" widgetVar="altaDialog"
+                responsive="true">
+        <p:outputPanel id="alta-content" class="ui-fluid">
+          <p:outputPanel>
+            <p:panelGrid columns="3">
+              <p:outputLabel for="cuenta" value="Cuenta"/>
+              <h:inputText id="cuenta" size="15" maxlength="4" required="true"
+                           value="#{configCuentasSicavFIU.cuentaNueva.id.cta}"/>
+              <p:message for="cuenta"/>
+              <p:outputLabel for="scuenta" value="Sub-Cuenta"/>
+              <h:inputText id="scuenta" size="15" maxlength="2" required="true"
+                           value="#{configCuentasSicavFIU.cuentaNueva.id.scta}"/>
+              <p:message for="scuenta"/>
+              <p:outputLabel for="sscuenta" value="Subsub-Cuenta"/>
+              <h:inputText id="sscuenta" size="15" maxlength="2" required="true"
+                           value="#{configCuentasSicavFIU.cuentaNueva.id.sscta}"/>
+              <p:message for="sscuenta"/>
+              <p:outputLabel for="ssscuenta" value="Subsubsub-Cuenta"/>
+              <h:inputText id="ssscuenta" size="15" maxlength="2" required="true"
+                           value="#{configCuentasSicavFIU.cuentaNueva.id.ssscta}"/>
+              <p:message for="ssscuenta"/>
+            </p:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+        <f:facet name="footer">
+          <p:commandButton value="Guardar"
+                           actionListener="#{configCuentasSicavFIU.guardar()}"
+                           update="alta-content"
+                           process="alta-content @this"/>
+          <p:commandButton value="Cancelar"
+                           onclick="PF('altaDialog').hide()"
+                           class="ui-button-secondary"
+                           type="button"/>
+        </f:facet>
+      </p:dialog>
+
+      <p:confirmDialog widgetVar="eliminarDialog"
+                       showEffect="fade"
+                       width="300"
+                       message="¿Desea borrar el registro?"
+                       header="Confirmar"
+                       severity="warn">
+        <p:commandButton value="Si"
+                         actionListener="#{configCuentasSicavFIU.eliminar()}"
+                         process="@this"
+                         oncomplete="PF('eliminarDialog').hide()"/>
+        <p:commandButton value="No"
+                         onclick="PF('eliminarDialog').hide()"
+                         styleClass="ui-button-secondary"
+                         type="button"/>
+      </p:confirmDialog>
+    </h:form>
+
+  </div>
+</h:body>
+</html>

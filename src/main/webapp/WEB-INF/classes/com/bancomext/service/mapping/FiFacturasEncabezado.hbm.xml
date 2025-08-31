@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16/12/2013 03:16:11 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiFacturasEncabezado" schema="FACTIMX" table="FI_FACTURAS_ENCABEZADO">
+
+    <composite-id name="id" class="com.bancomext.service.mapping.FiFacturasEncabezadoId">
+      <key-property name="numAcreditado" type="int">
+        <column name="NO_ACREDITADO" precision="8" scale="0"/>
+      </key-property>
+      <key-property name="contrato" type="string">
+        <column name="CONTRATO" length="10"/>
+      </key-property>
+      <key-property name="fechaValor" type="date">
+        <column name="FECHAVALOR" length="7"/>
+      </key-property>
+    </composite-id>
+
+    <property name="rfc" type="string">
+      <column name="RFC" length="19"/>
+    </property>
+    <property name="nombre" type="string">
+      <column name="NOMBRE" length="100"/>
+    </property>
+    <property name="calle" type="string">
+      <column name="CALLE" length="50"/>
+    </property>
+    <property name="numExterior" type="string">
+      <column name="NOEXTERIOR" length="10"/>
+    </property>
+    <property name="numInterior" type="string">
+      <column name="NOINTERIOR" length="10"/>
+    </property>
+    <property name="colonia" type="string">
+      <column name="COLONIA" length="30"/>
+    </property>
+    <property name="localidad" type="string">
+      <column name="LOCALIDAD" length="30"/>
+    </property>
+    <property name="referencia" type="string">
+      <column name="REFERENCIA" length="75"/>
+    </property>
+    <property name="municipio" type="string">
+      <column name="MUNICIPIO" length="30"/>
+    </property>
+    <property name="estado" type="string">
+      <column name="ESTADO" length="30"/>
+    </property>
+    <property name="pais" type="string">
+      <column name="PAIS" length="45"/>
+    </property>
+    <property name="codigoPostal" type="string">
+      <column name="CODIGOPOSTAL" length="10"/>
+    </property>
+    <property name="linea" type="string">
+      <column name="LINEA" length="10"/>
+    </property>
+    <property name="tipoCredito" type="string">
+      <column name="TIPOCREDITO" length="75"/>
+    </property>
+    <property name="negociacion" type="string">
+      <column name="NEGOCIACION" length="40"/>
+    </property>
+    <property name="atencion" type="string">
+      <column name="ATENCION" length="75"/>
+    </property>
+    <property name="codigoMoneda" type="string">
+      <column name="CODIGOMONEDA" length="5"/>
+    </property>
+    <property name="moneda" type="string">
+      <column name="MONEDA" length="30"/>
+    </property>
+    <property name="tipoDeCambio" type="big_decimal">
+      <column name="TIPODECAMBIO" precision="10" scale="5"/>
+    </property>
+    <property name="importe" type="big_decimal">
+      <column name="IMPORTE" precision="22"/>
+    </property>
+    <property name="numFactura" type="string">
+      <column name="NUM_FACTURA" length="20"/>
+    </property>
+    <property name="secuencia" type="string">
+      <column name="SECUENCIA" length="20"/>
+    </property>
+    <property name="secuenciaImx" type="string">
+      <column name="SECUENCIAIMX" length="20"/>
+    </property>
+    <property name="campoB" type="string">
+      <column name="CAMPOB" length="100"/>
+    </property>
+    <property name="usuCambioImporte" type="string">
+      <column name="USU_CAMBIO_IMPORTE" length="100"/>
+    </property>
+    <property name="importeAnterior" type="big_decimal">
+      <column name="IMPORTE_ANTERIOR" precision="22"/>
+    </property>
+    <property name="fechaCambioImp" type="date">
+      <column name="FECHA_CAMBIO_IMP" length="7"/>
+    </property>
+    <property name="importeCont" type="big_decimal">
+      <column name="IMPORTE_CONT" precision="22"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12/11/2013 11:15:16 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCfdEstadoCuenta" schema="FACTIMX" table="FI_CFD_ESTADO_CUENTA">
+    <composite-id class="com.bancomext.service.mapping.FiCfdEstadoCuentaId" name="id">
+      <key-property name="fecha" type="date">
+        <column length="7" name="FECHA"/>
+      </key-property>
+      <key-property name="folio" type="big_decimal">
+        <column name="FOLIO" precision="10" scale="0"/>
+      </key-property>
+      <key-property name="folioCfd" type="string">
+        <column length="40" name="FOLIO_CFD"/>
+      </key-property>
+      <key-property name="tramaId" type="string">
+        <column length="10" name="TRAMA_ID"/>
+      </key-property>
+      <key-property name="secuencia" type="big_decimal">
+        <column name="SECUENCIA" precision="22" scale="0"/>
+      </key-property>
+      <key-property name="trama" type="string">
+        <column name="TRAMA" length="3000"/>
+      </key-property>
+    </composite-id>
+    <property name="cliente" type="big_decimal">
+      <column name="CLIENTE" precision="10" scale="0"/>
+    </property>
+    <property name="lc" type="big_decimal">
+      <column name="LC" precision="10" scale="0"/>
+    </property>
+    <property name="moneda" type="string">
+      <column length="30" name="MONEDA"/>
+    </property>
+
+    <property name="producto" type="string">
+      <column length="15" name="PRODUCTO"/>
+    </property>
+    <property name="orden" type="big_decimal">
+      <column name="ORDEN" precision="22" scale="0"/>
+    </property>
+    <property name="fechaProceso" type="date">
+      <column name="FECHA_PROCESO" length="7"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

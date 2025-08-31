@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 22/01/2014 12:31:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCfdVerificacionBitaErr" schema="FACTIMX" table="FI_CFD_VERIFICACION_BITA_ERR">
+    <id name="idFolio" type="big_decimal">
+      <column name="ID_FOLIO" precision="38" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <many-to-one name="fiFacturasEncabezado" class="com.bancomext.service.mapping.FiFacturasEncabezado" lazy="false"
+                 update="false" insert="false" fetch="select">
+      <column name="NO_ACREDITADO" precision="8" scale="0" not-null="true"/>
+      <column name="CONTRATO" length="10" not-null="true"/>
+      <column name="FECHA_EMISION" length="7" not-null="true"/>
+    </many-to-one>
+    <property name="status" type="string">
+      <column name="STATUS" length="15"/>
+    </property>
+    <property name="fecha" type="date">
+      <column name="FECHA" length="7"/>
+    </property>
+    <property name="producto" type="string">
+      <column name="PRODUCTO" length="15"/>
+    </property>
+    <property name="motivo" type="string">
+      <column name="MOTIVO" length="100"/>
+    </property>
+    <property name="adicionadoPor" type="string">
+      <column name="ADICIONADO_POR" length="10"/>
+    </property>
+    <property name="fechaAdicion" type="date">
+      <column name="FECHA_ADICION" length="7"/>
+    </property>
+    <property name="modificadoPor" type="string">
+      <column name="MODIFICADO_POR" length="10"/>
+    </property>
+    <property name="fechaModificacion" type="date">
+      <column name="FECHA_MODIFICACION" length="7"/>
+    </property>
+    <property name="statusConciliado" type="string">
+      <column name="STATUS_CONCILIADO" length="100"/>
+    </property>
+  </class>
+</hibernate-mapping>

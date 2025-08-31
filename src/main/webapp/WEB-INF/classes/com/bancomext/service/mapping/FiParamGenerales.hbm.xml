@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 4/12/2013 05:21:14 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiParamGenerales" schema="FACTIMX" table="FI_PARAM_GENERALES">
+    <id name="idparametro" type="boolean">
+      <column name="IDPARAMETRO" precision="1" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="adicionadoPor" type="string">
+      <column name="ADICIONADO_POR" length="30"/>
+    </property>
+    <property name="fechaAdicion" type="date">
+      <column name="FECHA_ADICION" length="7"/>
+    </property>
+    <property name="modificadoPor" type="string">
+      <column name="MODIFICADO_POR" length="30"/>
+    </property>
+    <property name="fechaModificacion" type="date">
+      <column name="FECHA_MODIFICACION" length="7"/>
+    </property>
+    <property name="diasReproceso" type="string">
+      <column name="DIAS_REPROCESO" length="20" not-null="true">
+        <comment>Numero de Dias de reproceso</comment>
+      </column>
+    </property>
+    <property name="ctaImp" type="string">
+      <column name="CTA_IMP" length="4">
+        <comment>Cuenta Sicav Importacion</comment>
+      </column>
+    </property>
+    <property name="sctaImp" type="string">
+      <column name="SCTA_IMP" length="2">
+        <comment>SubCuenta Importacion SICAV</comment>
+      </column>
+    </property>
+    <property name="ssctaImp" type="string">
+      <column name="SSCTA_IMP" length="2">
+        <comment>SubSubCuenta Importacion SICAV</comment>
+      </column>
+    </property>
+    <property name="sssctaImp" type="string">
+      <column name="SSSCTA_IMP" length="2">
+        <comment>SubSubSubCuenta Importacion SICAV</comment>
+      </column>
+    </property>
+    <property name="ctaExp" type="string">
+      <column name="CTA_EXP" length="4">
+        <comment>Cuenta Exportacion SICAV</comment>
+      </column>
+    </property>
+    <property name="sctaExp" type="string">
+      <column name="SCTA_EXP" length="2">
+        <comment>SubCuenta Exportacion SICAV</comment>
+      </column>
+    </property>
+    <property name="ssctaExp" type="string">
+      <column name="SSCTA_EXP" length="2">
+        <comment>SubSubCuenta Exportacion SICAV</comment>
+      </column>
+    </property>
+    <property name="sssctaExp" type="string">
+      <column name="SSSCTA_EXP" length="2">
+        <comment>SubSubSubCuenta Exportacion SICAV</comment>
+      </column>
+    </property>
+    <property name="ctaFiu" type="string">
+      <column name="CTA_FIU" length="4">
+        <comment>Cuenta FIU SICAV</comment>
+      </column>
+    </property>
+    <property name="sctaFiu" type="string">
+      <column name="SCTA_FIU" length="2">
+        <comment>SubCuenta FIU SICAV</comment>
+      </column>
+    </property>
+    <property name="ssctaFiu" type="string">
+      <column name="SSCTA_FIU" length="2">
+        <comment>SubSubCuenta FIU SICAV</comment>
+      </column>
+    </property>
+    <property name="sssctaFiu" type="string">
+      <column name="SSSCTA_FIU" length="2">
+        <comment>SubSubSubCuenta FIU SICAV</comment>
+      </column>
+    </property>
+    <property name="importeeditable" type="string">
+      <column name="IMPORTEEDITABLE" length="2">
+        <comment>determina si el importe en verificacion es ediitable</comment>
+      </column>
+    </property>
+    <property name="diasCifrasCtrl" type="string">
+      <column name="DIAS_CIFRAS_CONTROL" length="20" not-null="true">
+        <comment>Numero de Dias de Cifras Control</comment>
+      </column>
+    </property>
+  </class>
+</hibernate-mapping>

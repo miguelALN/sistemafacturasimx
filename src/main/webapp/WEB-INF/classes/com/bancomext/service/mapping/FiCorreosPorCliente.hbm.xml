@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 22/11/2013 03:31:49 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCorreosPorCliente" schema="FACTIMX" table="FI_CORREOS_POR_CLIENTE">
+    <composite-id class="com.bancomext.service.mapping.FiCorreosPorClienteId" name="id">
+      <key-property name="codigoCliente" type="long">
+        <column name="CODIGO_CLIENTE" precision="10" scale="0"/>
+      </key-property>
+      <key-property name="email" type="string">
+        <column length="100" name="EMAIL"/>
+      </key-property>
+    </composite-id>
+    <property name="descripcionCliente" type="string">
+      <column length="300" name="DESCRIPCION_CLIENTE" not-null="true"/>
+    </property>
+    <property name="adicionadoPor" type="string">
+      <column length="20" name="ADICIONADO_POR"/>
+    </property>
+    <property name="fechaAdicion" type="date">
+      <column length="7" name="FECHA_ADICION"/>
+    </property>
+    <property name="modificadoPor" type="string">
+      <column length="20" name="MODIFICADO_POR"/>
+    </property>
+    <property name="fechaModificacion" type="date">
+      <column length="7" name="FECHA_MODIFICACION"/>
+    </property>
+  </class>
+</hibernate-mapping>

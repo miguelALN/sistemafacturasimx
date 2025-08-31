@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12/11/2013 11:15:16 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCfdHistoricoFolios" schema="FACTIMX" table="FI_CFD_HISTORICO_FOLIOS">
+    <composite-id class="com.bancomext.service.mapping.FiCfdHistoricoFoliosId" name="id">
+      <key-property name="fechaAutorizacion" type="date">
+        <column length="7" name="FECHA_AUTORIZACION"/>
+      </key-property>
+      <key-property name="noAutorizacion" type="string">
+        <column length="15" name="NO_AUTORIZACION"/>
+      </key-property>
+      <key-property name="numeroFolio" type="big_decimal">
+        <column name="NUMERO_FOLIO" precision="22" scale="0"/>
+      </key-property>
+    </composite-id>
+    <property name="statusFolio" type="string">
+      <column length="15" name="STATUS_FOLIO"/>
+    </property>
+    <property name="producto" type="string">
+      <column length="15" name="PRODUCTO"/>
+    </property>
+    <property name="serie" type="string">
+      <column length="10" name="SERIE"/>
+    </property>
+    <property name="adicionadoPor" type="string">
+      <column length="10" name="ADICIONADO_POR"/>
+    </property>
+    <property name="fechaAdicion" type="date">
+      <column length="7" name="FECHA_ADICION"/>
+    </property>
+    <property name="modificadoPor" type="string">
+      <column length="10" name="MODIFICADO_POR"/>
+    </property>
+    <property name="fechaModificacion" type="date">
+      <column length="7" name="FECHA_MODIFICACION"/>
+    </property>
+    <property name="fechaAsignacion" type="date">
+      <column length="7" name="FECHA_ASIGNACION"/>
+    </property>
+    <property name="codigoCliente" type="big_decimal">
+      <column name="CODIGO_CLIENTE" precision="10" scale="0"/>
+    </property>
+    <property name="codigoLineaCredito" type="string">
+      <column length="10" name="CODIGO_LINEA_CREDITO"/>
+    </property>
+    <property name="moneda" type="string">
+      <column length="30" name="MONEDA"/>
+    </property>
+    <property name="monedaCuerpo" type="string">
+      <column length="30" name="MONEDA_CUERPO"/>
+    </property>
+    <property name="orden" type="big_decimal">
+      <column name="ORDEN" precision="22" scale="0"/>
+    </property>
+    <property name="versionInfor" type="big_decimal">
+      <column name="VERSION_INFOR" precision="10" scale="0"/>
+    </property>
+    <property name="contrato" type="string">
+      <column length="10" name="CONTRATO"/>
+    </property>
+    <property name="secuencia" type="big_decimal">
+      <column name="SECUENCIA" precision="22" scale="0"/>
+    </property>
+
+    <property name="enviadoCliente" type="string">
+      <column name="ENVIADO_CLIENTE" length="1"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

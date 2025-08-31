@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : usuarios.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Usuarios</legend>
+        <p:outputPanel layout="block">
+
+          <h:panelGroup if="pgInfo">
+            <p:dataTable id="dt-usuarios"
+                         widgetVar="dtUsuarios"
+                         var="row"
+                         value="#{usuarios.listaAccesos}"
+                         reflow="true"
+                         tableStyle="width:auto"
+                         style="position: relative; vertical-align:top"
+                         sortMode="single"
+                         rows="#{usuarios.defaultRows}"
+                         paginator="#{usuarios.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Usuario"
+                        style="text-align:center"
+                        sortBy="#{row.idPromotor}"
+                        filterBy="#{row.idPromotor}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtUsuarios').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.idPromotor}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Email"
+                        style="text-align:center"
+                        sortBy="#{row.email}"
+                        filterBy="#{row.email}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtUsuarios').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.email}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Rol"
+                        style="text-align:center"
+                        sortBy="#{row.rol}"
+                        filterBy="#{row.rol}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtUsuarios').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.rol}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Fecha de Ingreso"
+                        style="text-align:center"
+                        sortBy="#{row.fechaEntrada}"
+                        filterBy="#{row.fechaEntrada}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtUsuarios').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.fechaEntrada}" style="text-align:center; font-style:normal; font-size:11px;">
+                  <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss"/>
+                </h:outputText>
+              </p:column>
+
+              <p:column headerText="Desbloquear" style="width:65px; text-align:center;" exportable="false">
+                <p:commandLink title="Desbloquear Usuario"
+                               style="border:none"
+                               rendered="#{row.bloqueado}"
+                               oncomplete="PF('desbloquearDialog').show()"
+                               process="@this">
+                  <h:graphicImage value="../resources/img/botonrojo.jpg" style="height: 18px; width: 18px"/>
+                  <f:setPropertyActionListener value="#{row}" target="#{usuarios.usuarioSeleccionado}"/>
+                </p:commandLink>
+                <p:commandLink title="Activo"
+                               style="border:none"
+                               rendered="#{not row.bloqueado}">
+                  <h:graphicImage value="../resources/img/botonverde.jpg" style="height: 18px; width: 18px"/>
+                </p:commandLink>
+              </p:column>
+
+              <p:column headerText="Eliminar" style="width:65px; text-align:center" exportable="false">
+                <p:commandButton title="Eliminar"
+                                 icon="pi pi-trash"
+                                 styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                 oncomplete="PF('borrarDialog').show()"
+                                 process="@this"
+                                 style="height: 20px; width: 15px" >
+                  <f:setPropertyActionListener value="#{row}" target="#{usuarios.usuarioSeleccionado}"/>
+                </p:commandButton>
+              </p:column>
+            </p:dataTable>
+          </h:panelGroup>
+
+          <div style="text-align: -webkit-center; padding: 15px;">
+              <p:commandButton value="Agregar Usuario"
+                               actionListener="#{usuarios.abrirPopupAlta}"
+                               oncomplete="PF('altaDialog').show()"
+                               update=":dialogs:alta-content">
+                <p:resetInput target=":dialogs:alta-content"/>
+              </p:commandButton>
+          </div>
+
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+    </h:form>
+    <h:form id="dialogs">
+      <p:dialog showEffect="fade" modal="true" widgetVar="altaDialog" responsive="true">
+        <p:outputPanel id="alta-content" class="ui-fluid">
+         <fieldset style="width:445px; padding: .1rem !important;">
+          <legend style="width:135px; align:left">Alta Usuarios</legend>
+            <p:card>
+            <p:panelGrid columns="3">
+              <p:outputLabel for="user-name" value="Nombre de Usuario"/>
+              <p:inputText id="user-name" required="true" maxlength="30" style="width: 225px"
+                           value="#{usuarios.usuarioNuevo.idPromotor}">
+              </p:inputText>
+              <p:message for="user-name"/>
+              <p:outputLabel for="email" value="E-mail"/>
+              <p:inputText id="email" required="true" maxlength="200" style="width: 225px"
+                           value="#{usuarios.usuarioNuevo.email}">
+              </p:inputText>
+              <p:message for="email"/>
+              <p:outputLabel for="rol" value="Rol"/>
+              <p:selectOneMenu id="rol" value="#{usuarios.usuarioNuevo.rol}" partialSubmit="true">
+                <f:selectItems value="#{usuarios.listaRoles}"/>
+              </p:selectOneMenu>
+              <p:message for="rol"/>
+            </p:panelGrid>
+            </p:card>
+          </fieldset>
+        </p:outputPanel>
+
+        <div style="text-align: -webkit-center; padding: 15px;">
+          <p:commandButton value="Guardar"
+                           actionListener="#{usuarios.agregar()}"
+                           update="alta-content"
+                           process="alta-content @this"/>
+          <p:commandButton value="Cancelar"
+                           onclick="PF('altaDialog').hide()"
+                           class="ui-button-secondary" type="button"/>
+        </div>
+
+      </p:dialog>
+
+      <p:confirmDialog widgetVar="desbloquearDialog"
+                       showEffect="fade"
+                       width="300"
+                       message="¿Desea desbloquear al usuario?"
+                       header="Confirmar"
+                       severity="warn">
+        <p:commandButton value="Si"
+                         actionListener="#{usuarios.desbloquear()}"
+                         process="@this"
+                         oncomplete="PF('desbloquearDialog').hide()"/>
+        <p:commandButton value="No"
+                         onclick="PF('desbloquearDialog').hide()"
+                         styleClass="ui-button-secondary"
+                         type="button"/>
+      </p:confirmDialog>
+
+      <p:confirmDialog widgetVar="borrarDialog"
+                       showEffect="fade"
+                       width="300"
+                       message="¿Desea borrar al usuario?"
+                       header="Confirmar"
+                       severity="warn">
+        <p:commandButton value="Si"
+                         actionListener="#{usuarios.eliminar()}"
+                         process="@this"
+                         oncomplete="PF('borrarDialog').hide()"/>
+        <p:commandButton value="No"
+                         onclick="PF('borrarDialog').hide()"
+                         styleClass="ui-button-secondary"
+                         type="button"/>
+      </p:confirmDialog>
+    </h:form>
+  </div>
+</h:body>
+</html>

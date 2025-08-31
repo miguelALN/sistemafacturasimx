@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : ejecucionProceso.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <fieldset>
+        <legend>Ejecucion del Proceso</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:message for="errorEjecProceso" id="errorEjecProceso"
+                     style="color:red; font-size:12px;text-align:justify;"/>
+          <p:message for="btnGuardado" id="btnGuardado"
+                     style="color:blue; font-size:12px;text-align:justify;"/>
+          <p:outputPanel layout="block" scrollHeight="300px">
+            <h:panelGrid>
+              <table>
+                <tr>
+                  <td width="80%">
+                    <p:outputLabel value="Hora Ejecucion Proceso"
+                                   style="font-style:normal; font-size:13px; font-weight:bold;"/>
+                  </td>
+                  <td colspan="1">
+                    <h:inputText value="#{ejecucionProceso.horaProceso}"
+                                 disabled="#{ejecucionProceso.horaVisible}"
+                                 rendered="#{!ejecucionProceso.horaVisible}"
+                                 maxlength="5" size="5"/>
+                    <h:inputText id="horaEjec" value="" disabled="#{ejecucionProceso.horaVisible}"
+                                 rendered="#{ejecucionProceso.horaVisible}" maxlength="5"
+                                 size="5"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p:outputLabel value="Proceso"
+                                   style="font-style:normal; font-size:12px; font-weight:bold;"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:outputLabel value="Manual"
+                                   style="font-style:normal; font-size:12px; font-weight:bold;"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:outputLabel value="Automatico"
+                                   style="font-style:normal; font-size:12px; font-weight:bold;"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h:outputText value="Cancelaci&#243;n de la provisi&#243;n de intereses"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect" partialSubmit="false"
+                                             value="#{ejecucionProceso.checkBoxFlag}"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect1" partialSubmit="true"
+                                             value="#{ejecucionProceso.checkBoxFlag1}"
+                                             valueChangeListener="#{ejecucionProceso.isDisabled}"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h:outputText value="Capitalizaci&#243;n de Intereses"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect2" partialSubmit="false"
+                                             value="#{ejecucionProceso.checkBoxFlag2}"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect3" partialSubmit="true"
+                                             value="#{ejecucionProceso.checkBoxFlag3}"
+                                             valueChangeListener="#{ejecucionProceso.isDisabled}"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <h:outputText value="Reclasificar saldo negativo"
+                                  style="font-style:normal; font-size:12px; font-weight:bold;"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h:outputText value=" -> Reclasificar Saldo"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect4" partialSubmit="false"
+                                             value="#{ejecucionProceso.checkBoxFlag4}"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect5" partialSubmit="true"
+                                             value="#{ejecucionProceso.checkBoxFlag5}"
+                                             valueChangeListener="#{ejecucionProceso.isDisabled}"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h:outputText value=" -> Restaurar Saldo"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect6" partialSubmit="false"
+                                             value="#{ejecucionProceso.checkBoxFlag6}"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect7" partialSubmit="true"
+                                             value="#{ejecucionProceso.checkBoxFlag7}"
+                                             valueChangeListener="#{ejecucionProceso.isDisabled}"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h:outputText value="Clasificaci&#243;n de Cofactor"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect8" partialSubmit="false"
+                                             value="#{ejecucionProceso.checkBoxFlag8}"/>
+                  </td>
+                  <td style="text-align:center;">
+                    <p:selectBooleanCheckbox id="headerSelect9" partialSubmit="true"
+                                             value="#{ejecucionProceso.checkBoxFlag9}"
+                                             valueChangeListener="#{ejecucionProceso.isDisabled}"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" style="text-align:center;">
+                    <p:commandButton value="Guardar"
+                                     action="#{ejecucionProceso.ejecucionProceso}"
+                                     partialSubmit="true"/>
+                  </td>
+                </tr>
+              </table>
+            </h:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

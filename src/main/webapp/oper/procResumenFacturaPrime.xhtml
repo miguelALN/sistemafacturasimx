@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : procResumenFacturaPrime.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Proceso Manual Resumen de Facturación Mensual Prime</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:outputPanel layout="block" scrollHeight="250px">
+            <p:panelGrid columns="3">
+              <p:commandButton id="resumenMensual" value="Procesar Resumen Facturacion Prime"
+                               oncomplete="PF('confirmarProcesar').show()"
+                               process="@this"/>
+            </p:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+    </h:form>
+    <h:form id="dialogs">
+      <p:confirmDialog widgetVar="confirmarProcesar" showEffect="fade" width="300"
+                       message="Confirme la acción de Procesar"
+                       header="Procesar" severity="warn">
+        <p:commandButton value="Procesar" icon="pi pi-check"
+                         actionListener="#{procResumenFacturaPrime.procesarResumen}"
+                         process="@this"
+                         oncomplete="PF('confirmarProcesar').hide()"/>
+        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('confirmarProcesar').hide()"
+                         styleClass="ui-button-secondary" type="button"/>
+      </p:confirmDialog>
+    </h:form>
+  </div>
+</h:body>
+</html>

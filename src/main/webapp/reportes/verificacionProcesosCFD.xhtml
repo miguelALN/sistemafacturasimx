@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : verificacionProcesosCFD.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+ <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <p:growl id="messages" showDetail="true"/>
+    <h:form id="form1">
+      <fieldset>
+        <legend>Facturas Verificadas</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <!--p:message for="btnBuscar" id="otMsg" style="color:blue; font-size:11px;"/-->
+
+          <p:tabView width="560px" height="400" id="panelTabSet1" tabPlacement="Top"
+                     partialSubmit="true"
+                     selectedIndex="#{verificacionProcesosCFD.selectIndex}">
+
+            <p:tab id="panelTab1" title="Cifras Control">
+
+
+              <p:panelGrid columns="1" style="vertical-align:top; ">
+                <p:message for="btnFiltrarCifrasControl" style="color:red; font-size:11px;"/>
+              </p:panelGrid>
+
+              <p:panelGrid id="fechas" columns="5" style="vertical-align:top; ">
+
+                <h:outputText value="Fecha Generación incial: "/>
+                <p:calendar id="calendarioIni"
+                            value="#{verificacionProcesosCFD.filtroFechaProcesoIni}"
+                            locale="es"
+                            navigator="true"
+                            showButtonPanel="true"
+                            autocomplete="off"
+                            required="true">
+                  <p:ajax event="dateSelect"
+                          listener="#{verificacionProcesosCFD.updateCalendar}"
+                          update="messages"/>
+                </p:calendar>
+
+                <h:outputText value="Fecha Generación Final: "/>
+                <p:calendar id="calendarioFin"
+                            value="#{verificacionProcesosCFD.filtroFechaProcesoFin}"
+                            locale="es"
+                            navigator="true"
+                            showButtonPanel="true"
+                            autocomplete="off"
+                            required="true" >
+                  <p:ajax event="dateSelect"
+                          listener="#{verificacionProcesosCFD.updateCalendar}"
+                          update="messages"/>
+                </p:calendar>
+
+                <p:commandButton value="Filtrar" id="btnFiltrarCifrasControl"
+                                 action="#{verificacionProcesosCFD.filtrarTableCifrasControl}"
+                                 process="@this"
+                                 update="dtInfo2"/>
+                <p:commandButton
+                    title="Descargar excel"
+                    image="../resources/img/excel.png"
+                    ajax="false"
+                    onclick="PrimeFaces.monitorDownload(start, stop);">
+                  <p:fileDownload value="#{verificacionProcesosCFD.excelResourceCC}"/>
+                </p:commandButton>
+              </p:panelGrid>
+
+              <p:dataTable id="dtInfo2" var="row"
+                           binding="#{verificacionProcesosCFD.htmlDataTableCFDCifrasControl}"
+                           value="#{verificacionProcesosCFD.listaTablaCFDCifrasControl}"
+                           rows="#{verificacionProcesosCFD.defaultRows}"
+                           style="vertical-align:top;"
+                           paginator="#{verificacionProcesosCFD.paginatorVisibleCFDCifrasControl}"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                           currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                <p:column headerText="Fecha Valor" sortOrder="asc">
+                  <h:outputText value="#{row.id.fechaEmision}"
+                                style="text-align:center;">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                  </h:outputText>
+                </p:column>
+                <p:column headerText="Producto">
+                  <h:outputText value="#{row.id.tpocredito}"
+                                style="text-align:left;"/>
+                </p:column>
+                <p:column headerText="Facturas Generadas">
+                  <h:outputText value="#{row.total}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Facturas Verificadas">
+                  <h:outputText value="#{row.totalVerificacion}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Facturas con Error">
+                  <h:outputText value="#{row.totalError}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Facturas Esperadas">
+                  <h:outputText value="#{row.totalEsperado}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Facturas Pendientes">
+                  <h:outputText value="#{row.pendientes}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Motivo">
+                  <h:outputText value="#{row.motivoError!= null ? row.motivoError:'.'}"
+                                style="text-align:left;"/>
+                </p:column>
+                <!--TODO REA review this-->
+                <p:column headerText="Detalle"
+                          style="text-align:center">
+                  <p:commandLink action="#{verificacionProcesosCFD.redirectSeguimientoFacturas}">
+                    <p:graphicImage url="../resources/img/detalle2.png" width="60" height="20"
+                                    title="Detalle" style="border:none"/>
+                    <f:param name="rowIndex"
+                             value="#{verificacionProcesosCFD.htmlDataTableCFDCifrasControl.rowIndex}"/>
+                  </p:commandLink>
+                </p:column>
+              </p:dataTable>
+
+              <br/>
+
+              <p:dataTable id="tableConcVerificacion" var="row"
+                           binding="#{verificacionProcesosCFD.htmlDataTableCFDConciliaVerificacion}"
+                           value="#{verificacionProcesosCFD.listaTablaCFDConciliaVerificacion}"
+                           rows="#{verificacionProcesosCFD.defaultRows}"
+                           style="vertical-align:top; "
+                           paginator="#{verificacionProcesosCFD.paginatorVisibleCFDConciliaVerificacion}"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                           currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                <p:column headerText="Fecha Verificado" sortOrder="asc">
+                  <h:outputText value="#{row.fechaVerificado}"
+                                style="text-align:center;">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                  </h:outputText>
+                </p:column>
+                <p:column headerText="Total Facturas">
+                  <h:outputText value="#{row.totalFacturas}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Total Verificado">
+                  <h:outputText value="#{row.totalVerificado}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Total con Error">
+                  <h:outputText value="#{row.totalErrores}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Total Esperado">
+                  <h:outputText value="#{row.totalEsperado}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Total Pendientes">
+                  <h:outputText value="#{row.totalPendientes}"
+                                style="text-align:center;"/>
+                </p:column>
+                <p:column headerText="Diferencia">
+                  <h:outputText value="#{row.diferencia}"
+                                style="text-align:center;"/>
+                </p:column>
+              </p:dataTable>
+
+            </p:tab>
+            <p:tab id="panelTab3" title="Verificación Facturas" style="vertical-align:top">
+              <p:panelGrid columns="1">
+                <p:panelGrid columns="1" style="padding:20px; position:relative; ">
+                  <p:message for="btnVerificar" style="color:red; font-size:11px;"/>
+                  <p:message for="btnCancelar" style="color:red; font-size:11px;"/>
+                  <!--p:message for="btnOk" style="color:red; font-size:12px;text-align:justify;"/-->
+                </p:panelGrid>
+                <p:panelGrid columns="7" style="padding:20px; position:relative; ">
+                  <h:outputText style="text-align:center;" value="Estatus:"/>
+                  <p:selectOneMenu id="filtroEstatusVerificacion"
+                                   value="#{verificacionProcesosCFD.filtroEstatusVerificacion}"
+                                   binding="#{verificacionProcesosCFD.selectFiltroEstatusVerificacion}"
+                                   partialSubmit="true">
+                    <f:selectItems value="#{verificacionProcesosCFD.listaFiltroEstatusVerificacion}"/>
+                  </p:selectOneMenu>
+                  <h:outputText style="text-align:center;" value="Fecha Valor"/>
+                  <p:outputLabel id="filtroFechaEmision" style="z-index:1000;"
+                                 onkeypress="return false;" renderAsPopup="true"
+                                 value="#{verificacionProcesosCFD.filtroFechaEmision}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                  </p:outputLabel>
+
+
+                  <h:outputText style="text-align:center;" value="Fecha Generación"/>
+                  <p:outputLabel id="filtroFechaGeneracion" style="z-index:1000;"
+                                 onkeypress="return false;" renderAsPopup="true"
+                                 value="#{verificacionProcesosCFD.filtroFechaGeneracion}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                  </p:outputLabel>
+
+                  <p:commandButton value="Filtrar" id="btnFiltrar"
+                                   binding="#{verificacionProcesosCFD.btnFiltrar}"
+                                   action="#{verificacionProcesosCFD.filtrarTableCFDVerificacion}"/>
+
+
+                  <h:outputText value="CampoA "/>
+                  <h:inputText id="campoAF" maxlength="20" value="#{verificacionProcesosCFD.campoAF}"
+                               style="width:200px"/>
+                  <h:outputText value="Producto "/>
+                  <p:selectOneMenu id="filtroProducto" style="z-index:1;"
+                                   value="#{verificacionProcesosCFD.filtroProducto}"
+                                   binding="#{verificacionProcesosCFD.selectFiltroProducto}"
+                                   partialSubmit="true">
+                    <f:selectItems value="#{verificacionProcesosCFD.listaFiltroProducto}"/>
+                  </p:selectOneMenu>
+
+                </p:panelGrid>
+
+
+                <p:panelGrid columns="7" style="padding:20px; position:relative; ">
+
+                  <p:commandButton
+                      value="#{verificacionProcesosCFD.nombreArchivoV}"
+                      icon="../resources/img/excel.png"
+                      ajax="false"
+                      onclick="PrimeFaces.monitorDownload(start, stop);"
+                      styleClass="border:0;">
+                    <p:fileDownload value="#{verificacionProcesosCFD.excelResourceV}"/>
+                  </p:commandButton>
+                  <p:commandButton
+                      label="Exportar"
+                      value="#{verificacionProcesosCFD.nombreArchivoV}"
+                      ajax="false"
+                      onclick="PrimeFaces.monitorDownload(start, stop);"
+                      styleClass="color:blue; text-decoration:underline;">
+                    <p:fileDownload value="#{verificacionProcesosCFD.excelResourceV}"/>
+                  </p:commandButton>
+
+
+                  <p:commandButton value="Limpiar" id="btnLimpiar"
+                                   action="#{verificacionProcesosCFD.limpiarTableCFDVerificacion}"/>
+                  <p:commandButton value="Cancelar" id="btnCancelar"
+                                   binding="#{verificacionProcesosCFD.btnCancelar}"
+                                   action="#{verificacionProcesosCFD.generaCancelar}"/>
+                  <p:commandButton value="Verificar" id="btnVerificar"
+                                   binding="#{verificacionProcesosCFD.btnVerificar}"
+                                   action="#{verificacionProcesosCFD.poUpVerificar}"/>
+
+
+                </p:panelGrid>
+
+
+                <p:panelGrid columns="1" style="padding:20px;">
+
+
+                  <p:dataTable id="dtInfo"
+                               binding="#{verificacionProcesosCFD.htmlDataTableCFDVerificacion}"
+                               value="#{verificacionProcesosCFD.listaTablaCFDVerificacion}" var="row"
+                               rows="#{verificacionProcesosCFD.defaultRows}"
+                               style="vertical-align:top; "
+                               paginator="#{verificacionProcesosCFD.paginatorVisibleCFDVerificacion}"
+                               paginatorPosition="bottom"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                               currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                    <!--TODO REA review this checkbox-->
+                    <p:column headerText="">
+                      <p:selectBooleanCheckbox
+                          value="#{row.seleccionado}"
+                          valueChangeListener="#{verificacionProcesosCFD.AddCheckList}"
+                          partialSubmit="true">
+                        <f:attribute name="rowIndex"
+                                     value="#{verificacionProcesosCFD.htmlDataTableCFDVerificacion.rowIndex}"/>
+                      </p:selectBooleanCheckbox>
+                      <p:selectBooleanCheckbox id="headerSelect"
+                                               partialSubmit="true"
+                                               value="#{verificacionProcesosCFD.headerSelectFlag}"
+                                               valueChangeListener="#{verificacionProcesosCFD.headerSelectionListener}"/>
+                    </p:column>
+                    <p:column headerText="Fecha Valor" sortOrder="asc">
+                      <h:outputText value="#{row.id.fechaEmision}"
+                                    style="text-align:center;">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                      </h:outputText>
+                    </p:column>
+                    <p:column headerText="Estatus">
+                      <h:outputText value="#{row.status}"
+                                    style="text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Observaciones">
+                      <h:outputText value="#{row.statusConciliado}"
+                                    style="text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Fecha Generación">
+                      <h:outputText style="text-align:center;" value="#{row.fecha}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                      </h:outputText>
+                    </p:column>
+                    <p:column headerText="Producto">
+                      <h:outputText value="#{row.fiFacturasEncabezado.tipocredito}"
+                                    style="text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Campo A">
+                      <h:outputText value="#{row.fiFacturasEncabezado.id.noAcreditado}"
+                                    style="text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Campo B">
+                      <h:outputText value="#{row.fiFacturasEncabezado.campob}"
+                                    style="text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Moneda">
+                      <h:outputText value="#{row.fiFacturasEncabezado.codigomoneda}"
+                                    style="text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Importe">
+                      <p:commandLink action="#{verificacionProcesosCFD.popupImporte}"
+                                     rendered="#{verificacionProcesosCFD.importeEditable}">
+                        <h:outputText style="text-align:right;color:blue"
+                                      value="#{row.fiFacturasEncabezado.importe}"/>
+                        <f:param name="rowIndex"
+                                 value="#{verificacionProcesosCFD.htmlDataTableCFDVerificacion.rowIndex}"/>
+                      </p:commandLink>
+
+                      <h:outputText value="#{row.fiFacturasEncabezado.importe}"
+                                    style="text-align:right;"
+                                    rendered="#{!verificacionProcesosCFD.importeEditable}"/>
+                    </p:column>
+                    <!--TODO REA Review this button -->
+                    <p:column headerText="Detalle"
+                              style="text-align:center">
+                      <p:commandLink action="#{verificacionProcesosCFD.poUpDetalleVerificacion}">
+                        <p:graphicImage url="../resources/img/common/detail.png" width="20" height="20"
+                                        title="Mostrar Detalle" style="border:none"/>
+                        <f:param name="rowIndex"
+                                 value="#{verificacionProcesosCFD.htmlDataTableCFDVerificacion.rowIndex}"/>
+                      </p:commandLink>
+                    </p:column>
+                  </p:dataTable>
+
+                </p:panelGrid>
+              </p:panelGrid>
+            </p:tab>
+
+
+          </p:tabView>
+
+        </p:outputPanel>
+
+        <p:dialog id="ppUsuario" modal="true" autoCentre="true"
+                  title="Confirmacion Usuario" visible="#{verificacionProcesosCFD.ppUsuario}">
+          <f:facet name="header">
+            <p:panelGrid id="pgdHeaderppUsuario" columns="1"
+                         style="display: block; height: 24px; position: relative; text-align:right; width: 100%">
+              <p:commandButton action="#{verificacionProcesosCFD.cancelarppUsuario}"
+                               id="closePopupBtnppUsuario" alt="Cerrar"
+                               image="../resources/img/cerrar.png"
+                               style="position: relative;" value="submit" title="Cerrar"/>
+            </p:panelGrid>
+          </f:facet>
+
+          <f:facet name="body">
+            <h:panelGroup>
+              <fieldset style="width:auto">
+                <legend>Confirmación de Usuario</legend>
+                <br/>
+                <p:message for="btncomprobarUsuario" style="color:red; font-size:12px;text-align:justify;"/>
+                <p:panelGrid columns="3">
+                  <h:outputText value="* Usuario "/>
+                  <h:inputText id="usuario" maxlength="20" value="#{verificacionProcesosCFD.usuario}"
+                               style="width:200px"/>
+                  <p:message for="usuario" id="errorUsuario"
+                             style="color: red; font-size: 11px; height: 20px;"/>
+
+                  <h:outputText value="* Password "/>
+                  <h:inputSecret id="claveText" redisplay="true" style="width:200px"
+                                 value="#{verificacionProcesosCFD.password}"/>
+                  <p:message for="claveText" id="errorClave"
+                             style="color: red; font-size: 11px; height: 20px;"/>
+
+                  <h:outputText value="Motivo "/>
+                  <h:inputText id="motivo" style="width:200px"
+                               value="#{verificacionProcesosCFD.motivo}"/>
+                  <p:message for="motivo" id="errorcomentario"
+                             style="color: red; font-size: 11px; height: 20px;"/>
+
+                </p:panelGrid>
+                <p:panelGrid columns="5">
+                  <p:commandButton value="Comprobar Usuario" id="btncomprobarUsuario"
+                                   binding="#{verificacionProcesosCFD.btncomprobarUsuario}"
+                                   action="#{verificacionProcesosCFD.comprobarUsuario}"/>
+                  <p:commandButton value="Cancelar"
+                                   action="#{verificacionProcesosCFD.cancelarppUsuario}"/>
+                </p:panelGrid>
+                <p:outputPanel layout="block" style="text-align:center;">
+                  <p/>
+                  <h:outputText value="Los campos marcados con * son mandatorios"/>
+                </p:outputPanel>
+              </fieldset>
+            </h:panelGroup>
+          </f:facet>
+        </p:dialog>
+
+
+        <p:dialog id="ppAlerta" modal="true" autoCentre="true"
+                  title="Alerta" visible="#{verificacionProcesosCFD.ppAlerta}">
+          <f:facet name="header">
+            <p:panelGrid id="pgdHeaderppAlerta" columns="1"
+                         style="display: block; height: 24px; position: relative; text-align:right; width: 100%">
+              <p:commandButton action="#{verificacionProcesosCFD.cancelarppAlerta}"
+                               id="closePopupBtnppAlerta" alt="Cerrar"
+                               image="../resources/img/cerrar.png"
+                               style="position: relative;" value="submit" title="Cerrar"/>
+            </p:panelGrid>
+          </f:facet>
+
+          <f:facet name="body">
+            <h:panelGroup>
+              <fieldset style="width:auto">
+                <legend>Alerta</legend>
+                <br/>
+                <p:message for="btnOk" style="color:red; font-size:12px;text-align:justify;"/>
+
+                <p:panelGrid columns="2">
+                  <h:outputText value="#{verificacionProcesosCFD.mensajeAlerta}"/>
+
+                </p:panelGrid>
+                <p:panelGrid columns="5">
+                  <p:commandButton value="Ok" id="btnOk"
+                                   action="#{verificacionProcesosCFD.PU_STATUS_FOLIOS}"
+                                   binding="#{verificacionProcesosCFD.btnOk}"/>
+                  <p:commandButton value="Cancelar"
+                                   action="#{verificacionProcesosCFD.cancelarppAlerta}"/>
+                </p:panelGrid>
+                <p:outputPanel layout="block" style="text-align:center;">
+                  <p/>
+                </p:outputPanel>
+              </fieldset>
+            </h:panelGroup>
+          </f:facet>
+        </p:dialog>
+        <p:dialog id="ppDetalleVerificacion" modal="true" autoCentre="true"
+                  title="Detalle" visible="#{verificacionProcesosCFD.ppDetalleVerificacion}">
+          <f:facet name="header">
+            <p:panelGrid id="pgdHeaderppDetalleVerificacion" columns="1"
+                         style="display: block; height: 24px; position: relative; text-align:right; width: 100%">
+              <p:commandButton action="#{verificacionProcesosCFD.cancelarppDetalleVerificacion}"
+                               id="closePopupBtnppDetalleVerificacion" alt="Cerrar"
+                               image="../resources/img/cerrar.png"
+                               style="position: relative;" value="submit" title="Cerrar"/>
+            </p:panelGrid>
+          </f:facet>
+
+          <f:facet name="body">
+            <h:panelGroup>
+              <fieldset style="width:auto">
+                <legend>Detalle de Factura</legend>
+                <br/>
+                <p:panelGrid columns="3">
+
+                  <h:outputText value=" Campo A " style="font-weight:bold;"/>
+                  <h:outputText value=" RFC " style="font-weight:bold;"/>
+                  <h:outputText value=" Nombre " style="font-weight:bold;"/>
+
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.noAcreditado}"/>
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.rfc}"/>
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.nombre}"/>
+
+                  <h:outputText value=" Contrato " style="font-weight:bold;"/>
+                  <h:outputText value=" Importe Esperado" style="font-weight:bold;"/>
+                  <h:outputText value=" Producto" style="font-weight:bold;"/>
+
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.contrato}"/>
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.importeCont}"/>
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.tipoDeCredito}"/>
+
+
+                  <h:outputText value=" Moneda " style="font-weight:bold;"/>
+                  <h:outputText value=" Tipo de Cambio " style="font-weight:bold;"/>
+                  <h:outputText value=" Importe CFDI " style="font-weight:bold;"/>
+
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.moneda}"/>
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.tipoDeCambio}"/>
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.importe}">
+                    <f:convertNumber pattern="###,##0.00" locale="EN"/>
+                  </h:inputText>
+
+                </p:panelGrid>
+
+                <p:panelGrid columns="3">
+
+                  <h:outputText value=" Fecha Valor " style="font-weight:bold;"/>
+                  <h:outputText value=" Secuencia IMX " style="font-weight:bold;"/>
+                  <h:outputText value=" Campo B " style="font-weight:bold;"/>
+
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.fechaValor}"/>
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.secuenciaIMX}"/>
+                  <h:inputText style="width:150px;" readonly="true"
+                               value="#{verificacionProcesosCFD.campoB}"/>
+
+                </p:panelGrid>
+              </fieldset>
+            </h:panelGroup>
+          </f:facet>
+        </p:dialog>
+
+
+        <p:dialog autoCentre="true" rendered="#{verificacionProcesosCFD.showDialogImporte}"
+                  autoPosition="true" modal="true" title="Nuevo Importe">
+          <f:facet name="header">
+            <p:panelGrid columns="1"
+                         style="display: block; height: 24px; position: relative; text-align:right; width: 100%">
+              <p:commandButton action="#{verificacionProcesosCFD.closePopUpDialogImporte}" alt="Cerrar"
+                               image="../resources/img/cerrar.png"
+                               style="position: relative;" value="submit" title="Cerrar"/>
+            </p:panelGrid>
+          </f:facet>
+          <f:facet name="body">
+            <h:panelGroup>
+              <h:outputText style="font-family: Arial,Helvetica,sans-serif; font-weight:bold"
+                            value="Importe"/>
+
+              <br/>
+              <p:panelGrid columns="2">
+                <h:inputText id="importe" maxlength="200"
+                             style="display: block; height: 24px; position: relative; text-align:left; width: 200px;"
+                             value="#{verificacionProcesosCFD.importeCambio}" partialSubmit="true"/>
+                <p:message for="btnGuardarImporte" style="color:red; font-size:11px"/>
+              </p:panelGrid>
+              <div style="text-align: -webkit-center">
+                <p:commandButton id="btnGuardarImporte" value="Guardar"
+                                 action="#{verificacionProcesosCFD.modificaImporte}"
+                                 binding="#{verificacionProcesosCFD.btnGuardarImporte}"/>
+                <p:commandButton value="Cancelar"
+                                 action="#{verificacionProcesosCFD.closePopUpDialogImporte}"/>
+              </div>
+            </h:panelGroup>
+          </f:facet>
+        </p:dialog>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/05/2015 10:54:29 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCapitalizacionImxTmp" schema="FACTIMX" table="FI_CAPITALIZACION_IMX_TMP">
+    <id name="id" type="int">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="opCode" type="string">
+      <column name="OPCODE"/>
+    </property>
+
+    <property name="campoA" type="string">
+      <column name="CAMPOA"/>
+    </property>
+
+    <property name="nomCliente" type="string">
+      <column name="NOM_CLIENTE"/>
+    </property>
+
+    <property name="cuentaOrigen" type="string">
+      <column name="CUENTA_ORIGEN"/>
+    </property>
+
+    <property name="montoOrigen" type="big_decimal">
+      <column name="MONTO_ORIGEN"/>
+    </property>
+
+    <property name="cuentaDestino" type="string">
+      <column name="CUENTA_DESTINO"/>
+    </property>
+
+    <property name="montoDestino" type="big_decimal">
+      <column name="MONTO_DESTINO"/>
+    </property>
+
+    <property name="cuentaSust1" type="string">
+      <column name="CUENTA_SUST1"/>
+    </property>
+
+    <property name="montoSust1" type="big_decimal">
+      <column name="MONTO_SUST1"/>
+    </property>
+
+    <property name="cuentaSust2" type="string">
+      <column name="CUENTA_SUST2"/>
+    </property>
+
+    <property name="montoSust2" type="big_decimal">
+      <column name="MONTO_SUST2"/>
+    </property>
+
+    <property name="moneda" type="int">
+      <column name="MONEDA"/>
+    </property>
+
+    <property name="ctaOrigen" type="int">
+      <column name="CTA_ORIGEN"/>
+    </property>
+
+    <property name="sctaOrigen" type="int">
+      <column name="SCTA_ORIGEN"/>
+    </property>
+
+    <property name="ssCtaOrigen" type="int">
+      <column name="SSCTA_ORIGEN"/>
+    </property>
+
+    <property name="sssCtaOrigen" type="int">
+      <column name="SSSCTA_ORIGEN"/>
+    </property>
+
+    <property name="ctaDestino" type="int">
+      <column name="CTA_DESTINO"/>
+    </property>
+
+    <property name="sctaDestino" type="int" access="field">
+      <column name="SCTA_DESTINO"/>
+    </property>
+
+    <property name="ssCtaDestino" type="int">
+      <column name="SSCTA_DESTINO"/>
+    </property>
+
+    <property name="sssCtaDestino" type="int">
+      <column name="SSSCTA_DESTINO"/>
+    </property>
+
+    <property name="ctaSust1" type="int">
+      <column name="CTA_SUST1"/>
+    </property>
+
+    <property name="sCtaSust1" type="int" access="field">
+      <column name="SCTA_SUST1"/>
+    </property>
+
+    <property name="ssCtaSust1" type="int">
+      <column name="SSCTA_SUST1"/>
+    </property>
+
+    <property name="sssCtaSust1" type="int">
+      <column name="SSSCTA_SUST1"/>
+    </property>
+
+    <property name="ctaSust2" type="int">
+      <column name="CTA_SUST2"/>
+    </property>
+
+    <property name="sCtaSust2" type="int" access="field">
+      <column name="SCTA_SUST2"/>
+    </property>
+
+    <property name="ssCtaSust2" type="int">
+      <column name="SSCTA_SUST2"/>
+    </property>
+
+    <property name="sssCtaSust2" type="int">
+      <column name="SSSCTA_SUST2"/>
+    </property>
+
+    <property name="mensaje" type="string">
+      <column name="MENSAJE"/>
+    </property>
+
+    <property name="suCcon" type="int">
+      <column name="SUCCON"/>
+    </property>
+
+    <property name="depto" type="int">
+      <column name="DEPTO"/>
+    </property>
+
+    <property name="numPol" type="int">
+      <column name="NUMPOL"/>
+    </property>
+
+    <property name="feCad" type="int">
+      <column name="FECAD"/>
+    </property>
+
+    <property name="feCam" type="int">
+      <column name="FECAM"/>
+    </property>
+
+    <property name="feCaa" type="int">
+      <column name="FECAA"/>
+    </property>
+
+    <property name="cuentaSustitucion" type="string">
+      <column name="CUENTA_SUSTITUCION"/>
+    </property>
+
+    <property name="montoSustitucion" type="big_decimal">
+      <column name="MONTO_SUSTITUCION"/>
+    </property>
+
+    <property name="desMon" type="string">
+      <column name="DESMON"/>
+    </property>
+
+    <property name="tipoCambio" type="big_decimal">
+      <column name="TIPO_CAMBIO"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

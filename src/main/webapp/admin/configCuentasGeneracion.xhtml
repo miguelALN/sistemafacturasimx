@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : configCuentasGeneracion.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Configuración de Cuentas Proceso de Extracción (Conciliación)</legend>
+        <p:outputPanel layout="block">
+          <h:panelGroup id="pgInfo">
+            <p:dataTable id="dt-cuentas"
+                         widgetVar="dtCuentas"
+                         var="row"
+                         value="#{configCuentasGeneracion.listaComparativo}"
+                         reflow="true"
+                         tableStyle="width:auto"
+                         style="position: relative; vertical-align:top"
+                         rows="#{configCuentasGeneracion.defaultRows}"
+                         paginator="#{configCuentasGeneracion.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+              <p:column headerText="Cuenta"
+                        style="text-align:center"
+                        sortBy="#{row.id.cta}"
+                        filterBy="#{row.id.cta}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.cta}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="SCuenta"
+                        style="text-align:center"
+                        sortBy="#{row.id.scta}"
+                        filterBy="#{row.id.scta}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.scta}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="SSCuenta"
+                        style="text-align:center"
+                        sortBy="#{row.id.sscta}"
+                        filterBy="#{row.id.sscta}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.sscta}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="SSSCuenta"
+                        style="text-align:center"
+                        sortBy="#{row.id.ssscta}"
+                        filterBy="#{row.id.ssscta}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.ssscta}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Producto"
+                        style="text-align:center"
+                        sortBy="#{row.id.producto}"
+                        filterBy="#{row.id.producto}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.producto}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Eliminar" style="text-align:center" exportable="false">
+                <p:commandButton title="Eliminar"
+                                 icon="pi pi-trash"
+                                 styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                 oncomplete="PF('eliminarDialog').show()"
+                                 process="@this"
+                                 style="height: 20px; width: 15px">
+                  <f:setPropertyActionListener value="#{row}" target="#{configCuentasGeneracion.cuentaSeleccionada}"/>
+                </p:commandButton>
+              </p:column>
+            </p:dataTable>
+          </h:panelGroup>
+
+          <div style="text-align: -webkit-center; padding: 15px;">
+              <p:commandButton value="Agregar"
+                               actionListener="#{configCuentasGeneracion.abrirPopupAlta}"
+                               oncomplete="PF('altaDialog').show()"
+                               update=":dialogs:alta-content">
+                <p:resetInput target=":dialogs:alta-content"/>
+
+              </p:commandButton>
+          </div>
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+    </h:form>
+
+    <h:form id="dialogs">
+      <p:dialog header="Agregar Cuenta" showEffect="fade" modal="true" widgetVar="altaDialog"
+                responsive="true">
+        <p:outputPanel id="alta-content" class="ui-fluid">
+          <p:outputPanel>
+            <p:panelGrid columns="3">
+              <p:outputLabel for="id-cuenta" value="* Cuenta:"/>
+              <p:inputText id="id-cuenta" style="width: 150px" value="#{configCuentasGeneracion.cuentaNueva.id.cta}"/>
+              <p:message for="id-cuenta"/>
+
+              <p:outputLabel for="id-subcuenta" value="* Sub-Cuenta:"/>
+              <p:inputText id="id-subcuenta" style="width: 150px" value="#{configCuentasGeneracion.cuentaNueva.id.scta}"/>
+              <p:message for="id-subcuenta"/>
+
+              <p:outputLabel for="id-subsubcuenta" value="* SubSub-Cuenta:"/>
+              <p:inputText id="id-subsubcuenta" style="width: 150px" value="#{configCuentasGeneracion.cuentaNueva.id.sscta}"/>
+              <p:message for="id-subsubcuenta"/>
+
+              <p:outputLabel for="id-subsubsubcuenta" value="* SubSubSub-Cuenta:"/>
+              <p:inputText id="id-subsubsubcuenta" style="width: 150px" value="#{configCuentasGeneracion.cuentaNueva.id.ssscta}"/>
+              <p:message for="id-subsubsubcuenta"/>
+
+              <p:outputLabel for="producto" value="Producto:"/>
+              <p:selectOneMenu id="producto" partialSubmit="true"
+                               value="#{configCuentasGeneracion.cuentaNueva.id.producto}">
+                <f:selectItems value="#{configCuentasGeneracion.listaProducto}"/>
+              </p:selectOneMenu>
+              <p:message for="producto"/>
+            </p:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+
+        <!--<f:facet name="footer">-->
+          <div style="text-align: -webkit-center; padding: 15px;">
+          <p:commandButton value="Guardar"
+                           actionListener="#{configCuentasGeneracion.guardarCuenta}"
+                           update="alta-content"
+                           process="alta-content @this"/>
+          <p:commandButton value="Cancelar"
+                           onclick="PF('altaDialog').hide()"
+                           type="button"/>
+            <br></br>
+            <br></br>
+            <p:outputLabel value="Los campos marcados con * son mandatorios"/>
+          </div>
+       <!-- </f:facet>-->
+      </p:dialog>
+
+      <p:confirmDialog widgetVar="eliminarDialog"
+                       showEffect="fade"
+                       width="300"
+                       message="Confirme Acción Eliminar"
+                       header="Confirmar"
+                       severity="warn">
+        <p:commandButton value="Si"
+                         actionListener="#{configCuentasGeneracion.eliminarCuenta}"
+                         process="@this"
+                         oncomplete="PF('eliminarDialog').hide()"/>
+        <p:commandButton value="No"
+                         onclick="PF('eliminarDialog').hide()"
+                         type="button"/>
+      </p:confirmDialog>
+    </h:form>
+  </div>
+</h:body>
+</html>

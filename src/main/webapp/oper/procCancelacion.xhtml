@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : procCancelacion.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <script type="text/javascript" src="../resources/js/PrimeFacesLocale.js"></script>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+  <style type="text/css">
+    .panelCol1 {
+      text-align: right;
+      width: 20%
+    }
+
+    .panelCol2 {
+      text-align: left;
+      width: 30%
+    }
+
+    .panelCol3 {
+      text-align: right;
+      width: 20%
+    }
+
+    .panelCol4 {
+      text-align: left;
+      width: 30%
+    }
+  </style>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <br/>
+      <fieldset>
+        <legend>Proceso Manual de Cancelacion CFDI</legend>
+        <p:outputPanel id="pgInfo">
+          <p:panelGrid columns="1">
+            <p:panelGrid columns="4" layout="grid" contentStyleClass="ui-fluid" style="width: 90%"
+                         columnClasses="panelCol1, panelCol2, panelCol3, panelCol4">
+              <h:outputText value="Fecha Valor Inicial"/>
+              <p:calendar id="fechaEmisionIni"
+                          value="#{procCancelacion.fechaEmisionIni}"
+                          locale="es"
+                          navigator="true"
+                          showButtonPanel="true"
+                          autocomplete="off"
+                          pattern="MMM d, yyyy"/>
+
+              <h:outputText value="Fecha Valor Final"/>
+              <p:calendar id="fechaEmisionFin"
+                          value="#{procCancelacion.fechaEmisionFin}"
+                          locale="es"
+                          navigator="true"
+                          showButtonPanel="true"
+                          autocomplete="off"
+                          pattern="MMM d, yyyy"/>
+
+              <h:outputText value="Fecha Generación Inicial"/>
+              <p:calendar id="fechaGeneraIni"
+                          value="#{procCancelacion.fechaGeneraIni}"
+                          locale="es"
+                          navigator="true"
+                          showButtonPanel="true"
+                          autocomplete="off"
+                          pattern="MMM d, yyyy"/>
+
+              <h:outputText value="Fecha Generación Final"/>
+              <p:calendar id="fechaGeneraFin"
+                          value="#{procCancelacion.fechaEmisionFin}"
+                          locale="es"
+                          navigator="true"
+                          showButtonPanel="true"
+                          autocomplete="off"
+                          pattern="MMM d, yyyy"/>
+
+            </p:panelGrid>
+
+            <p:panelGrid columns="4" layout="grid" contentStyleClass="ui-fluid" style="width: 90%">
+              <p:commandButton value="Limpiar" action="#{procCancelacion.limpiarTabla}"
+                               update=":form1:pgInfo"/>
+              <p:commandButton id="boton-cancelar" value="#{procCancelacion.labelBotonCancelar}"
+                               action="#{procCancelacion.validarCancelacion}" update="@this"
+                               disabled="#{!procCancelacion.hayCFDSseleccionados()}"/>
+              <p:commandButton id="boton-verificar" value="#{procCancelacion.labelBotonVerificar}"
+                               action="#{procCancelacion.validarVerificacion}" update="@this"
+                               disabled="#{!procCancelacion.hayCFDSseleccionados()}"/>
+              <p:commandButton value="Filtrar" action="#{procCancelacion.filtrarTableCFDVerificacion}"
+                               update=":form1:pgInfo"/>
+            </p:panelGrid>
+
+            <p:panelGrid columns="1">
+              <p:dataTable id="dt-cfdis"
+                           rendered="#{not empty procCancelacion.listaCfds}"
+                           widgetVar="dtCfdis"
+                           var="cfdi"
+                           value="#{procCancelacion.listaCfds}"
+                           reflow="true"
+                           selection="#{procCancelacion.cfdsSeleccionados}"
+                           rowSelectMode="add"
+                           rowKey="#{cfdi.fiCfdHistoricoFolios.id.numeroFolio}"
+                           tableStyle="width:auto"
+                           style="position: relative; vertical-align:top"
+                           rows="#{procCancelacion.defaultRows}"
+                           paginator="#{procCancelacion.paginadorVisible}"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                           currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                <p:ajax event="rowSelect" listener="#{procCancelacion.procesarSeleccion()}"
+                        update=":form1:boton-cancelar :form1:boton-verificar" process="@this" partialSubmit="true"/>
+
+                <p:ajax event="rowUnselect" listener="#{procCancelacion.procesarSeleccion()}"
+                        update=":form1:boton-cancelar :form1:boton-verificar" process="@this" partialSubmit="true"/>
+
+                <p:ajax event="rowSelectCheckbox" listener="#{procCancelacion.procesarSeleccion()}"
+                        update=":form1:boton-cancelar :form1:boton-verificar" process="@this" partialSubmit="true"/>
+
+                <p:ajax event="rowUnselectCheckbox" listener="#{procCancelacion.procesarSeleccion()}"
+                        update=":form1:boton-cancelar :form1:boton-verificar" process="@this" partialSubmit="true"/>
+
+                <p:ajax event="toggleSelect" listener="#{procCancelacion.procesarSeleccion()}"
+                        update=":form1:boton-cancelar :form1:boton-verificar" process="@this" partialSubmit="true"/>
+
+                <p:column selectionMode="multiple"> </p:column>
+
+                <p:column headerText="Folio Factura"
+                          sortBy="#{cfdi.fiCfdHistoricoFolios.id.numeroFolio}"
+                          filterBy="#{cfdi.fiCfdHistoricoFolios.id.numeroFolio}"
+                          filterMatchMode="contains"
+                          sortOrder="asc">
+                  <h:outputText value="#{cfdi.fiCfdHistoricoFolios.id.numeroFolio}"/>
+                </p:column>
+
+                <p:column headerText="Fecha Valor"
+                          sortBy="#{cfdi.id.fechaEmision}"
+                          filterBy="#{cfdi.id.fechaEmision}"
+                          filterMatchMode="contains">
+                  <h:outputText value="#{cfdi.id.fechaEmision}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                  </h:outputText>
+                </p:column>
+
+                <p:column headerText="Estatus"
+                          sortBy="#{cfdi.status}"
+                          filterBy="#{cfdi.status}"
+                          filterMatchMode="contains">
+                  <h:outputText value="#{cfdi.status}"/>
+                </p:column>
+
+                <p:column headerText="Observaciones"
+                          sortBy="#{cfdi.statusConciliado}"
+                          filterBy="#{cfdi.statusConciliado}"
+                          filterMatchMode="contains">
+                  <h:outputText value="#{cfdi.statusConciliado}"/>
+                </p:column>
+
+                <p:column headerText="Fecha Generación"
+                          sortBy="#{cfdi.fecha}"
+                          filterBy="#{cfdi.fecha}"
+                          filterMatchMode="contains">
+                  <h:outputText value="#{cfdi.fecha}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                  </h:outputText>
+                </p:column>
+
+                <p:column headerText="Producto"
+                          sortBy="#{cfdi.producto}"
+                          filterBy="#{cfdi.producto}"
+                          filterMatchMode="contains">
+                  <h:outputText value="#{cfdi.producto}"/>
+                </p:column>
+
+                <p:column headerText="CampoA"
+                          sortBy="#{cfdi.id.numAcreditado}"
+                          filterBy="#{cfdi.id.numAcreditado}"
+                          filterMatchMode="contains">
+                  <h:outputText value="#{cfdi.id.numAcreditado}"/>
+                </p:column>
+
+                <p:column headerText="Moneda"
+                          sortBy="#{cfdi.fiFacturasEncabezado.codigoMoneda}"
+                          filterBy="#{cfdi.fiFacturasEncabezado.codigoMoneda}"
+                          filterMatchMode="contains">
+                  <h:outputText value="#{cfdi.fiFacturasEncabezado.codigoMoneda}"/>
+                </p:column>
+
+                <p:column headerText="Importe"
+                          sortBy="#{cfdi.fiFacturasEncabezado.importe}"
+                          filterBy="#{cfdi.fiFacturasEncabezado.importe}"
+                          filterMatchMode="contains">
+                  <h:outputText value="#{cfdi.fiFacturasEncabezado.importe}">
+                    <f:convertNumber pattern="##,###.00"/>
+                  </h:outputText>
+                </p:column>
+
+                <p:column headerText="Editar" exportable="false">
+                  <p:commandButton title="Editar"
+                                   action="#{procCancelacion.mostrarEditarEncabezado}"
+                                   icon="pi pi-pencil"
+                                   styleClass="rounded-button edit-button ui-button-outlined"
+                                   oncomplete="PF('modificacionDialog').show()"
+                                   process="@this"
+                                   update=":dialogs:modificacion-content"
+                                   rendered="#{cfdi.status.equalsIgnoreCase('CANCELADO')}">
+                    <f:setPropertyActionListener value="#{cfdi}" target="#{procCancelacion.cfdAEditar}"/>
+                    <p:resetInput target=":dialogs:detalle-verificacion-content"/>
+                  </p:commandButton>
+
+                </p:column>
+              </p:dataTable>
+
+            </p:panelGrid>
+
+          </p:panelGrid>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+
+    <h:form id="dialogs">
+
+      <p:dialog header="Detalle de Factura" showEffect="fade" modal="true" widgetVar="dialogDetalleVerificacion"
+                responsive="true">
+        <p:outputPanel id="detalle-verificacion-content" class="ui-fluid">
+          <p:outputPanel rendered="#{not empty catCorreoClientes.cuentaSeleccionada}">
+            <p:panelGrid columns="3">
+
+              <p:outputLabel for="campoA" style="font-weight:bold;" value="Campo A"/>
+              <p:outputLabel for="rfc" style="font-weight:bold;" value="RFC"/>
+              <p:outputLabel for="nombre" style="font-weight:bold;" value="Nombre"/>
+              <p:inputNumber id="campoA" style="width: 150px" readonly="true"
+                             value="#{procCancelacion.encabezado.id.numAcreditado}"
+                             thousandSeparator="" decimalPlaces="0"/>
+              <p:inputText id="rfc" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.rfc}"/>
+              <p:inputText id="nombre" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.nombre}"/>
+
+              <p:outputLabel for="contrato" value="Contrato " style="font-weight:bold;"/>
+              <p:outputLabel for="importeEsperado" value="Importe Esperado" style="font-weight:bold;"/>
+              <p:outputLabel for="producto" value="Producto" style="font-weight:bold;"/>
+              <p:inputText id="contrato" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.id.contrato}"/>
+              <p:inputNumber id="importeEsperado" style="width:150px;" readonly="true"
+                             value="#{procCancelacion.encabezado.importeCont}"
+                             thousandSeparator="," decimalPlaces="2"/>
+              <p:inputText id="producto" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.tipoCredito}"/>
+
+              <p:outputLabel for="moneda" value="Moneda" style="font-weight:bold;"/>
+              <p:outputLabel for="tipoDeCambio" value="Tipo de Cambio" style="font-weight:bold;"/>
+              <p:outputLabel for="importeCFDI" value="Importe CFDI" style="font-weight:bold;"/>
+              <p:inputText id="moneda" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.moneda}"/>
+              <p:inputText id="tipoDeCambio" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.tipoDeCambio}"/>
+              <p:inputText id="importeCFDI" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.importe}">
+                <f:convertNumber pattern="###,##0.00" locale="EN"/>
+              </p:inputText>
+
+              <p:outputLabel for="fechaValor" value="Fecha Valor" style="font-weight:bold;"/>
+              <p:outputLabel for="secuenciaIMX" value="Secuencia IMX" style="font-weight:bold;"/>
+              <p:outputLabel for="campoB" value="Campo B" style="font-weight:bold;"/>
+              <p:inputText id="fechaValor" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.id.fechaValor}"/>
+              <p:inputText id="secuenciaIMX" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.secuenciaImx}"/>
+              <p:inputText id="campoB" style="width:150px;" readonly="true"
+                           value="#{procCancelacion.encabezado.campoB}"/>
+
+            </p:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+      </p:dialog>
+
+      <p:dialog header="Confirmación de usuario" showEffect="fade" modal="true" widgetVar="usuarioDialog"
+                responsive="true">
+        <p:outputPanel id="confirma-usuario-content" class="ui-fluid">
+          <p:panelGrid columns="3">
+            <p:outputLabel for="usuario" value="Usuario:"/>
+            <p:inputText id="usuario" maxlength="20" style="width:200px" disabled="true"
+                         value="#{procCancelacion.usuario}"/>
+            <p:message for="usuario"/>
+            <p:outputLabel for="claveText" value="Password:"/>
+            <h:inputSecret id="claveText" redisplay="true" style="width:200px" required="true"
+                           value="#{procCancelacion.password}"/>
+            <p:message for="claveText"/>
+            <p:outputLabel for="motivo" value="Motivo:"/>
+            <h:inputText id="motivo" style="width:200px" value="#{procCancelacion.motivo}"/>
+            <p:message for="motivo"/>
+          </p:panelGrid>
+        </p:outputPanel>
+        <f:facet name="footer">
+          <p:commandButton value="Comprobar Usuario" icon="pi pi-check"
+                           actionListener="#{procCancelacion.comprobarUsuario}"
+                           update="confirma-usuario-content"
+                           process="confirma-usuario-content @this"/>
+          <p:commandButton value="Cerrar" icon="pi pi-times" onclick="PF('usuarioDialog').hide()"
+                           class="ui-button-secondary" type="button"/>
+        </f:facet>
+      </p:dialog>
+
+
+      <p:confirmDialog widgetVar="alertaCancela" showEffect="fade" width="300"
+                       message="Los folios que estan verficados para esta fecha de emision seran cancelados y no
+                                se podran utilizar de nuevo. ¿Desea Continuar?"
+                       header="Confirmar Cancelación" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check"
+                         actionListener="#{procCancelacion.cancelarCFD}"
+                         process="@this"
+                         oncomplete="PF('alertaCancela').hide()"/>
+        <p:commandButton value="No" icon="pi pi-times" onclick="PF('alertaCancela').hide()"
+                         styleClass="ui-button-secondary" type="button"/>
+      </p:confirmDialog>
+
+
+      <p:confirmDialog widgetVar="alertaVerifica" showEffect="fade" width="300"
+                       message="Va a comenzar el proceso de verificación para CFD. ¿Desea Continuar?"
+                       header="Confirmar Verificación" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check"
+                         actionListener="#{procCancelacion.verificarCFD}"
+                         process="@this"
+                         oncomplete="PF('alertaVerifica').hide()"/>
+        <p:commandButton value="No" icon="pi pi-times" onclick="PF('alertaVerifica').hide()"
+                         styleClass="ui-button-secondary" type="button"/>
+      </p:confirmDialog>
+
+
+      <p:dialog header="Modificación Encabezado" showEffect="fade" modal="true" widgetVar="modificacionDialog"
+                responsive="true">
+        <p:outputPanel id="modificacion-content" class="ui-fluid">
+          <p:outputPanel rendered="#{not empty procCancelacion.encabezado}">
+            <p:panelGrid columns="4">
+
+              <p:outputLabel for="rfc2" value="RFC" style="font-weight:bold;"/>
+              <p:inputText id="rfc2" value="#{procCancelacion.encabezado.rfc}" maxlength="19" size="19"/>
+
+              <p:outputLabel for="nombre2" value="Nombre" style="font-weight:bold;"/>
+              <p:inputText id="nombre2" value="#{procCancelacion.encabezado.nombre}" maxlength="100" size="60"/>
+
+              <p:outputLabel for="calle" value="Calle" style="font-weight:bold;"/>
+              <p:inputText id="calle" value="#{procCancelacion.encabezado.calle}" maxlength="50" size="40"/>
+
+              <p:outputLabel for="numExterior" value="No. Exterior" style="font-weight:bold;"/>
+              <p:inputText id="numExterior" value="#{procCancelacion.encabezado.numExterior}" maxlength="10" size="10"/>
+
+              <p:outputLabel for="numInterior" value="No. Interior" style="font-weight:bold;"/>
+              <p:inputText id="numInterior" value="#{procCancelacion.encabezado.numInterior}" maxlength="10" size="10"/>
+
+              <p:outputLabel for="colonia" value="Colonia" style="font-weight:bold;"/>
+              <p:inputText id="colonia" value="#{procCancelacion.encabezado.colonia}" maxlength="30" size="30"/>
+
+              <p:outputLabel for="localidad" value="Localidad" style="font-weight:bold;"/>
+              <p:inputText id="localidad" value="#{procCancelacion.encabezado.localidad}" maxlength="30" size="30"/>
+
+              <p:outputLabel for="referencia" value="Referencia" style="font-weight:bold;"/>
+              <p:inputText id="referencia" value="#{procCancelacion.encabezado.referencia}" maxlength="75" size="30"/>
+
+              <p:outputLabel for="municipio" value="Municipio" style="font-weight:bold;"/>
+              <p:inputText id="municipio" value="#{procCancelacion.encabezado.municipio}" maxlength="30" size="30"/>
+
+              <p:outputLabel for="estado" value="Estado" style="font-weight:bold;"/>
+              <p:inputText id="estado" value="#{procCancelacion.encabezado.estado}" maxlength="30" size="30"/>
+
+              <p:outputLabel for="pais" value="Pais" style="font-weight:bold;"/>
+              <p:inputText id="pais" value="#{procCancelacion.encabezado.pais}" maxlength="45" size="30"/>
+
+              <p:outputLabel for="codigoPostal" value="Codigo Postal" style="font-weight:bold;"/>
+              <p:inputText id="codigoPostal" value="#{procCancelacion.encabezado.codigoPostal}" maxlength="10"
+                           size="10"/>
+
+              <p:outputLabel for="contrato2" value="Contrato" style="font-weight:bold;"/>
+              <p:inputText id="contrato2" value="#{procCancelacion.encabezado.id.contrato}" maxlength="10" size="10"/>
+
+              <p:outputLabel for="linea" value="Linea" style="font-weight:bold;"/>
+              <p:inputText id="linea" value="#{procCancelacion.encabezado.linea}" maxlength="10" size="10"/>
+
+              <p:outputLabel for="tipoCredito" value="Tipo Credito" style="font-weight:bold;"/>
+              <p:inputText id="tipoCredito" value="#{procCancelacion.encabezado.tipoCredito}" maxlength="75"
+                           size="10"/>
+
+              <p:outputLabel for="codigoMoneda" value="Codigo Moneda" style="font-weight:bold;"/>
+              <p:inputText id="codigoMoneda" value="#{procCancelacion.encabezado.codigoMoneda}" maxlength="5" size="5"
+                           disabled="true"/>
+
+              <p:outputLabel for="moneda2" value="Moneda" style="font-weight:bold;"/>
+              <p:inputText id="moneda2" value="#{procCancelacion.encabezado.moneda}" maxlength="30" size="10"
+                           disabled="true"/>
+
+              <p:outputLabel for="importe" value="Importe" style="font-weight:bold;"/>
+              <p:inputText id="importe" value="#{procCancelacion.encabezado.importe}" maxlength="22" size="22"
+                           disabled="true"/>
+            </p:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+
+        <f:facet name="footer">
+          <p:commandButton value="Modificar" icon="pi pi-check"
+                           actionListener="#{procCancelacion.actualizarEncabezado}"
+                           update="modificacion-content"
+                           process="modificacion-content @this"/>
+          <p:commandButton value="Cerrar" icon="pi pi-times" onclick="PF('modificacionDialog').hide()"
+                           class="ui-button-secondary" type="button"/>
+        </f:facet>
+      </p:dialog>
+
+    </h:form>
+  </div>
+</h:body>
+</html>

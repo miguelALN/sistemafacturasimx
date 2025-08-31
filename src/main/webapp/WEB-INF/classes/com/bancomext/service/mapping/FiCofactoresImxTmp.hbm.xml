@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 9/06/2015 01:12:27 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiCofactoresImxTmp" schema="FACTIMX" table="FI_COFACTORES_IMX_TMP">
+    <id name="id" type="int">
+      <column name="ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="campoA" type="string">
+      <column name="CAMPOA"/>
+    </property>
+    <property name="campoAcof" type="string">
+      <column name="CAMPOA_COF"/>
+    </property>
+    <property name="campoB" type="string">
+      <column name="CAMPOB"/>
+    </property>
+    <property name="contratoImx" type="string">
+      <column name="CONTRATO_IMX"/>
+    </property>
+    <property name="ctaOrigen" type="int">
+      <column name="CTA_ORIGEN"/>
+    </property>
+    <property name="cuentaOrigen" type="string">
+      <column name="CUENTA_ORIGEN"/>
+    </property>
+    <property name="depto" type="int">
+      <column name="DEPTO"/>
+    </property>
+    <property name="e102128" type="big_decimal">
+      <column name="E102128"/>
+    </property>
+    <property name="e102142" type="big_decimal">
+      <column name="E102142"/>
+    </property>
+    <property name="e103447" type="big_decimal">
+      <column name="E103447"/>
+    </property>
+    <property name="e103450" type="big_decimal">
+      <column name="E103450"/>
+    </property>
+    <property name="e103453" type="big_decimal">
+      <column name="E103453"/>
+    </property>
+    <property name="fecAA" type="int">
+      <column name="FECAA"/>
+    </property>
+    <property name="feCad" type="int">
+      <column name="FECAD"/>
+    </property>
+    <property name="feCam" type="int">
+      <column name="FECAM"/>
+    </property>
+    <property name="mensaje" type="string">
+      <column name="MENSAJE"/>
+    </property>
+    <property name="moneda" type="int">
+      <column name="MONEDA"/>
+    </property>
+    <property name="monedaCof" type="string">
+      <column name="MONEDA_COF"/>
+    </property>
+    <property name="montoAbonoOriginal" type="int">
+      <column name="MONTO_ABONO_ORIGINAL"/>
+    </property>
+    <property name="montoCargoOriginal" type="int">
+      <column name="MONTO_CARGO_ORIGINAL"/>
+    </property>
+    <property name="nomCliente" type="string">
+      <column name="NOM_CLIENTE"/>
+    </property>
+    <property name="nomClienteCof" type="string">
+      <column name="NOM_CLIENTE_COF"/>
+    </property>
+    <property name="nomCofactor" type="string">
+      <column name="NOM_COFACTOR"/>
+    </property>
+    <property name="numPol" type="int">
+      <column name="NUMPOL"/>
+    </property>
+    <property name="opCode" type="string">
+      <column name="OPCODE"/>
+    </property>
+    <property name="saldoSicav" type="big_decimal">
+      <column name="SALDO_SICAV"/>
+    </property>
+    <property name="sctaOrigen" type="int" access="field">
+      <column name="SCTA_ORIGEN"/>
+    </property>
+    <property name="ssCtaOrigen" type="int">
+      <column name="SSCTA_ORIGEN"/>
+    </property>
+    <property name="sssCtaOrigen" type="int">
+      <column name="SSSCTA_ORIGEN"/>
+    </property>
+    <property name="sucCon" type="int">
+      <column name="SUCCON"/>
+    </property>
+    <property name="atributo1" type="string">
+      <column name="ATRIBUTO1"/>
+    </property>
+    <property name="atributo2" type="string">
+      <column name="ATRIBUTO2"/>
+    </property>
+
+
+  </class>
+</hibernate-mapping>

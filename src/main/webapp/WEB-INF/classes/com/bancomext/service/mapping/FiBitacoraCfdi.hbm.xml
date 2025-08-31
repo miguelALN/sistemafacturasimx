@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/08/2015 11:57:06 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiBitacoraCfdi" schema="FACTIMX" table="FI_BITACORA_CFDI">
+    <id name="serieFolio" type="string">
+      <column name="SERIE_FOLIO"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fechaStatus" type="java.util.Date">
+      <column name="FECHA_STATUS"/>
+    </property>
+    <property name="fechaEnvioCliente" type="java.util.Date">
+      <column name="FECHA_ENVIO_CLIENTE"/>
+    </property>
+    <property name="status" type="string">
+      <column name="STATUS"/>
+    </property>
+    <property name="accion" type="string">
+      <column name="ACCION"/>
+    </property>
+    <property name="statusVerificado" type="string">
+      <column name="STATUS_VERIFICADO"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

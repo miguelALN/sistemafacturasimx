@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : historicoArchivosCFD.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Archivos para GACD</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+
+          <p:message for="btnprocesar" style="color:red; font-size:12px;text-align:justify;"/>
+          <p:outputPanel layout="block" scrollHeight="250px">
+
+            <p:panelGrid columns="3">
+              <h:outputText value="Fecha Emisión: "/>
+              <p:selectOneMenu id="fechaEmision" value="#{historicoArchivosCFD.fechaEmision}"
+                               binding="#{historicoArchivosCFD.selectfechaEmision}"
+                               partialSubmit="true">
+                <f:selectItems value="#{historicoArchivosCFD.listaFechaEmision}"/>
+              </p:selectOneMenu>
+
+              <p:commandButton id="btnprocesar" value="Procesar"
+                               action="#{historicoArchivosCFD.procesar}"
+                               update="btnDownload" />
+            </p:panelGrid>
+
+            <p:panelGrid columns="2">
+
+              <p:commandButton id="btnDownload"
+                  value="#{historicoArchivosCFD.nombreArchivo}"
+                  ajax="false"
+                  onclick="PrimeFaces.monitorDownload(start, stop);">
+                <p:fileDownload value="#{historicoArchivosCFD.resource}"/>
+              </p:commandButton>
+
+             <!-- <p:commandButton
+                  label="Exportar #{historicoArchivosCFD.nombreArchivo}"
+                  value="#{historicoArchivosCFD.nombreArchivo}"
+                  icon="../resources/img/texto.gif"
+                  ajax="false"
+                  onclick="PrimeFaces.monitorDownload(start, stop);"
+                  styleClass="color:blue; text-decoration:underline;">
+                <p:fileDownload value="#{historicoArchivosCFD.resource}"/>
+              </p:commandButton>-->
+
+            </p:panelGrid>
+          </p:outputPanel>
+          <p/>
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : clientesCarteraVencidaNEW.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+
+  <ui:include src="../menuBar.xhtml"/>
+  <script type="text/javascript">
+
+    function start() {
+      PF('statusDialog').show();
+    }
+
+    function stop() {
+      PF('statusDialog').hide();
+    }
+  </script>
+
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Exclusión Clientes Cartera Vencida</legend>
+        <p:outputPanel layout="block" id="pgResultado">
+
+            <p:message for="btnFiltro" id="btnFiltro" style="color:red; font-size:11px;"/>
+
+              <p:panelGrid columns="5">
+                <h:outputText value="Nombre Cliente"/>
+                <p:selectOneMenu value="#{clientesCarteraVencida.clienteFiltro}"
+                                 partialSubmit="true">
+                  <f:selectItems value="#{clientesCarteraVencida.listaClientes}"/>
+                </p:selectOneMenu>
+                <p:commandButton value="Filtrar"
+                                 action="#{clientesCarteraVencida.filtroCliente()}"/>
+              </p:panelGrid>
+
+              <p:panelGrid columns="2">
+
+                <h:commandButton
+                    title="Descargar archivo"
+                    image="../resources/img/excel.png"
+                    ajax="false"
+                    icone="pi pi-arrow-down"
+                    styleClass="mr-2">
+                    <p:fileDownload value="#{clientesCarteraVencida.excelResourceV}"/>
+                </h:commandButton>
+              </p:panelGrid>
+
+              <p:dataTable id="dtInfo" var="row"
+                           binding="#{clientesCarteraVencida.htmlDataTable}"
+                           value="#{clientesCarteraVencida.lst}"
+                           rows="#{clientesCarteraVencida.defaultRows}"
+                           style="position: relative; vertical-align:top"
+                           paginator="#{clientesCarteraVencida.paginatorVisible}"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                           currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                <p:column headerText="Codigo Cliente" id="column12">
+                  <p:commandLink id="editaF"
+                                 action="#{clientesCarteraVencida.muestraEdicion}"
+                                 style="color: #990033; text-decoration: underline">
+                    <h:outputText id="otEditaF"
+                                  value="#{row.id}"
+                                  style="color: #019390;text-align:center; font-style:normal; font-size:11px;"/>
+                    <f:param name="rowIndex" value="#{clientesCarteraVencida.htmlDataTable.rowIndex}"/>
+                  </p:commandLink>
+                </p:column>
+                <p:column headerText="Nombre">
+                  <h:outputText value="#{row.descripcionCliente}"
+                                style="text-align:left; font-style:normal; font-size:11px;"/>
+                </p:column>
+                <!--TODO REA review this button -->
+                <p:column headerText="Eliminar" id="column5" style="width:40px; text-align:center;">
+                  <p:commandButton actionListener="#{clientesCarteraVencida.borraGpoCorreo}"
+                                   alt="Borrar Grupo de Correo"
+                                   icon="pi pi-trash"
+                                   style="position:relative">
+                    <f:attribute name="rowIndex"
+                                 value="#{clientesCarteraVencida.htmlDataTable.rowIndex}"/>
+                  </p:commandButton>
+                </p:column>
+              </p:dataTable>
+
+              <p:outputPanel layout="block" id="pgBotones" style="height:40px;top:10px;position: relative">
+                <p:commandButton action="#{clientesCarteraVencida.openPanel}" id="btnConsulta"
+                                 style="position:relative;"
+                                 styleClass="boton" value="Agregar Cuenta"/>
+              </p:outputPanel>
+
+
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+
+      <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+          <i class="pi pi-spinner pi-spin" style="font-size:3rem"></i>
+      </p:dialog>
+
+      <!--<p:dialog draggable="false" id="ppConsulta" modal="true" rendered="true"
+                title="Consulta de Documentos" visible="#{clientesCarteraVencida.paginatorVisible}"
+                autoCentre="true">
+        <f:facet name="header">
+          <p:panelGrid id="pgdHeader" columns="1"
+                       style="display: block; height: 24px; position: relative; text-align:right; width: 100%">
+            <p:commandButton action="#{clientesCarteraVencida.closePanel}" id="closePopupBtn"
+                             alt="Cerrar" image="../resources/img/cerrar.png"
+                             style="position: relative;" value="submit" title="Cerrar"/>
+          </p:panelGrid>
+        </f:facet>
+        <f:facet name="body">
+          <p:outputPanel layout="block" id="pgFiltro" style="font-family: serif; position: relative">
+            <p:outputPanel layout="block" id="pgFFolio"
+                           style="border: 1px solid rgb(153, 153, 153); font-family: serif;left: 5px; top: 5px; position: relative">
+              <p:message for="btnModificar" id="otMsg" style="color:red; font-size:11px;"/>
+              <h:outputText id="otFFolio" style="font-family: Arial,Helvetica,sans-serif" value="Datos"/>
+              <p:panelGrid columns="2">
+                <h:outputText value="* Clave Cliente "/>
+                <p:inputNumber id="primerFolio" maxValue="9999999999" thousandSeparator="" decimalPlaces="0"
+                               value="#{clientesCarteraVencida.cliente}"/>
+
+                <h:outputText value="* Descripción: "/>
+                <h:inputText maxlength="200" style="width: 350px"
+                             value="#{clientesCarteraVencida.descripcion}"/>
+
+
+              </p:panelGrid>
+
+
+            </p:outputPanel>
+            <p:outputPanel layout="block" id="pgBtn"
+                           style="height: 60px; top: 25px; position: relative; text-align:center">
+              <p:commandButton action="#{clientesCarteraVencida.modificaGpoCorreo}" id="btnModificar"
+                               rendered="#{!clientesCarteraVencida.btnGuardar}" value="Modificar"/>
+              <p:commandButton action="#{clientesCarteraVencida.guardaGpoClientesCarteraVencida}"
+                               id="btnLimpiar"
+                               rendered="#{clientesCarteraVencida.btnGuardar}" value="Guardar"/>
+              <p:commandButton action="#{clientesCarteraVencida.closePanel}" value="Cancelar"/>
+            </p:outputPanel>
+          </p:outputPanel>
+        </f:facet>
+
+      </p:dialog>-->
+
+      <p:confirmDialog id="confirmarAgregar" autoCentre="true" acceptLabel="Aceptar"
+                       cancelLabel="Cancelar"
+                       message="¿Realmente desea Agregar?"
+                       rendered="#{clientesCarteraVencida.confirmar}" title="Confirmar"/>
+      <p:confirmDialog id="confirmarEliminar" autoCentre="true" acceptLabel="Aceptar"
+                       cancelLabel="Cancelar"
+                       message="¿Realmente desea Eliminar?"
+                       rendered="#{clientesCarteraVencida.confirmar}" title="Confirmar"/>
+      <p:confirmDialog id="confirmarModificar" autoCentre="true" acceptLabel="Aceptar"
+                       cancelLabel="Cancelar" message="¿Realmente desea Modificar?"
+                       rendered="#{clientesCarteraVencida.confirmar}" title="Confirmar"/>
+    </h:form>
+  </div>
+</h:body>
+</html>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : primerDiaHabil.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+
+      <!--<p:messages id="messages"
+                  showDetail="true"
+                  closable="true"
+                  style="max-width:900px;">
+        <p:autoUpdate/>
+      </p:messages>-->
+
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Primer D&#237;a H&#225;bil</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:outputPanel layout="block" scrollHeight="450px">
+            <p:message for="btnMensaje" id="btnMensaje" style="color:blue; font-size:11px;"/>
+            <p:message for="btnError" id="btnError" style="color:red; font-size:11px;"/>
+            <p:panelGrid columns="1">
+              <p:dataTable id="tblDiasHabiles"
+                           widgetVar="drPrimerDiaHabil"
+                           var="row"
+                           binding="#{primerDiaHabil.htmlDataTable}"
+                           value="#{primerDiaHabil.listaFechaEjecucion}"
+                           rows="#{primerDiaHabil.defaultRows}"
+                           paginator="true"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                           currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+                <p:column headerText="editar">
+
+                  <p:commandButton title="editar"
+                                   action="#{primerDiaHabil.muestraEdicion}"
+                                   icon="pi pi-pencil"
+                                   styleClass="rounded-button edit-button ui-button-outlined"
+                                   oncomplete="PF('diasHabilesDialog').show()"
+                                   process="@this"
+                                   update=":form1:diasHabiles-content"
+                                   style="height: 10px; width: 5px">
+                    <f:setPropertyActionListener value="#{row.id}"
+                                                 target="#{primerDiaHabil.id}"/>
+                    <f:setPropertyActionListener value="false"
+                                                 target="#{primerDiaHabil.saveEdit}"/>
+                  </p:commandButton>
+
+                </p:column>
+
+                <p:column headerText="id" sortBy="#{row.id}"
+                          filterBy="#{row.id}"
+                          filterMatchMode="contains"
+                          sortOrder="asc">
+                    <f:facet name="filter">
+                      <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('drPrimerDiaHabil').filter()" />
+                    </f:facet>
+                    <h:outputText value="#{row.id}" style="font-style: normal; font-size: 10px" />
+                </p:column>
+
+                <p:column headerText="Día de Operación"
+                          sortBy="#{row.fechaPrimerDia}"
+                          filterBy="#{row.fechaPrimerDia}"
+                          filterMatchMode="contains"
+                          sortOrder="asc">
+                  <f:facet name="filter">
+                    <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('drPrimerDiaHabil').filter()" />
+                  </f:facet>
+                  <h:outputText value="#{row.fechaPrimerDia}" style="font-style:normal; font-size:10px;"/>
+                </p:column>
+
+                <p:column headerText="Último Día hábil mes anterior"
+                          sortBy="#{row.fechaUltimoDia}"
+                          filterBy="#{row.fechaUltimoDia}"
+                          filterMatchMode="contains"
+                          sortOrder="asc">
+                  <f:facet name="filter">
+                    <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('drPrimerDiaHabil').filter()" />
+                  </f:facet>
+                  <h:outputText value="#{row.fechaUltimoDia}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+
+                <!--TODO REA fix this button -->
+                <p:column headerText="Eliminar" style="text-align:center">
+
+                  <p:commandButton title="Eliminar"
+                                  icon="pi pi-trash"
+                                  styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                  process="@this"
+                                  style="height: 20px; width: 15px"
+                                  onclick="PF('borrarDialog').show()">
+                   <f:setPropertyActionListener value="#{row.id}" target="#{primerDiaHabil.id}"/>
+                 </p:commandButton>
+
+                </p:column>
+
+              </p:dataTable>
+
+            </p:panelGrid>
+            <p:commandButton style="text-align:center;"
+                             value="Agregar" id="guardarPrimerDia"
+                             action="#{primerDiaHabil.muestraInsert}"
+                             oncomplete="PF('diasHabilesDialog').show()"
+                             process="@this"
+                             update=":form1:diasHabiles-content">
+              <p:resetInput target=":form1:diasHabiles-content"/>
+            </p:commandButton>
+          </p:outputPanel>
+
+          <p:confirmDialog widgetVar="borrarDialog"
+                           showEffect="fade"
+                           width="300"
+                           message="¿Desea borrar el registro?"
+                           header="Confirmar"
+                           severity="warn">
+            <p:commandButton value="Si"
+                             actionListener="#{primerDiaHabil.eliminar}"
+                             process="@this"
+                             update=":form1:tblDiasHabiles"
+                             oncomplete="PF('borrarDialog').hide()"/>
+            <p:commandButton value="No"
+                             onclick="PF('borrarDialog').hide()"
+                             styleClass="ui-button-secondary"
+                             type="button"/>
+          </p:confirmDialog>
+
+          <p:confirmDialog acceptLabel="Eliminar" cancelLabel="Cancelar" id="confirmarEliminar"
+                           message="Confirme Acción Eliminar" rendered="true"
+                           title="Eliminar Canc. de  la Provision Intereses"/>
+
+          <p:confirmDialog acceptLabel="Modificar" cancelLabel="Cancelar" id="confirmarModificacion"
+                           message="Realmente desea modificar la fecha de Ejecucion de los Procesos?"
+                           rendered="true" title="Edicion"/>
+
+          <p:dialog id="diasHabiles"
+                    modal="true"
+                    autoCentre="true"
+                    title="Alta - Edicion Primer dia Habil"
+                    widgetVar="diasHabilesDialog">
+            <p:outputPanel id="diasHabiles-content" class="ui-fluid">
+
+                <fieldset style="width:auto">
+                  <legend>Alta Fechas</legend>
+                  <br/>
+                  <p:message for="uImensajeGuardar" style="color:red; font-size:12px;text-align:justify;"/>
+                  <p:message for="uImensajeModificar" style="color:red; font-size:12px;text-align:justify;"/>
+                  <p:panelGrid columns="2">
+
+                    <h:outputText style="text-align:left;" value="Día de operación:"/>
+                    <p:inputMask id="fechaPrimerDiaStr"
+                                 value="#{primerDiaHabil.fechaPrimerDiaStr}"
+                                 mask="99/99/9999">
+                      <p:ajax event="blur"
+                              listener="#{primerDiaHabil.checkFechas()}"/>
+                    </p:inputMask>
+                    <h:outputText style="text-align:left;" value="Ultimo día habil mes anterior:"/>
+                    <p:inputMask id="fechaUltimoDiaStr"
+                                 value="#{primerDiaHabil.fechaUltimoDiaStr}"
+                                 mask="99/99/9999">
+                      <p:ajax event="blur"
+                              listener="#{primerDiaHabil.checkFechas()}"/>
+                    </p:inputMask>
+                  </p:panelGrid>
+                  <p:panelGrid columns="2">
+                    <p:commandButton value="Guardar" id="uImensajeGuardar"
+                                     action="#{primerDiaHabil.guardar}"
+                                     oncomplete="PF('diasHabilesDialog').hide()"
+                                     process="@this"
+                                     update=":form1:diasHabiles-content, :form1:tblDiasHabiles"
+                                     rendered="#{primerDiaHabil.saveEdit}"/>
+                    <p:commandButton value="Modificar"
+                                     action="#{primerDiaHabil.modificar}"
+                                     oncomplete="PF('diasHabilesDialog').hide()"
+                                     id="uImensajeModificar"
+                                     process="@this"
+                                     update=":form1:diasHabiles-content, :form1:tblDiasHabiles"
+                                     rendered="#{!primerDiaHabil.saveEdit}"/>
+                    <p:commandButton value="Cancelar" action="#{primerDiaHabil.closePanel}"
+                                     oncomplete="PF('diasHabilesDialog').hide()"/>
+                  </p:panelGrid>
+                  <p:outputPanel layout="block" style="text-align:center;">
+                    <p/>
+                    <h:outputText value="Los campos marcados con * son mandatorios"/>
+                  </p:outputPanel>
+                </fieldset>
+
+            </p:outputPanel>
+
+          </p:dialog>
+        </p:outputPanel>
+      </fieldset>
+
+
+
+    </h:form>
+  </div>
+</h:body>
+</html>

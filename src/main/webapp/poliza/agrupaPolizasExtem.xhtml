@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : agrupaPolizasExtem.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <fieldset>
+        <legend>Agrupacion Polizas Extemporaneo</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:outputPanel layout="block" scrollHeight="450px">
+            <h:outputText id="btnMensaje" value="#{agrupaPolizasExtem.btnMensaje}"
+                          style="color:blue; font-size:11px;"/>
+            <h:outputText id="btnError" value="#{agrupaPolizasExtem.btnError}"
+                          style="color:red; font-size:11px;"/>
+            <h:outputText
+                id="btnMensajeProcesar"
+                value="CIERRE #{agrupaPolizasExtem.btnMensaje}"
+                style="color:blue; font-size:11px; position:relative; left:195;"/>
+
+            <p:dataTable id="infoAgrupacionPolizasExtemporaneo" var="row"
+                         rows="#{agrupaPolizasExtem.defaultRows}"
+                         value="#{agrupaPolizasExtem.listaPolizasExtemporaneas}"
+                         columnWidths="50px,300px,300px,70px,90px"
+                         paginator="#{agrupaPolizasExtem.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Poliza">
+                <h:outputText value="#{row.poliza}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="OPCODE">
+                <h:outputText value="#{row.opCode}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Descripción">
+                <h:outputText value="#{row.descripcion}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cargo">
+                <h:outputText value="#{row.cargoFor}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+              <p:column headerText="Abono">
+                <h:outputText value="#{row.abonoFor}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+
+              <!--TODO  REA Review this button-->
+              <p:column headerText="Detalle" style="text-align:center">
+                <p:commandLink action="#{agrupaPolizasExtem.detalle}">
+                  <p:graphicImage url="../resources/img/detalle2.png" width="20" height="20"
+                                  title="Eliminar" style="border:none"/>
+                  <f:param name="opCode" value="#{row.opCode}"/>
+                  <f:param name="descripcion" value="#{row.descripcion}"/>
+                  <f:param name="poliza" value="#{row.poliza}"/>
+                </p:commandLink>
+              </p:column>
+            </p:dataTable>
+
+            <p:panelGrid columns="1">
+              <p:commandButton id="agruparPolizar" style="text-align:center;"
+                               value="Agrupar Polizas Extemporaneo"
+                               action="#{agrupaPolizasExtem.agrupaPolizas}"
+                               panelConfirmation="confirmarEjecutar"
+                               rendered="#{agrupaPolizasExtem.ejecutaExtemporaneo}"/>
+            </p:panelGrid>
+
+            <p:confirmDialog acceptLabel="Ejecutar" cancelLabel="Cancelar" id="confirmarEjecutar"
+                             message="Realmente desea ejecutar la agrupacion para el cierre #{agrupaPolizasExtem.btnMensaje}?"
+                             rendered="true" title="Ejecutar Proceso Agrupacion Polizas Extemporaneo."/>
+
+
+            <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+            <p:dialog id="ppDetallePolizas" modal="true" autoCentre="true" title="Detalle Polizas"
+                      visible="#{agrupaPolizasExtem.pagDetVisible}">
+              <f:facet name="header">
+                <p:panelGrid id="pgdHeader" columns="1"
+                             style="display: block; height: 24px; position: relative; text-align:right; width: 100%">
+                  <p:commandButton action="#{agrupaPolizasExtem.closePanel}"
+                                   id="closePopupBtn" alt="Cerrar" image="../resources/img/cerrar.png"
+                                   style="position: relative;" value="submit" title="Cerrar"/>
+                </p:panelGrid>
+              </f:facet>
+              <f:facet name="body">
+                <h:panelGroup>
+                  <fieldset style="width:auto">
+                    <legend>Detalle Polizas Extemporaneo.</legend>
+                    <br/>
+                    <p:panelGrid columns="1">
+
+                      <!--TODO  REA Review this Paginator-->
+                      <p:dataTable id="infoAgrupacionPolizasExtemporaneoDetalle" var="rowDet"
+                                   rows="#{agrupaPolizasExtem.defaultRows}"
+                                   value="#{agrupaPolizasExtem.listaPolizasExtemDetalle}"
+                                   paginator="#{agrupaPolizasExtem.paginatorDetVisible}"
+                                   paginatorPosition="bottom"
+                                   paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                                   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                        <p:column headerText="Poliza">
+                          <h:outputText value="#{rowDet.poliza}"
+                                        style="font-style:normal; font-size:10px;"/>
+                        </p:column>
+                        <p:column headerText="Cuenta Origen">
+                          <h:outputText value="#{rowDet.cuentaOrigen}"
+                                        style="font-style:normal; font-size:10px;"/>
+                        </p:column>
+                        <p:column headerText="Campo A">
+                          <h:outputText value="#{rowDet.campoA}"
+                                        style="font-style:normal; font-size:10px;"/>
+                        </p:column>
+                        <p:column headerText="Campo B">
+                          <h:outputText value="#{rowDet.campoB}"
+                                        style="font-style:normal; font-size:10px;"/>
+                        </p:column>
+                        <p:column headerText="OPCODE">
+                          <h:outputText value="#{rowDet.opCode}"
+                                        style="font-style:normal; font-size:10px;"/>
+                        </p:column>
+                        <p:column headerText="Descripción">
+                          <h:outputText value="#{rowDet.descripcion}"
+                                        style="font-style:normal; font-size:10px;"/>
+                        </p:column>
+                        <p:column headerText="Cargo">
+                          <h:outputText value="#{rowDet.cargoFor}"
+                                        style="font-style:normal; font-size:10px; text-align:right;"/>
+                        </p:column>
+                        <p:column headerText="Abono">
+                          <h:outputText value="#{rowDet.abonoFor}"
+                                        style="font-style:normal; font-size:10px; text-align:right;"/>
+                        </p:column>
+                      </p:dataTable>
+
+                    </p:panelGrid>
+                    <p:panelGrid columns="5">
+                      <p:commandButton value="Cancelar"
+                                       action="#{agrupaPolizasExtem.closePanel}"
+                                       style="position: relative; left:330px;"/>
+                    </p:panelGrid>
+                  </fieldset>
+                </h:panelGroup>
+              </f:facet>
+            </p:dialog>
+          </p:outputPanel>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

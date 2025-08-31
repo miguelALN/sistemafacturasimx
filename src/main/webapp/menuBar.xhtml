@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : menuBar.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:body id="menuBarBody">
+  <h:form id="menuBarForm">
+    <p:menubar>
+
+      <p:submenu label="Administrador" rendered="#{login.USUARIOS or login.CATROLES or login.ROLESMODULOS or
+     login.CATPARAMGENERALES or login.CATCORREOCLIENTES or login.CATCUENTASGENERACION or
+     login.CATCORREOREPORTES or login.CATCUENTASCOMPARATIVO or
+     login.PARAMEJECUCIONPROCESO or login.PARAMECODIGOOPERACIONCTA or
+     login.PARAMECOFACTOR or login.PRIMERDIAHABIL or login.AGRUPACIONPOLIZAS}">
+
+        <p:menuitem value="Usuarios"
+                    url="/sistemaFacturasiMX/admin/usuarios.xhtml"
+                    rendered="#{login.ADMINMENU and login.USUARIOS}"/>
+
+        <p:submenu label="Roles" rendered="#{login.CATROLES or login.ROLESMODULOS }">
+          <p:menuitem value="Catálogo Roles"
+                      url="/sistemaFacturasiMX/admin/catRoles.xhtml"
+                      rendered="#{login.CATROLES}"/>
+          <p:menuitem value="Módulos por Rol"
+                      url="/sistemaFacturasiMX/admin/rolesModulos.xhtml"
+                      rendered="#{login.ROLESMODULOS}"/>
+        </p:submenu>
+
+        <p:submenu label="Parámetros" rendered="#{login.CATPARAMGENERALES or login.CATCORREOCLIENTES or
+    login.CATCUENTASGENERACION or login.CATCORREOREPORTES or login.CATCUENTASCOMPARATIVO }">
+
+          <p:submenu label="CFDI"
+                     rendered="#{login.CATPARAMGENERALES or login.CATCORREOCLIENTES or login.CATCUENTASGENERACION}">
+            <p:menuitem value="Parámetros Generales"
+                        url="/sistemaFacturasiMX/admin/catParamGenerales.xhtml"
+                        rendered="#{login.CATPARAMGENERALES}"/>
+            <p:menuitem value="Correos por Cliente"
+                        url="/sistemaFacturasiMX/admin/catCorreoClientes.xhtml"
+                        rendered="#{login.CATCORREOCLIENTES}"/>
+            <p:menuitem value="Cuentas para Conciliación"
+                        url="/sistemaFacturasiMX/admin/configCuentasGeneracion.xhtml"
+                        rendered="#{login.CATCUENTASGENERACION}"/>
+          </p:submenu>
+
+          <p:submenu label="Reportes" rendered="#{login.CATCORREOREPORTES or login.CATCUENTASCOMPARATIVO}">
+            <p:menuitem value="Correos por Reporte"
+                        url="/sistemaFacturasiMX/admin/catCorreoReportes.xhtml"
+                        rendered="#{login.CATCORREOREPORTES}"/>
+            <p:menuitem value="Cuentas de Colocación"
+                        url="/sistemaFacturasiMX/admin/configCuentasSicavFIU.xhtml"
+                        rendered="#{login.CATCUENTASCOMPARATIVO}"/>
+          </p:submenu>
+
+          <p:submenu label="Cierre Mensual"
+                     rendered="#{login.PARAMEJECUCIONPROCESO or login.PARAMECODIGOOPERACIONCTA or
+         login.PARAMECOFACTOR or login.PRIMERDIAHABIL or login.AGRUPACIONPOLIZAS}">
+            <p:menuitem value="Ejecución del Proceso"
+                        url="/sistemaFacturasiMX/param/ejecucionProceso.xhtml"
+                        rendered="#{login.PARAMEJECUCIONPROCESO}"/>
+            <p:menuitem value="Codigo de Operación y Cuentas"
+                        url="/sistemaFacturasiMX/param/codigoOperacionYCuentas.xhtml"
+                        rendered="#{login.PARAMECODIGOOPERACIONCTA}"/>
+            <p:menuitem value="Cofactor (Campo B)"
+                        url="/sistemaFacturasiMX/param/cofactor.xhtml"
+                        rendered="#{login.PARAMECOFACTOR}"/>
+            <p:menuitem value="Primer Día Hábil"
+                        url="/sistemaFacturasiMX/primerdia/primerDiaHabil.xhtml"
+                        rendered="#{login.PRIMERDIAHABIL}"/>
+            <p:menuitem value="Agrupación Polizas Diario"
+                        url="/sistemaFacturasiMX/poliza/agrupacionPolizas.xhtml"
+                        rendered="#{login.AGRUPACIONPOLIZAS}"/>
+          </p:submenu>
+
+        </p:submenu>
+
+      </p:submenu>
+
+      <p:submenu label="Procesos CFDI"
+                 rendered="#{login.PROCESOFACTORAJE or login.PROCESOCANCELACION or login.PRUEBASFTP or
+     login.PROCESORESUMENFACTURACION or login.PROCESORESUMENFACTURACIONPRIMECOM or
+     login.HISTORICOARCHIVOSCFD or login.CARGAFACTURAS or login.VERIFICAPROCESOCFDI or
+     login.FACTURASYEDOSDECTA or login.CIFRASTOTALES or login.CLIENTESCARTERAVENCIDA or
+     login.RESUMENFACTURACIONPORCLIENTE or login.BITACORADEACCIONES}">
+        <p:menuitem value="Proceso Manual CFDI"
+                    url="/sistemaFacturasiMX/oper/procFactoraje.xhtml"
+                    rendered="#{login.PROCESOFACTORAJE}"/>
+        <p:menuitem value="Proceso Manual Cancelación CFDI"
+                    url="/sistemaFacturasiMX/oper/procCancelacion.xhtml"
+                    rendered="#{login.PROCESOCANCELACION}"/>
+        <p:menuitem value="Envío Manual CFDI"
+                    url="/sistemaFacturasiMX/envio/envioManualFacturas.xhtml"
+                    rendered="#{login.PRUEBASFTP}"/>
+        <p:menuitem value="Resumen Facturación iMX"
+                    url="/sistemaFacturasiMX/oper/procResumenFacturacion.xhtml"
+                    rendered="#{login.PROCESORESUMENFACTURACION}"/>
+        <p:menuitem value="Resumen Facturación Prime"
+                    url="/sistemaFacturasiMX/oper/procResumenFacturaPrime.xhtml"
+                    rendered="#{login.PROCESORESUMENFACTURACIONPRIMECOM}"/>
+        <p:menuitem value="Archivos para GACD"
+                    url="/sistemaFacturasiMX/oper/historicoArchivosCFD.xhtml"
+                    rendered="#{login.HISTORICOARCHIVOSCFD}"/>
+        <p:menuitem value="Envío Correos para CFDI"
+                    url="/sistemaFacturasiMX/oper/cargaFacturas.xhtml"
+                    rendered="#{login.CARGAFACTURAS}"/>
+
+        <!-- MENU PARA CIFRAS CONTROL Y SEGUIMIENTO DE ESTATUS DE FACTURAS -->
+        <p:submenu label="Control y Seguimiento"
+                   rendered="#{login.VERIFICAPROCESOCFDI or login.FACTURASYEDOSDECTA or
+      login.CIFRASTOTALES or login.CLIENTESCARTERAVENCIDA}">
+          <p:menuitem value="Cifras Control iMX"
+                      url="/sistemaFacturasiMX/reportes/verificacionProcesosCFD.xhtml"
+                      rendered="#{login.VERIFICAPROCESOCFDI}"/>
+          <p:menuitem value="Seguimiento Estatus Facturas"
+                      url="/sistemaFacturasiMX/reportes/seguimientoFacturas.xhtml"
+                      rendered="#{login.FACTURASYEDOSDECTA}"/>
+          <p:menuitem value="Cifras Totales"
+                      url="/sistemaFacturasiMX/reportes/cifrasTotalesEstatusFactu.xhtml"
+                      rendered="#{login.CIFRASTOTALES}"/>
+          <p:menuitem value="Exclusión Clientes Cartera Vencida"
+                      url="/sistemaFacturasiMX/reportes/clientesCarteraVencida.xhtml"
+                      rendered="#{login.CLIENTESCARTERAVENCIDA}"/>
+        </p:submenu>
+
+        <!-- MENU PARA REPORTES DE RESUMEN DE FACTURACION POR CLIENTE -->
+        <p:submenu label="Reportes" rendered="#{login.RESUMENFACTURACIONPORCLIENTE or login.BITACORADEACCIONES }">
+          <p:menuitem value="Resumen Facturación por Cliente"
+                      url="/sistemaFacturasiMX/proc/resumenFacturacionPorCliente.xhtml"
+                      rendered="#{login.RESUMENFACTURACIONPORCLIENTE}"/>
+          <p:menuitem value="Bitácora de Acciones"
+                      url="/sistemaFacturasiMX/proc/bitacoraAcciones.xhtml"
+                      rendered="#{login.BITACORADEACCIONES}"/>
+        </p:submenu>
+      </p:submenu>
+
+      <p:submenu label="Reportes" rendered="#{login.REPORTECOMPARATIVO or login.REPORTESALDOSFIU}">
+        <p:menuitem value="Reporte Comparativo Contable"
+                    url="/sistemaFacturasiMX/reportes/reporteComparativo.xhtml"
+                    rendered="#{login.REPORTECOMPARATIVO}"/>
+        <p:menuitem value="Reporte de Financiamiento (FIU)"
+                    url="/sistemaFacturasiMX/reportes/reporteSaldosFIU.xhtml"
+                    rendered="#{login.REPORTESALDOSFIU}"/>
+      </p:submenu>
+
+      <p:submenu label="Cierre Mensual"
+                 rendered="#{login.PROCESOMANCANCELACIONPROVINTERESES or login.PROCESOMANCAPITALIZACIONINTERESES or
+     login.PROCESOMANRECLASIFICARSALDONEGATIVO or login.PROCESOMANRESTAURARSALDONEGATIVO  or
+     login.PROCESOMANCLASIFICACIONDECOFACTOR or login.BITACORACANCELACIONPROVINTERESES or
+     login.BITACORACAPITALIZACIONINTERESES or login.BITACORARECLASIFICARSALDONEGATIVO or
+     login.BITACORARESTAURARSALDONEGATIVO or login.BITACORACLASIFICACIONDECOFACTOR or
+     login.AGRUPACIONPOLIZASEXTEMPORANEO or login.BITACORAAGRUPACIONPOLIZAS}">
+
+        <p:submenu label="Procesos Manuales"
+                   rendered="#{login.PROCESOMANCANCELACIONPROVINTERESES or login.PROCESOMANCAPITALIZACIONINTERESES or
+      login.PROCESOMANRECLASIFICARSALDONEGATIVO or login.PROCESOMANRESTAURARSALDONEGATIVO  or
+      login.PROCESOMANCLASIFICACIONDECOFACTOR}">
+          <p:menuitem value="Cancelación Provisión de Intereses"
+                      url="/sistemaFacturasiMX/pm/cancelProvisionInteres.xhtml"
+                      rendered="#{login.PROCESOMANCANCELACIONPROVINTERESES}"/>
+          <p:menuitem value="Capitalización Intereses"
+                      url="/sistemaFacturasiMX/pm/capitalizacionInteres.xhtml"
+                      rendered="#{login.PROCESOMANCAPITALIZACIONINTERESES}"/>
+          <p:submenu label="Reclasificar Saldo Negativo"
+                     rendered="#{login.PROCESOMANRECLASIFICARSALDONEGATIVO or login.PROCESOMANRESTAURARSALDONEGATIVO}">
+            <p:menuitem value="Reclasificar Saldo"
+                        url="/sistemaFacturasiMX/pm/reclasificarSaldoNeg.xhtml"
+                        rendered="#{login.PROCESOMANRECLASIFICARSALDONEGATIVO}"/>
+            <p:menuitem value="Restaurar Saldo"
+                        url="/sistemaFacturasiMX/pm/restaurarSaldoNeg.xhtml"
+                        rendered="#{login.PROCESOMANRESTAURARSALDONEGATIVO}"/>
+          </p:submenu>
+          <p:menuitem value="Clasificación de Cofactor"
+                      url="/sistemaFacturasiMX/pm/clasificacionCofactor.xhtml"
+                      rendered="#{login.PROCESOMANCLASIFICACIONDECOFACTOR}"/>
+        </p:submenu>
+
+        <p:submenu label="Reportes (Bitácoras)"
+                   rendered="#{login.BITACORACANCELACIONPROVINTERESES or login.BITACORACAPITALIZACIONINTERESES or
+       login.BITACORARECLASIFICARSALDONEGATIVO or login.BITACORARESTAURARSALDONEGATIVO or
+       login.BITACORACLASIFICACIONDECOFACTOR}">
+          <p:menuitem value="Cancelación Provisión de Intereses"
+                      url="/sistemaFacturasiMX/bitacoras/bitCancelProvisionInteres.xhtml"
+                      rendered="#{login.BITACORACANCELACIONPROVINTERESES}"/>
+          <p:menuitem value="Capitalización Intereses"
+                      url="/sistemaFacturasiMX/bitacoras/bitCapitalizacionInteres.xhtml"
+                      rendered="#{login.BITACORACAPITALIZACIONINTERESES}"/>
+
+          <p:submenu label="Reclasificar Saldo Negativo"
+                     rendered="#{login.BITACORARECLASIFICARSALDONEGATIVO or login.BITACORARESTAURARSALDONEGATIVO}">
+            <p:menuitem value="Reclasificar Saldo"
+                        url="/sistemaFacturasiMX/bitacoras/bitReclasificarSaldoNeg.xhtml"
+                        rendered="#{login.BITACORARECLASIFICARSALDONEGATIVO}"/>
+            <p:menuitem value="Restaurar Saldo"
+                        url="/sistemaFacturasiMX/bitacoras/bitRestaurarSaldoNeg.xhtml"
+                        rendered="#{login.BITACORARESTAURARSALDONEGATIVO}"/>
+          </p:submenu>
+
+          <p:menuitem value="Clasificación de Cofactor"
+                      url="/sistemaFacturasiMX/bitacoras/bitClasificacionCofactor.xhtml"
+                      rendered="#{login.BITACORACLASIFICACIONDECOFACTOR}"/>
+        </p:submenu>
+
+        <p:submenu label="Agrupación Polizas"
+                   rendered="#{login.AGRUPACIONPOLIZASEXTEMPORANEO or login.BITACORAAGRUPACIONPOLIZAS}">
+          <p:menuitem value="Agrupación Pólizas Extemporáneo"
+                      url="/sistemaFacturasiMX/poliza/agrupaPolizasExtem.xhtml"
+                      rendered="#{login.AGRUPACIONPOLIZASEXTEMPORANEO}"/>
+          <p:menuitem value="Bitácora Agrupación Pólizas"
+                      url="/sistemaFacturasiMX/poliza/bitAgrupaPolizasExtem.xhtml"
+                      rendered="#{login.BITACORAAGRUPACIONPOLIZAS}"/>
+        </p:submenu>
+
+      </p:submenu>
+
+      <p:menuitem value="Salir" actionListener="#{login.logout}"/>
+    </p:menubar>
+  </h:form>
+</h:body>
+</html>

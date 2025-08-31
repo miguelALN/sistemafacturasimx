@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : ejecucionProceso.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+
+    <h:form id="form1">
+
+      <p:messages id="messages"
+                  showDetail="true"
+                  closable="true"
+                  style="max-width:900px;">
+        <p:autoUpdate/>
+      </p:messages>
+
+      <fieldset>
+        <legend>Ejecucion del Proceso</legend>
+
+        <p:outputPanel id="pgInfo"
+                       style="max-width:1080px;">
+
+            <div class="card">
+
+              <p:panelGrid id="pnlProceso"
+                           columns="2"
+                           layout="grid">
+
+                <p:panelGrid id="procesoTime" columns="2" layout="grid">
+                    <p:outputLabel for="horaProceso" value="Hora Ejecucion Proceso info."
+                                   style="font-style:normal; font-size:13px; font-weight:bold;"/>
+                    <h:inputText id="horaProceso"
+                                 value="#{ejecucionProceso.horaProceso}"
+                                 maxlength="5"
+                                 size="5">
+                      <p:ajax event="blur" listener="#{ejecucionProceso.checkUncheckOption}"/>
+                    </h:inputText>
+                </p:panelGrid>
+
+                <br></br>
+
+                <p:panelGrid columns="3" layout="grid">
+                    <p:outputLabel value="Proceso"
+                                     style="font-style:normal; font-size:12px; font-weight:bold;"/>
+                    <p:outputLabel value="Manual"
+                                     style="font-style:normal; font-size:12px; font-weight:bold;"/>
+                    <p:outputLabel value="Automatico"
+                                     style="font-style:normal; font-size:12px; font-weight:bold;"/>
+                </p:panelGrid>
+
+                <br></br>
+
+                <p:panelGrid columns="3" layout="grid">
+                  <h:outputText value="Cancelaci&#243;n de la provisi&#243;n de intereses"
+                                style="font-style:normal; font-size:10px;"/>
+                  <p:selectBooleanCheckbox id="checkBoxFlag"
+                                           value="#{ejecucionProceso.checkBoxFlag}"
+                                           valueChangeListener="#{ejecucionProceso.isDisabled}"
+                                           update=":form1:horaProceso">
+                   <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                  <p:selectBooleanCheckbox id="checkBoxFlag1"
+                                           value="#{ejecucionProceso.checkBoxFlag1}"
+                                           valueChangeListener="#{ejecucionProceso.isDisabled}"
+                                           update=":form1:horaProceso">
+                   <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                  <p:message for="checkBoxFlag"
+                             id="msgcheckBoxFlag"
+                             display="text"/>
+                  <p:message for="checkBoxFlag1"
+                             id="msgcheckBoxFlag1"
+                             display="text"/>
+                </p:panelGrid>
+
+                <br></br>
+
+                <p:panelGrid columns="3" layout="grid">
+                  <h:outputText value="Capitalizaci&#243;n de Intereses"
+                                style="font-style:normal; font-size:10px;"/>
+                  <p:selectBooleanCheckbox id="headerSelect2"
+                                           value="#{ejecucionProceso.checkBoxFlag2}">
+                    <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                  <p:selectBooleanCheckbox id="headerSelect3"
+                                           value="#{ejecucionProceso.checkBoxFlag3}"
+                                           valueChangeListener="#{ejecucionProceso.isDisabled}">
+                    <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                </p:panelGrid>
+
+                <br></br>
+
+                <p:panelGrid columns="3" layout="grid">
+                  <h:outputText value="Reclasificar saldo negativo"
+                                style="font-style:normal; font-size:12px; font-weight:bold;"/>
+                </p:panelGrid>
+
+                <br></br>
+
+                <p:panelGrid columns="3" layout="grid">
+                  <h:outputText value=" -> Reclasificar Saldo"
+                                style="font-style:normal; font-size:10px;"/>
+                  <p:selectBooleanCheckbox id="headerSelect4"
+                                           value="#{ejecucionProceso.checkBoxFlag4}">
+                    <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                  <p:selectBooleanCheckbox id="headerSelect5"
+                                           value="#{ejecucionProceso.checkBoxFlag5}"
+                                           valueChangeListener="#{ejecucionProceso.isDisabled}">
+                    <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                </p:panelGrid>
+
+                <br></br>
+
+                <p:panelGrid columns="3" layout="grid">
+                  <h:outputText value=" -> Restaurar Saldo"
+                                style="font-style:normal; font-size:10px;"/>
+                  <p:selectBooleanCheckbox id="headerSelect6"
+                                           value="#{ejecucionProceso.checkBoxFlag6}">
+                    <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                  <p:selectBooleanCheckbox id="headerSelect7"
+                                           value="#{ejecucionProceso.checkBoxFlag7}"
+                                           valueChangeListener="#{ejecucionProceso.isDisabled}">
+                    <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                </p:panelGrid>
+
+                <br></br>
+
+                <p:panelGrid columns="3" layout="grid">
+                  <h:outputText value="Clasificaci&#243;n de Cofactor"
+                                style="font-style:normal; font-size:10px;"/>
+                  <p:selectBooleanCheckbox id="headerSelect8"
+                                           value="#{ejecucionProceso.checkBoxFlag8}">
+                    <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                  <p:selectBooleanCheckbox id="headerSelect9"
+                                           value="#{ejecucionProceso.checkBoxFlag9}"
+                                           valueChangeListener="#{ejecucionProceso.isDisabled}">
+                    <p:ajax listener="#{ejecucionProceso.checkUncheckOption}"/>
+                  </p:selectBooleanCheckbox>
+                </p:panelGrid>
+
+                <br></br>
+
+                <div style="text-align: -webkit-center; padding: 15px;">
+                  <p:commandButton value="Guardar"
+                                   id="btnGuardado"
+                                   action="#{ejecucionProceso.ejecucionProceso}"
+                                   process="@this"
+                                   update="@this"/>
+
+                </div>
+              </p:panelGrid>
+
+            </div>
+
+        </p:outputPanel>
+
+      </fieldset>
+    </h:form>
+
+  </div>
+</h:body>
+</html>

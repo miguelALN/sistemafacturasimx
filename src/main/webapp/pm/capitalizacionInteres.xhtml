@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : capitalizacionInteres.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<f:metadata>
+  <f:event type="preRenderView" listener="#{capitalizacionInteres.init}" />
+</f:metadata>
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Proceso Manual Capitalizacion Intereses</legend>
+        <h:panelGroup id="pgInfo">
+          <h:panelGroup scrollHeight="500px">
+            <p:message for="btnProcedimiento" id="btnProcedimiento" style="color:blue; font-size:11px;"/>
+            <p:message for="btnErrorProc" id="btnErrorProc" style="color:red; font-size:11px;"/>
+            <p:message for="btnActualiza" id="btnActualiza" style="color:blue; font-size:11px;"/>
+            <p:message for="btnAgregar" id="btnAgregar" style="color:blue; font-size:11px;"/>
+            <p:message for="btnElimina" id="btnElimina" style="color:red; font-size:11px;"/>
+            <p:dataTable id="infoProcesoCapitalizacion" var="row"
+                         value="#{capitalizacionInteres.listaCapitalizacion}"
+                         rows="#{capitalizacionInteres.defaultRows}"
+                         columnWidths="60px,350px,80px,60px,65px,65px,65px,65px,65px,50px,65px"
+                         paginator="#{capitalizacionInteres.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+              <p:column headerText="Campo A"
+                        sortBy="#{row.campoA}"
+                        filterBy="#{row.campoA}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+              <h:outputText value="#{row.campoA}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Nombre Cliente"
+                        sortBy="#{row.nomCliente}"
+                        filterBy="#{row.nomCliente}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.nomCliente}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta Extemporáneo"
+                        sortBy="#{row.cuentaOrigen}"
+                        filterBy="#{row.cuentaOrigen}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cuentaOrigen}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Extemporáneo"
+                        sortBy="#{row.montoOriFor}"
+                        filterBy="#{row.montoOriFor}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.montoOriFor}"
+                              style="font-style:normal; font-size:10px; text-align: right;"/>
+              </p:column>
+              <p:column headerText="Moneda"
+                        sortBy="#{row.desMon}"
+                        filterBy="#{row.desMon}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.desMon}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta Destino"
+                        sortBy="#{row.cuentaDestino}"
+                        filterBy="#{row.cuentaDestino}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cuentaDestino}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta Sustitución"
+                        sortBy="#{row.cuentaSust1}"
+                        filterBy="#{row.cuentaSust1}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cuentaSust1}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Cuenta Sustitución"
+                        sortBy="#{row.montoSusFor}"
+                        filterBy="#{row.montoSusFor}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.montoSusFor}"
+                              style="font-style:normal; font-size:10px; text-align: right;"/>
+              </p:column>
+              <p:column headerText="Cuenta Sustitución"
+                        sortBy="#{row.cuentaSust2}"
+                        filterBy="#{row.cuentaSust2}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cuentaSust2}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Cuenta Sustitución"
+                        sortBy="#{row.montoSust2For}"
+                        filterBy="#{row.montoSust2For}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.montoSust2For}"
+                              style="font-style:normal; font-size:10px; text-align: right;"/>
+              </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog id="confirmarEli"
+                             title="Eliminar Canc. de  la Provision Intereses"
+                             acceptLabel="Eliminar"
+                             cancelLabel="Cancelar"
+                             message="Confirme Acción Eliminar"
+                             rendered="true"/>
+            <h:panelGrid>
+              <p:dataTable var="rowSM"
+                           value="#{capitalizacionInteres.listaSaldoMoneda}">
+                <p:column headerText="Monto Moneda">
+                  <h:outputText value="#{rowSM.saldoMoneda}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+                <p:column headerText="Descripción">
+                  <h:outputText value="#{rowSM.descripcion}" style="font-style:normal; font-size:10px;"/>
+                </p:column>
+              </p:dataTable>
+            </h:panelGrid>
+
+            <h:panelGrid>
+              <p:commandButton value="Ejecutar"
+                               action="#{capitalizacionInteres.actualizaExtemporaneas}"
+                               panelConfirmation="confirmarProceso"
+                               style="position: relative; left: 20%;"/>
+            </h:panelGrid>
+            <p:confirmDialog id="confirmarProceso"
+                             acceptLabel="Ejecutar"
+                             cancelLabel="Cancelar"
+                             message="Confirme la ejecucion del proceso"
+                             rendered="true"
+                             title="Ejecutar proceso SSivac Extemporaneo"/>
+
+            <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+            <p:dialog id="ppCapitalizacion" modal="true" autoCentre="true" title="Parametrizacion"
+                      visible="#{capitalizacionInteres.procCanCapInt}">
+              <f:facet name="header">
+                <h:panelGrid id="pgCapitalizacion" columns="1"
+                             style="display: block; height: 24px; position: relative; text-align: right; width: 100%">
+                  <p:commandButton action="#{capitalizacionInteres.closePanel}"
+                                   id="closePopupBtn" alt="Cerrar" image="../resources/img/cerrar.png"
+                                   style="position: relative;" value="submit" title="Cerrar"/>
+                </h:panelGrid>
+              </f:facet>
+              <f:facet name="body">
+                <h:panelGroup>
+                  <fieldset style="width:auto">
+                    <legend>Ajuste Cuentas Capitalizacion</legend>
+                    <br/>
+                    <p:message for="btnErrorAgregar" style="color:red; font-size:12px;text-align:justify;"/>
+                    <h:panelGrid columns="2">
+
+                      <h:outputText value="* CAMPO A"/>
+                      <h:inputText maxlength="8" value="#{capitalizacionInteres.campoA}"
+                                   rendered="#{!capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="8" value="#{capitalizacionInteres.campoA}"
+                                   rendered="#{capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* NOMBRE CLIENTE"/>
+                      <h:inputText maxlength="250"
+                                   value="#{capitalizacionInteres.nomCliente}"
+                                   rendered="#{!capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="250"
+                                   value="#{capitalizacionInteres.nomCliente}"
+                                   rendered="#{capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* CUENTA ORIGEN"/>
+                      <h:inputText maxlength="25"
+                                   value="#{capitalizacionInteres.cuentaOrigen}"
+                                   rendered="#{!capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="25"
+                                   value="#{capitalizacionInteres.cuentaOrigen}"
+                                   rendered="#{capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* MONTO ORIGEN"/>
+                      <h:inputText maxlength="21"
+                                   value="#{capitalizacionInteres.montoOrigen}"/>
+
+                      <h:outputText value="* CUENTA DESTINO"/>
+                      <h:inputText maxlength="25"
+                                   value="#{capitalizacionInteres.cuentaDestino}"
+                                   rendered="#{!capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="25"
+                                   value="#{capitalizacionInteres.cuentaDestino}"
+                                   rendered="#{capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* MONTO DESTINO"/>
+                      <h:inputText maxlength="21"
+                                   value="#{capitalizacionInteres.montoDestino}"
+                                   rendered="#{!capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="21"
+                                   value="#{capitalizacionInteres.montoDestino}"
+                                   rendered="#{capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* CUENTA SUSTITUCION"/>
+                      <h:inputText maxlength="25"
+                                   value="#{capitalizacionInteres.cuentaSust1}"
+                                   rendered="#{!capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="25"
+                                   value="#{capitalizacionInteres.cuentaSust1}"
+                                   rendered="#{capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* MONTO SUSTITUCION"/>
+                      <h:inputText maxlength="21"
+                                   value="#{capitalizacionInteres.montoSust1}"
+                                   rendered="#{!capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="21"
+                                   value="#{capitalizacionInteres.montoSust1}"
+                                   rendered="#{capitalizacionInteres.btnUpdateSaveInt}"
+                                   disabled="false"/>
+
+                    </h:panelGrid>
+                    <h:panelGrid columns="5">
+                      <p:commandButton id="btnErrorAgregar" value="Guardar"
+                                       action="#{capitalizacionInteres.agregarAjuste}"
+                                       rendered="#{capitalizacionInteres.btnUpdateSaveInt}"/>
+                      <p:commandButton value="Modificar"
+                                       action="#{capitalizacionInteres.modificaAjuste}"
+                                       rendered="#{!capitalizacionInteres.btnUpdateSaveInt}"/>
+                      <p:commandButton value="Cancelar"
+                                       action="#{capitalizacionInteres.closePanel}"/>
+
+                    </h:panelGrid>
+                    <h:panelGroup style="text-align:center;">
+                      <p/>
+                      <h:outputText value="Los campos marcados con * son mandatorios"/>
+                    </h:panelGroup>
+                  </fieldset>
+                </h:panelGroup>
+              </f:facet>
+            </p:dialog>
+
+
+          </h:panelGroup>
+        </h:panelGroup>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>
+    
+
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 27/11/2013 04:39:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiLogErrores" schema="FACTIMX" table="FI_LOG_ERRORES">
+    <id name="idLog" type="short">
+      <column name="ID_LOG" precision="3" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fechaCreacion" type="date">
+      <column length="7" name="FECHA_CREACION" not-null="true"/>
+    </property>
+    <property name="usuarioProceso" type="string">
+      <column length="100" name="USUARIO_PROCESO" not-null="true"/>
+    </property>
+    <property name="modulo" type="string">
+      <column length="100" name="MODULO" not-null="true"/>
+    </property>
+    <property name="proceso" type="string">
+      <column length="100" name="PROCESO" not-null="true"/>
+    </property>
+    <property name="stacktrace" type="string">
+      <column length="2000" name="STACKTRACE"/>
+    </property>
+    <property name="mensaje" type="string">
+      <column length="600" name="MENSAJE" not-null="true"/>
+    </property>
+    <property name="adicionadoPor" type="string">
+      <column length="30" name="ADICIONADO_POR"/>
+    </property>
+    <property name="fechaAdicion" type="date">
+      <column length="7" name="FECHA_ADICION"/>
+    </property>
+    <property name="modificadoPor" type="string">
+      <column length="30" name="MODIFICADO_POR"/>
+    </property>
+    <property name="fechaModificacion" type="date">
+      <column length="7" name="FECHA_MODIFICACION"/>
+    </property>
+  </class>
+</hibernate-mapping>

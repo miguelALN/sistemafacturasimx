@@ -1,0 +1,1253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : codigoOperacionYCuentas.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Codigo de Operaci&#243;n y Cuentas</legend>
+        <p:outputPanel layout="block" id="pgResultado">
+
+          <p:outputPanel layout="block" id="pgInfo">
+
+            <p:outputPanel layout="block" scrollHeight="500px">
+
+              <p:message for="btnMensaje" id="btnMensaje" style="color:blue; font-size:11px;"/>
+              <p:message for="btnError" id="btnError" style="color:blue; font-size:11px;"/>
+              <p:tabView width="560px" height="800" id="panelTabSet1" tabPlacement="Top"
+                         partialSubmit="true">
+
+                <p:tab id="panelTab1" title="Cancelaci&#243;n de la Provisi&#243;n de Intereses"
+                       style="position:relative; top:-100px;">
+                  <!-- VENTANA PRINCIPAL DE CANCELACION DE LA PROVISION DE LA CANCELACION -->
+
+                  <p:dataTable id="dtInfo"
+                               var="row"
+                               rows="#{parCancelProvisionInteres.defaultRows}"
+                               binding="#{parCancelProvisionInteres.htmlDataTable}"
+                               value="#{parCancelProvisionInteres.listaCancelacionProvision}"
+                               style="position: relative;"
+                               paginator="#{parCancelProvisionInteres.paginatorVisible}"
+                               paginatorPosition="bottom"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                               currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                    <p:columnGroup type="header">
+                      <p:row>
+                        <p:column headerText="Codigo" colspan="2" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuenta de Origen" colspan="4" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuenta de Cargo" colspan="4" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuenta de Abono" colspan="5" style="font-style:normal; font-size:13px;"/>
+                      </p:row>
+                      <p:row>
+                        <p:column headerText="Editar"/>
+                        <p:column headerText="OPCODE"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="Eliminar"/>
+                      </p:row>
+                    </p:columnGroup>
+
+                    <p:column>
+                        <p:commandButton title="Editar"
+                                         action="#{parCancelProvisionInteres.muestraEdicion}"
+                                         icon="pi pi-pencil"
+                                         styleClass="rounded-button edit-button ui-button-outlined"
+                                         oncomplete="PF('cancelacionDialog').show()"
+                                         process="@this"
+                                         update=":form1:panelTabSet1:eliminar-cancelacion-content"
+                                         style="height: 10px; width: 5px;">
+                          <f:setPropertyActionListener value="#{parCancelProvisionInteres.htmlDataTable.rowIndex}"
+                                                       target="#{parCancelProvisionInteres.rowIndex}"/>
+                          <f:setPropertyActionListener value="true"
+                                                       target="#{parCancelProvisionInteres.editar}"/>
+                        </p:commandButton>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.opCode}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.ctaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.sctaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.ssCtaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.sssCtaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.ctaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.sctaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.ssCtaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.sssCtaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.ctaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.sctaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.ssCtaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <h:outputText value="#{row.sssCtaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column>
+                      <p:commandButton title="Eliminar"
+                                       icon="pi pi-trash"
+                                       styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                       process="@this"
+                                       style="height: 20px; width: 15px"
+                                       onclick="PF('eliminarDialog').show()">
+                        <f:setPropertyActionListener value="#{row.id}" target="#{parCancelProvisionInteres.id}"/>
+                      </p:commandButton>
+                    </p:column>
+                  </p:dataTable>
+
+                  <p:panelGrid columns="1">
+                      <p:commandButton value="Agregar"
+                                       action="#{parCancelProvisionInteres.agregarCancelacion}"
+                                       oncomplete="PF('cancelacionDialog').show()"
+                                       process="@this"
+                                       update=":form1:panelTabSet1:eliminar-cancelacion-content">
+                        <p:resetInput target=":form1:panelTabSet1:eliminar-cancelacion-content"/>
+                      </p:commandButton>
+                  </p:panelGrid>
+
+                  <p:confirmDialog widgetVar="eliminarDialog"
+                                   showEffect="fade"
+                                   width="300"
+                                   message="¿Desea borrar el registro?"
+                                   header="Confirmar"
+                                   severity="warn">
+                    <p:commandButton value="Si"
+                                     actionListener="#{parCancelProvisionInteres.eliminarCancelacion}"
+                                     process="@this"
+                                     oncomplete="PF('eliminarDialog').hide()"
+                                     update="dtInfo"/>
+                    <p:commandButton value="No"
+                                     onclick="PF('eliminarDialog').hide()"
+                                     styleClass="ui-button-secondary"
+                                     type="button"/>
+                  </p:confirmDialog>
+
+                  <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+
+                  <p:dialog modal="true"
+                            showEffect="fade"
+                            title="Parametrizacion"
+                            widgetVar="cancelacionDialog">
+
+                    <p:outputPanel id="eliminar-cancelacion-content" class="ui-fluid">
+
+                      <fieldset style="width:auto">
+                        <legend>Alta Cancelaci&#243;n de la Provisi&#243;n de Interesesss.</legend>
+                        <p:card style="width:600px;">
+
+                          <p:outputPanel id="msgGuardar">
+                            <p:message for="uImensajeGuardar"
+                                     style="color:red; font-size:12px;text-align:justify;"/>
+                          </p:outputPanel>
+                          <p:outputPanel id="msgModificar">
+                            <p:message for="uImensajeModificar"
+                                     style="color:red; font-size:12px;text-align:justify;"/>
+                          </p:outputPanel>
+
+                          <p:panelGrid columns="3" style="margin-top:-25px;">
+
+                            <p:outputLabel for="opCode" value="CODIGO OPERACI&#211;N" style="width: 100px"/>
+                            <h:inputText id="opCode"
+                                         maxlength="25"
+                                         style="width: 100px"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.opCode}"
+                                         required="true">
+                            </h:inputText>
+                            <p:message for="opCode" style="height:30px"/>
+
+                            <p:outputLabel for="ctaOrigen" value="CUENTA ORIGEN" style="width: 100px"/>
+                            <h:inputText id="ctaOrigen"
+                                         maxlength="4"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.ctaOrigen}">
+                            </h:inputText>
+                            <p:message for="ctaOrigen" style="height:30px"/>
+
+                            <p:outputLabel for="sctaOrigen" value="SUB-CUENTA ORIGEN" style="width: 100px"/>
+                            <h:inputText id="sctaOrigen"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.sctaOrigen}">
+                            </h:inputText>
+                            <p:message for="sctaOrigen" style="height:30px"/>
+
+                            <p:outputLabel for="ssCtaOrigen" value="SUB-CUENTA ORIGEN" style="width: 100px"/>
+                            <h:inputText id="ssCtaOrigen"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.ssCtaOrigen}">
+                            </h:inputText>
+                            <p:message for="ssCtaOrigen" style="height:30px"/>
+
+                            <p:outputLabel for="sssCtaOrigen" value="SSS-CUENTA ORIGEN" style="width: 100px"/>
+                            <h:inputText id="sssCtaOrigen"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.sssCtaOrigen}">
+                            </h:inputText>
+                            <p:message for="sssCtaOrigen" style="height:30px"/>
+
+                            <p:outputLabel for="ctaCargo" value="CUENTA CARGO" style="width: 100px"/>
+                            <h:inputText id="ctaCargo"
+                                         maxlength="4"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.ctaCargo}">
+                            </h:inputText>
+                            <p:message for="ctaCargo" style="height:30px"/>
+
+                            <p:outputLabel for="sctaCargo" value="SUB CUENTA CARGO" style="width: 100px"/>
+                            <h:inputText id="sctaCargo"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.sctaCargo}">
+                            </h:inputText>
+                            <p:message for="sctaCargo" style="height:30px"/>
+
+                            <p:outputLabel for="ssCtaCargo" value="SS-CUENTA CARGO" style="width: 100px"/>
+                            <h:inputText id="ssCtaCargo"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.ssCtaCargo}">
+                            </h:inputText>
+                            <p:message for="ssCtaCargo" style="height:30px"/>
+
+                            <p:outputLabel for="sssCtaCargo" value="SS-CUENTA CARGO" style="width: 100px"/>
+                            <h:inputText id="sssCtaCargo"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.sssCtaCargo}">
+                            </h:inputText>
+                            <p:message for="sssCtaCargo" style="height:30px"/>
+
+                            <p:outputLabel for="ctaAbono" value="CUENTA ABONO" style="width: 100px"/>
+                            <h:inputText id="ctaAbono"
+                                         maxlength="4"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.ctaAbono}">
+                            </h:inputText>
+                            <p:message for="ctaAbono" style="height:30px"/>
+
+                            <p:outputLabel for="sctaAbono" value="SUB-CUENTA ABONO" style="width: 100px"/>
+                            <h:inputText id="sctaAbono"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.sctaAbono}">
+                            </h:inputText>
+                            <p:message for="sctaAbono" style="height:30px"/>
+
+                            <p:outputLabel for="ssCtaAbono" value="SS-CUENTA ABONO" style="width: 100px"/>
+                            <h:inputText id="ssCtaAbono"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.ssCtaAbono}">
+                            </h:inputText>
+                            <p:message for="ssCtaAbono" style="height:30px"/>
+
+                            <p:outputLabel for="sssCtaAbono" value="SSSCTA ABONO" style="width: 100px"/>
+                            <h:inputText id="sssCtaAbono"
+                                         maxlength="2"
+                                         style="width: 100px"
+                                         required="true"
+                                         value="#{parCancelProvisionInteres.fiParametrizacionImx.sssCtaAbono}">
+                            </h:inputText>
+                            <p:message for="sssCtaAbono" style="height:30px"/>
+
+                          </p:panelGrid>
+
+                        </p:card>
+
+                        <br></br>
+
+                        <p:panelGrid columns="6">
+                          <p:commandButton value="Guardar"
+                                           id="uImensajeGuardar"
+                                           action="#{parCancelProvisionInteres.guardarCancelacion}"
+                                           update="eliminar-cancelacion-content dtInfo @this msgGuardar"
+                                           process="eliminar-cancelacion-content @this"
+                                           rendered="#{parCancelProvisionInteres.btnUpdateSave}">
+                            <p:resetInput target="eliminar-cancelacion-content"/>
+                          </p:commandButton>
+                          <p:commandButton value="Modificar"
+                                           action="#{parCancelProvisionInteres.modificaCancelacion}"
+                                           id="uImensajeModificar"
+                                           update="eliminar-cancelacion-content dtInfo @this msgModificar"
+                                           process="eliminar-cancelacion-content, @this"
+                                           rendered="#{!parCancelProvisionInteres.btnUpdateSave}"/>
+                          <p:commandButton value="Cancelar"
+                                           action="#{parCancelProvisionInteres.cancelarCancelacion}"
+                                           oncomplete="PF('cancelacionDialog').hide()"/>
+                        </p:panelGrid>
+
+                        <p:outputPanel layout="block" style="text-align:center;">
+                          <h:outputText value="Los campos marcados con * son mandatorios"/>
+                        </p:outputPanel>
+
+                      </fieldset>
+
+                    </p:outputPanel>
+
+                  </p:dialog>
+
+
+                </p:tab>
+                <!-- TERMINA CANCELACION DE LA PROVISION DE INTERESES -->
+
+                <p:tab id="panelTab2" title="Capitalizaci&#243;n de Intereses">
+                  <p:dataTable id="dtInfo1" var="rowCap"
+                               rows="#{parCapitalizacionInteres.defaultRows}"
+                               binding="#{parCapitalizacionInteres.htmlDataTable}"
+                               value="#{parCapitalizacionInteres.listaCapitalizacionInt}"
+                               style="position: relative; left: -1px;"
+                               paginator="#{parCapitalizacionInteres.paginatorVisible}"
+                               paginatorPosition="bottom"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                               currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                    <p:columnGroup type="header">
+                      <p:row>
+                        <p:column headerText="Codigo" colspan="2" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuenta de Origen" colspan="4" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuenta de Destino" colspan="4" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuentas de Sustitución de Saldos" colspan="9" style="font-style:normal; font-size:13px;"/>
+                      </p:row>
+                      <p:row>
+                        <p:column headerText="Editar"/>
+                        <p:column headerText="OPCODE"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="Eliminar"/>
+                      </p:row>
+                    </p:columnGroup>
+
+                    <p:column headerText="editar">
+
+                      <p:commandButton title="Editar"
+                                       action="#{parCapitalizacionInteres.muestraEdicion}"
+                                       icon="pi pi-pencil"
+                                       styleClass="rounded-button edit-button ui-button-outlined"
+                                       oncomplete="PF('parametrizacionInteresesDialog').show()"
+                                       process="@this"
+                                       update=":form1:panelTabSet1:parametrizacion-interes-content"
+                                       style="height: 10px; width: 5px" >
+                        <f:setPropertyActionListener value="#{parCapitalizacionInteres.htmlDataTable.rowIndex}"
+                                                     target="#{parCapitalizacionInteres.rowIndex}"/>
+                        <f:setPropertyActionListener value="true"
+                                                     target="#{parCapitalizacionInteres.editar}"/>
+                      </p:commandButton>
+
+                    </p:column>
+                    <p:column headerText="OPCODE">
+                      <h:outputText value="#{rowCap.opCode}" style="font-style:normal; font-size:10px;" />
+                    </p:column>
+                    <p:column headerText="CTA">
+                      <h:outputText value="#{rowCap.ctaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SCTA">
+                      <h:outputText value="#{rowCap.sctaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSCTA">
+                      <h:outputText value="#{rowCap.ssCtaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSSCTA">
+                      <h:outputText value="#{rowCap.sssCtaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="CTA">
+                      <h:outputText value="#{rowCap.ctaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SCTA">
+                      <h:outputText value="#{rowCap.sctaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSCTA">
+                      <h:outputText value="#{rowCap.ssCtaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSSCTA">
+                      <h:outputText value="#{rowCap.sssCtaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="CTA">
+                      <h:outputText value="#{rowCap.ctaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SCTA">
+                      <h:outputText value="#{rowCap.sctaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSCTA">
+                      <h:outputText value="#{rowCap.ssCtaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSSCTA">
+                      <h:outputText value="#{rowCap.sssCtaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="CTA">
+                      <h:outputText value="#{rowCap.ctaSustStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SCTA">
+                      <h:outputText value="#{rowCap.sctaSustStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSCTA">
+                      <h:outputText value="#{rowCap.ssCtaSustStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSSCTA">
+                      <h:outputText value="#{rowCap.sssCtaSustStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+
+                    <!--TODO REA Review this button-->
+
+                    <p:column headerText="Eliminar" style="text-align:center">
+                      <p:commandButton title="Eliminar"
+                                       icon="pi pi-trash"
+                                       styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                       process="@this"
+                                       style="height: 20px; width: 15px"
+                                       onclick="PF('borrarDialog').show()">
+                        <f:setPropertyActionListener value="#{rowCap.id}" target="#{parCapitalizacionInteres.id}"/>
+                      </p:commandButton>
+
+                    </p:column>
+
+                  </p:dataTable>
+
+                  <p:panelGrid columns="1">
+                    <p:commandButton value="Agregar"
+                                     action="#{parCapitalizacionInteres.openPanel}"
+                                     oncomplete="PF('parametrizacionInteresesDialog').show()"
+                                     process="@this"
+                                     update=":form1:panelTabSet1:parametrizacion-interes-content">
+                      <p:resetInput target=":form1:panelTabSet1:parametrizacion-interes-content"/>
+                    </p:commandButton>
+                  </p:panelGrid>
+
+                  <p:confirmDialog widgetVar="borrarDialog"
+                                   showEffect="fade"
+                                   width="300"
+                                   message="¿Desea borrar el registro?"
+                                   header="Confirmar"
+                                   severity="warn">
+                    <p:commandButton value="Si"
+                                     actionListener="#{parCapitalizacionInteres.eliminarIntereses}"
+                                     process="@this"
+                                     oncomplete="PF('borrarDialog').hide()"
+                                     update="dtInfo1" />
+                    <p:commandButton value="No"
+                                     onclick="PF('borrarDialog').hide()"
+                                     styleClass="ui-button-secondary"
+                                     type="button"/>
+                  </p:confirmDialog>
+
+                  <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+                  <p:dialog id="ppIntereses"
+                            modal="true"
+                            autoCentre="true"
+                            title="Parametrizacion Intereses"
+                            showEffect="fade"
+                            widgetVar="parametrizacionInteresesDialog">
+
+                    <p:outputPanel id="parametrizacion-interes-content" class="ui-fluid">
+
+                      <fieldset style="width:auto">
+                        <legend>Capitalizacion de Intereses.</legend>
+                        <br/>
+                        <p:card style="width:600px;">
+
+                          <p:message for="uImensajeGuardar1"
+                                     style="color:red; font-size:12px;text-align:justify;"/>
+
+                          <p:panelGrid columns="3" style="margin-top:-60px;margin-bottom:10px">
+
+                            <p:outputLabel for="opCodeppInteres" value=" CODIGO OPERACI&#211;N" style="width: 140px"/>
+                            <h:inputText id="opCodeppInteres"
+                                         style="width: 100px"
+                                         maxlength="25"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.opCode}"/>
+                            <p:message for="opCodeppInteres"  style="height:30px;" />
+
+                            <p:outputLabel for="ctaOrigenppInteres" value="CUENTA ORIGEN" style="width: 140px"/>
+                            <h:inputText id="ctaOrigenppInteres"
+                                         style="width: 100px"
+                                         maxlength="4"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.ctaOrigen}"/>
+                            <p:message for="ctaOrigenppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="sctaOrigenppInteres" value="SUB-CUENTA ORIGEN" style="width: 140px"/>
+                            <h:inputText id="sctaOrigenppInteres" style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.sctaOrigen}"/>
+                            <p:message for="sctaOrigenppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="ssCtaOrigenppInteres" value="SS-CUENTA ORIGEN" style="width: 140px"/>
+                            <h:inputText id="ssCtaOrigenppInteres" style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.ssCtaOrigen}"/>
+                            <p:message for="ssCtaOrigenppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="sssCtaOrigenppInteres" value="SSS-CUENTA ORIGEN" style="width: 140px"/>
+                            <h:inputText id="sssCtaOrigenppInteres"
+                                         style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.sssCtaOrigen}"/>
+                            <p:message for="sssCtaOrigenppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="ctaCargoppInteres" value="CUENTA DESTINO" style="width: 140px"/>
+                            <h:inputText id="ctaCargoppInteres"
+                                         style="width: 100px"
+                                         maxlength="4"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.ctaCargo}"/>
+                            <p:message for="ctaCargoppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="sctaCargoppInteres" value="SUB CUENTA DESTINO" style="width: 140px"/>
+                            <h:inputText id="sctaCargoppInteres"
+                                         style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.sctaCargo}"/>
+                            <p:message for="sctaCargoppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="ssCtaCargoppInteres" value="SS-CUENTA DESTINO" style="width: 140px"/>
+                            <h:inputText id="ssCtaCargoppInteres" style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.ssCtaCargo}"/>
+                            <p:message for="ssCtaCargoppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="sssCtaCargoppInteres" value="SSS-CUENTA DESTINO" style="width: 140px"/>
+                            <h:inputText id="sssCtaCargoppInteres" style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.sssCtaCargo}"/>
+                            <p:message for="sssCtaCargoppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="ctaAbonoppInteres" value="CUENTA ABONO" style="width: 140px"/>
+                            <h:inputText id="ctaAbonoppInteres" style="width: 100px"
+                                         maxlength="4"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.ctaAbono}"/>
+                            <p:message for="ctaAbonoppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="sctaAbonoppInteres" value="SUB-CUENTA ABONO" style="width: 140px"/>
+                            <h:inputText id="sctaAbonoppInteres" style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.sctaAbono}"/>
+                            <p:message for="sctaAbonoppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="ssCtaAbonoppInteres" value="SS-CUENTA ABONO" style="width: 140px"/>
+                            <h:inputText id="ssCtaAbonoppInteres" style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.ssCtaAbono}"/>
+                            <p:message for="ssCtaAbonoppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="sssCtaAbonoppInteres"  value="SSSCTA ABONO" style="width: 140px"/>
+                            <h:inputText id="sssCtaAbonoppInteres" style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.sssCtaAbono}"/>
+                            <p:message for="sssCtaAbonoppInteres" style="height:30px;"/>
+
+                            <p:outputLabel for="ctaSust" value="CUENTA SUSTITUCI&#211;N" style="width: 140px"/>
+                            <h:inputText id="ctaSust"
+                                         style="width: 100px"
+                                         maxlength="4"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.ctaSust}"/>
+                            <p:message for="ctaSust" style="height:30px;"/>
+
+                           <p:outputLabel for="sctaSust" value="SUB-CUENTA SUSTITUCI&#211;N" style="width: 140px"/>
+                            <h:inputText id="sctaSust"
+                                         style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.sctaSust}"/>
+                            <p:message for="sctaSust" style="height:30px;"/>
+
+                            <p:outputLabel for="ssCtaSust" value="SS-CUENTA SUSTITUCI&#211;N" style="width: 140px"/>
+                            <h:inputText id="ssCtaSust"
+                                         style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.ssCtaSust}"/>
+                            <p:message for="ssCtaSust" style="height:30px;"/>
+
+                            <p:outputLabel for="sssCtaSust" value="SSS-CUENTA SUSTITUCI&#211;N" style="width: 140px"/>
+                            <h:inputText id="sssCtaSust"
+                                         style="width: 100px"
+                                         maxlength="2"
+                                         required="true"
+                                         value="#{parCapitalizacionInteres.fiParametrizacionImx.sssCtaSust}"/>
+                            <p:message for="sssCtaSust" style="height:30px;"/>
+
+                          </p:panelGrid>
+                        </p:card>
+                        <br></br>
+                        <p:panelGrid columns="3">
+                          <p:commandButton value="Guardar"
+                                           id="uImensajeGuardar1"
+                                           action="#{parCapitalizacionInteres.agregarIntereses}"
+                                           update="parametrizacion-interes-content, dtInfo1"
+                                           process="parametrizacion-interes-content @this"
+                                           rendered="#{parCapitalizacionInteres.btnUpdateSaveInt}"/>
+                          <p:commandButton value="Modificar"
+                                           action="#{parCapitalizacionInteres.modificaIntereses}"
+                                           id="uImensajeModificar1"
+                                           update="parametrizacion-interes-content, dtInfo1 @this"
+                                           process="parametrizacion-interes-content, @this"
+                                           rendered="#{!parCapitalizacionInteres.btnUpdateSaveInt}"/>
+                          <p:commandButton value="Cancelar"
+                                           action="#{parCapitalizacionInteres.closePanel}"
+                                           oncomplete="PF('parametrizacionInteresesDialog').hide()"/>
+
+                        </p:panelGrid>
+                        <p:outputPanel layout="block" style="text-align:center;">
+                          <h:outputText value="Los campos marcados con * son mandatorios"/>
+                        </p:outputPanel>
+                      </fieldset>
+
+                    </p:outputPanel>
+
+                  </p:dialog>
+
+                </p:tab>
+
+                <p:tab id="panelTab3" title="Reclasificar Saldo Negativo">
+                  <p:dataTable id="tableSaldoNeg" var="rowSn"
+                               rows="#{parReclasificarSaldoNeg.defaultRows}"
+                               binding="#{parReclasificarSaldoNeg.htmlDataTable}"
+                               value="#{parReclasificarSaldoNeg.listaSaldoNegativo}"
+                               style="position: relative;"
+                               paginator="#{parReclasificarSaldoNeg.paginatorVisible}"
+                               paginatorPosition="bottom"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                               currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                    <p:columnGroup type="header">
+                      <p:row>
+                        <p:column headerText="Cuenta de Origen" colspan="5" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuenta de Cargo" colspan="4" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuentas de Abono" colspan="5" style="font-style:normal; font-size:13px;"/>
+                      </p:row>
+                      <p:row>
+                        <p:column headerText="Editar"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="Eliminar"/>
+                      </p:row>
+                    </p:columnGroup>
+
+                    <p:column headerText="editar">
+                      <p:commandButton title="Editar"
+                                       action="#{parReclasificarSaldoNeg.muestraEdicion}"
+                                       icon="pi pi-pencil"
+                                       styleClass="rounded-button edit-button ui-button-outlined"
+                                       oncomplete="PF('ppSaldoNegativoDialog').show()"
+                                       process="@this"
+                                       update=":form1:panelTabSet1:parametrizacion-saldo-neg-content"
+                                       style="height: 10px; width: 5px">
+
+                        <f:setPropertyActionListener value="#{parReclasificarSaldoNeg.htmlDataTable.rowIndex}"
+                                                     target="#{parReclasificarSaldoNeg.rowIndex}"/>
+                        <f:setPropertyActionListener value="true"
+                                                     target="#{parReclasificarSaldoNeg.editar}"/>
+                      </p:commandButton>
+                    </p:column>
+                    <p:column headerText="CTA">
+                      <h:outputText value="#{rowSn.ctaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SCTA">
+                      <h:outputText value="#{rowSn.sctaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSCTA">
+                      <h:outputText value="#{rowSn.ssCtaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSSCTA">
+                      <h:outputText value="#{rowSn.sssCtaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="CTA">
+                      <h:outputText value="#{rowSn.ctaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SCTA">
+                      <h:outputText value="#{rowSn.sctaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSCTA">
+                      <h:outputText value="#{rowSn.ssCtaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSSCTA">
+                      <h:outputText value="#{rowSn.sssCtaCargoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="CTA">
+                      <h:outputText value="#{rowSn.ctaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SCTA">
+                      <h:outputText value="#{rowSn.sctaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSCTA">
+                      <h:outputText value="#{rowSn.ssCtaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSSCTA">
+                      <h:outputText value="#{rowSn.sssCtaAbonoStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+
+                    <!--TODO REA Review this button-->
+                    <p:column headerText="Eliminar" style="text-align:center">
+
+                      <p:commandButton title="Eliminar"
+                                       icon="pi pi-trash"
+                                       styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                       process="@this"
+                                       style="height: 20px; width: 15px"
+                                       onclick="PF('eliminarSaldo').show()">
+                          <f:setPropertyActionListener value="#{rowSn.id}" target="#{parReclasificarSaldoNeg.id}"/>
+                      </p:commandButton>
+
+                    </p:column>
+                  </p:dataTable>
+
+                  <p:panelGrid columns="1">
+
+                    <p:commandButton value="Agregar"
+                                     action="#{parReclasificarSaldoNeg.openPanel}"
+                                     oncomplete="PF('ppSaldoNegativoDialog').show()"
+                                     process="@this"
+                                     update=":form1:panelTabSet1:parametrizacion-saldo-neg-content">
+                      <p:resetInput target=":form1:panelTabSet1:parametrizacion-saldo-neg-content"/>
+                    </p:commandButton>
+
+                  </p:panelGrid>
+
+                  <p:confirmDialog widgetVar="eliminarSaldo"
+                                   showEffect="fade"
+                                   width="300"
+                                   message="¿Desea borrar el registro?"
+                                   header="Confirmar"
+                                   severity="warn">
+                    <p:commandButton value="Si"
+                                     actionListener="#{parReclasificarSaldoNeg.eliminarSaldoNegativo}"
+                                     process="@this"
+                                     oncomplete="PF('eliminarSaldo').hide()"
+                                     update="tableSaldoNeg"/>
+                    <p:commandButton value="No"
+                                     onclick="PF('eliminarSaldo').hide()"
+                                     styleClass="ui-button-secondary"
+                                     type="button"/>
+                  </p:confirmDialog>
+
+
+                  <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+                  <p:dialog id="ppSaldoNegativo"
+                            modal="true"
+                            autoCentre="true"
+                            title="Parametrizacion Saldo Negativo"
+                            showEffect="fade"
+                            widgetVar="ppSaldoNegativoDialog">
+
+                    <p:outputPanel id="parametrizacion-saldo-neg-content" class="ui-fluid">
+
+                        <fieldset style="width:auto">
+                          <legend>Alta Reclasificaci&#243;n Saldo Negativo</legend>
+                          <br/>
+
+                          <p:card style="width:600px;">
+
+                            <p:message for="btnGuardar" style="color:red; font-size:12px;text-align:justify;"/>
+
+                            <p:panelGrid columns="3" style="margin-top:-60px;">
+
+                                <p:outputLabel for="opCodeReclasificacion" value=" CODIGO OPERACI&#211;N" style="width: 140px"/>
+                                <h:inputText id="opCodeReclasificacion"
+                                           style="width: 115px"
+                                           maxlength="25"
+                                           required="true"
+                                           value="#{parReclasificarSaldoNeg.fiParametrizacionImx.opCode}"/>
+                                <p:message for="opCodeppInteres"  style="height:30px;" />
+
+                                <h:outputText for="ctaOrigenppSaldoNegativo" value="* CUENTA ORIGEN" styleClass="lbl-format"/>
+                                <h:inputText  id="ctaOrigenppSaldoNegativo"
+                                              maxlength="4"
+                                              value="#{parReclasificarSaldoNeg.fiParametrizacionImx.ctaOrigen}"
+                                              required="true"
+                                              styleClass="txt-format"/>
+                                <p:message for="ctaOrigenppSaldoNegativo" styleClass="required-format"/>
+
+                                <h:outputText for="sctaOrigenppSaldoNegativo" value="* SUB-CUENTA ORIGEN" styleClass="lbl-format"/>
+                                <h:inputText id="sctaOrigenppSaldoNegativo"
+                                             maxlength="2"
+                                             required="true"
+                                             styleClass="txt-format"
+                                             value="#{parReclasificarSaldoNeg.fiParametrizacionImx.sctaOrigen}"/>
+                                <p:message for="sctaOrigenppSaldoNegativo" styleClass="required-format"/>
+
+                                <h:outputText for="ssCtaOrigenppSaldoNegativo" value="* SS-CUENTA ORIGEN" styleClass="lbl-format"/>
+                                <h:inputText id="ssCtaOrigenppSaldoNegativo"
+                                             maxlength="2"
+                                             required="true"
+                                             styleClass="txt-format"
+                                             value="#{parReclasificarSaldoNeg.fiParametrizacionImx.ssCtaOrigen}"/>
+                                <p:message for="ssCtaOrigenppSaldoNegativo" styleClass="required-format"/>
+
+                                <h:outputText for="sssCtaOrigenppSaldoNegativo" value="* SSS-CUENTA ORIGEN" styleClass="lbl-format"/>
+                                <h:inputText id="sssCtaOrigenppSaldoNegativo"
+                                             maxlength="2"
+                                             required="true"
+                                             styleClass="txt-format"
+                                             value="#{parReclasificarSaldoNeg.fiParametrizacionImx.sssCtaOrigen}"/>
+                                <p:message for="sssCtaOrigenppSaldoNegativo" styleClass="required-format"/>
+
+                                <h:outputText for="ctaCargoppSaldoNegativo" value="* CUENTA CARGO" styleClass="lbl-format"/>
+                                <h:inputText id="ctaCargoppSaldoNegativo"
+                                             maxlength="4"
+                                             required="true"
+                                             styleClass="txt-format"
+                                             value="#{parReclasificarSaldoNeg.fiParametrizacionImx.ctaCargo}"/>
+                                <p:message for="ctaCargoppSaldoNegativo" styleClass="required-format"/>
+
+                                <h:outputText for="sctaCargoppSaldoNegativo" value="* SUB CUENTA CARGO" styleClass="lbl-format"/>
+                                <h:inputText id="sctaCargoppSaldoNegativo"
+                                            maxlength="2"
+                                            required="true"
+                                            styleClass="txt-format"
+                                            value="#{parReclasificarSaldoNeg.fiParametrizacionImx.sctaCargo}"/>
+                               <p:message for="sctaCargoppSaldoNegativo" styleClass="required-format"/>
+
+                               <h:outputText for="ssCtaCargoppSaldoNegativo" value="* SS-CUENTA CARGO" styleClass="lbl-format"/>
+                               <h:inputText id="ssCtaCargoppSaldoNegativo"
+                                           maxlength="2"
+                                           required="true"
+                                           styleClass="txt-format"
+                                           value="#{parReclasificarSaldoNeg.fiParametrizacionImx.ssCtaCargo}"/>
+                              <p:message for="ssCtaCargoppSaldoNegativo" styleClass="required-format"/>
+
+                              <h:outputText for="sssCtaCargoppSaldoNegativo" value="* SSS-CUENTA CARGO" styleClass="lbl-format"/>
+                              <h:inputText id="sssCtaCargoppSaldoNegativo"
+                                           maxlength="2"
+                                           required="true"
+                                           styleClass="txt-format"
+                                           value="#{parReclasificarSaldoNeg.fiParametrizacionImx.sssCtaCargo}"/>
+                              <p:message for="sssCtaCargoppSaldoNegativo" styleClass="required-format"/>
+
+                              <h:outputText for="ctaAbonoppSaldoNegativo" value="* CUENTA ABONO" styleClass="lbl-format"/>
+                              <h:inputText id="ctaAbonoppSaldoNegativo"
+                                           maxlength="4"
+                                           required="true"
+                                           styleClass="txt-format"
+                                           value="#{parReclasificarSaldoNeg.fiParametrizacionImx.ctaAbono}"/>
+                              <p:message for="ctaAbonoppSaldoNegativo" styleClass="required-format"/>
+
+                              <h:outputText for="sctaAbonoppSaldoNegativo" value="* SUB-CUENTA ABONO" styleClass="lbl-format"/>
+                              <h:inputText id="sctaAbonoppSaldoNegativo"
+                                           maxlength="2"
+                                           required="true"
+                                           styleClass="txt-format"
+                                           value="#{parReclasificarSaldoNeg.fiParametrizacionImx.sctaAbono}"/>
+                              <p:message for="sctaAbonoppSaldoNegativo" styleClass="required-format"/>
+
+                              <h:outputText for="ssCtaAbonoppSaldoNegativo" value="* SS-CUENTA ABONO" styleClass="lbl-format"/>
+                              <h:inputText id="ssCtaAbonoppSaldoNegativo"
+                                           maxlength="2"
+                                           required="true"
+                                           styleClass="txt-format"
+                                           value="#{parReclasificarSaldoNeg.fiParametrizacionImx.ssCtaAbono}"/>
+                              <p:message for="ssCtaAbonoppSaldoNegativo" styleClass="required-format"/>
+
+                              <h:outputText for="sssCtaAbonoppSaldoNegativo" value="* SSSCTA ABONO" styleClass="lbl-format"/>
+                              <h:inputText id="sssCtaAbonoppSaldoNegativo"
+                                           maxlength="2"
+                                           required="true"
+                                           styleClass="txt-format"
+                                           value="#{parReclasificarSaldoNeg.fiParametrizacionImx.sssCtaAbono}"/>
+                              <p:message for="sssCtaAbonoppSaldoNegativo" styleClass="required-format"/>
+
+                            </p:panelGrid>
+
+                          </p:card>
+
+                          <br></br>
+
+                          <p:panelGrid columns="5">
+                            <p:commandButton value="Guardar"
+                                             id="btnGuardar"
+                                             action="#{parReclasificarSaldoNeg.guardaSaldoNegativo}"
+                                             update="parametrizacion-saldo-neg-content, tableSaldoNeg"
+                                             process="parametrizacion-saldo-neg-content @this"
+                                             rendered="#{parReclasificarSaldoNeg.btnUpdateSaveInt}"/>
+                            <p:commandButton value="Modificar"
+                                             action="#{parReclasificarSaldoNeg.modificaSaldoNegativo}"
+                                             id="btnModificar"
+                                             update="parametrizacion-saldo-neg-content, tableSaldoNeg, @this"
+                                             process="parametrizacion-saldo-neg-content, @this"
+                                             rendered="#{!parReclasificarSaldoNeg.btnUpdateSaveInt}"/>
+                            <p:commandButton value="Cancelar"
+                                             action="#{parReclasificarSaldoNeg.closePanel}"
+                                             oncomplete="PF('ppSaldoNegativoDialog').hide()" />
+                          </p:panelGrid>
+
+                          <p:outputPanel layout="block" style="text-align:center;">
+                            <p/>
+                            <h:outputText value="Los campos marcados con * son mandatorios"/>
+                          </p:outputPanel>
+
+                        </fieldset>
+
+                    </p:outputPanel>
+
+                  </p:dialog>
+                </p:tab>
+
+                <p:tab id="panelTab4" title="Clasificaci&#243;n de Campo B">
+                  <p:dataTable id="tableCofactor"
+                               value="#{parClasificacionCofactor.listaClasificacionCofactor}"
+                               var="rowC"
+                               binding="#{parClasificacionCofactor.htmlDataTable}"
+                               rows="#{parClasificacionCofactor.defaultRows}"
+                               style="position: relative;"
+                               paginator="#{parClasificacionCofactor.paginatorVisible}"
+                               paginatorPosition="bottom"
+                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                               currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                    <p:columnGroup>
+                      <p:column headerText="Código" colspan="1">
+                        <h:outputText value="Codigo"
+                                      style="font-style:normal; font-size:11px;"/>
+                      </p:column>
+                      <p:column headerText="Cuenta de Origen" colspan="4">
+                        <h:outputText value="Cuenta de Origen"
+                                      style="font-style:normal; font-size:11px;"/>
+                      </p:column>
+                      <p:column colspan="2">
+                      </p:column>
+                    </p:columnGroup>
+
+                    <p:columnGroup type="header">
+                      <p:row>
+                        <p:column headerText="Código" colspan="2" style="font-style:normal; font-size:13px;"/>
+                        <p:column headerText="Cuenta de Origen" colspan="6" style="font-style:normal; font-size:13px;"/>
+                      </p:row>
+                      <p:row>
+                        <p:column headerText="Editar"/>
+                        <p:column headerText="OPCODE"/>
+                        <p:column headerText="CTA"/>
+                        <p:column headerText="SCTA"/>
+                        <p:column headerText="SSCTA"/>
+                        <p:column headerText="SSSCTA"/>
+                        <p:column headerText="MODALIDAD"/>
+                        <p:column headerText="Eliminar"/>
+                      </p:row>
+                    </p:columnGroup>
+
+
+                    <p:column headerText="editar">
+                      <p:commandButton title="Editar"
+                                       action="#{parClasificacionCofactor.muestraEdicion}"
+                                       icon="pi pi-pencil"
+                                       styleClass="rounded-button edit-button ui-button-outlined"
+                                       oncomplete="PF('ppCofactorDialog').show()"
+                                       process="@this"
+                                       update=":form1:panelTabSet1:ppCofactor-content"
+                                       style="height: 10px; width: 5px">
+
+                        <f:setPropertyActionListener value="#{parClasificacionCofactor.htmlDataTable.rowIndex}"
+                                                     target="#{parClasificacionCofactor.rowIndex}"/>
+                        <f:setPropertyActionListener value="true"
+                                                     target="#{parClasificacionCofactor.editar}"/>
+                      </p:commandButton>
+                    </p:column>
+                    <p:column headerText="OPCODE">
+                      <h:outputText value="#{rowC.opCode}" style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="CTA">
+                      <h:outputText value="#{rowC.ctaOrigenStr}" style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SCTA">
+                      <h:outputText value="#{rowC.sctaOrigenStr}" style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSCTA">
+                      <h:outputText value="#{rowC.ssCtaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="SSSCTA">
+                      <h:outputText value="#{rowC.sssCtaOrigenStr}"
+                                    style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+                    <p:column headerText="MODALIDAD">
+                      <h:outputText value="#{rowC.modalidad}" style="font-style:normal; font-size:10px;"/>
+                    </p:column>
+
+                    <!--TODO REA review this button -->
+                    <p:column headerText="Eliminar" style="text-align:center">
+
+                      <p:commandButton title="Eliminar"
+                                       icon="pi pi-trash"
+                                       styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                       process="@this"
+                                       style="height: 20px; width: 15px"
+                                       onclick="PF('eliminarCofactor').show()">
+                        <f:setPropertyActionListener value="#{rowC.id}" target="#{parClasificacionCofactor.id}"/>
+                      </p:commandButton>
+
+                    </p:column>
+                  </p:dataTable>
+                  <p:panelGrid columns="1">
+
+                    <p:commandButton value="Agregar"
+                                     action="#{parClasificacionCofactor.openPanel}"
+                                     oncomplete="PF('ppCofactorDialog').show()"
+                                     process="@this"
+                                     update=":form1:panelTabSet1:ppCofactor-content">
+                      <p:resetInput target=":form1:panelTabSet1:ppCofactor-content"/>
+                    </p:commandButton>
+
+                  </p:panelGrid>
+
+                  <p:confirmDialog widgetVar="eliminarCofactor"
+                                   showEffect="fade"
+                                   width="300"
+                                   message="¿Desea borrar el registro?"
+                                   header="Confirmar"
+                                   severity="warn">
+                    <p:commandButton value="Si"
+                                     actionListener="#{parClasificacionCofactor.eliminarCofactor}"
+                                     process="@this"
+                                     oncomplete="PF('eliminarCofactor').hide()"
+                                     update="tableCofactor" />
+                    <p:commandButton value="No"
+                                     onclick="PF('eliminarCofactor').hide()"
+                                     styleClass="ui-button-secondary"
+                                     type="button"/>
+                  </p:confirmDialog>
+
+
+                  <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+                  <p:dialog id="ppCofactor" modal="true" autoCentre="true"
+                            title="Parametrizacion Cofactor"
+                            widgetVar="ppCofactorDialog">
+
+                    <p:outputPanel id="ppCofactor-content" class="ui-fluid">
+
+                        <fieldset style="width:auto">
+                          <legend>Alta Clasificaci&#243;n Cofactor</legend>
+                          <br/>
+                          <p:card>
+                            <p:message for="uImensajeGuardar1"
+                                       style="color:red; font-size:12px;text-align:justify;"/>
+
+                            <p:panelGrid columns="3">
+
+                              <h:outputText for="opCode" value="* CODIGO OPERACI&#211;N" styleClass="lbl-format"/>
+                              <h:inputText id="opCodeppCofactor" maxlength="25"
+                                           value="#{parClasificacionCofactor.fiParametrizacionImx.opCode}"
+                                           required="true"
+                                           styleClass="txt-format"/>
+                              <p:message for="opCodeppCofactor" styleClass="required-format"/>
+
+                              <h:outputText for="ctaOrigenppCofactor" value="* CUENTA ORIGEN" styleClass="lbl-format"/>
+                              <h:inputText id="ctaOrigenppCofactor" maxlength="4"
+                                           required="true"
+                                           styleClass="txt-format"
+                                           value="#{parClasificacionCofactor.fiParametrizacionImx.ctaOrigen}"/>
+                             <p:message for="ctaOrigenppCofactor" styleClass="required-format"/>
+
+                              <h:outputText for="sctaOrigenppCofactor" value="* SUB-CUENTA ORIGEN" styleClass="lbl-format"/>
+                              <h:inputText id="sctaOrigenppCofactor" maxlength="2"
+                                           required="true"
+                                           styleClass="txt-format"
+                                           value="#{parClasificacionCofactor.fiParametrizacionImx.sctaOrigen}"/>
+                              <p:message for="sctaOrigenppCofactor" styleClass="required-format"/>
+
+                              <h:outputText for="ssCtaOrigenppCofactor" value="* SS-CUENTA ORIGEN" styleClass="lbl-format"/>
+                              <h:inputText id="ssCtaOrigenppCofactor"
+                                           maxlength="2"
+                                           styleClass="txt-format"
+                                           required="true"
+                                           value="#{parClasificacionCofactor.fiParametrizacionImx.ssCtaOrigen}"/>
+                             <p:message for="ssCtaOrigenppCofactor" styleClass="required-format"/>
+
+                              <h:outputText for="sssCtaOrigenppCofactor" value="* SSS-CUENTA ORIGEN" styleClass="lbl-format"/>
+                              <h:inputText id="sssCtaOrigenppCofactor"
+                                           maxlength="2"
+                                           styleClass="txt-format"
+                                           required="true"
+                                           value="#{parClasificacionCofactor.fiParametrizacionImx.sssCtaOrigen}"/>
+                              <p:message for="sssCtaOrigenppCofactor" styleClass="required-format"/>
+
+                              <h:outputText for="modalidad" value="* MODALIDAD" styleClass="lbl-format"/>
+                              <h:inputText id="modalidad"
+                                           maxlength="50"
+                                           styleClass="txt-format"
+                                           required="true"
+                                           value="#{parClasificacionCofactor.fiParametrizacionImx.modalidad}"/>
+                              <p:message for="modalidad" styleClass="required-format"/>
+
+
+                            </p:panelGrid>
+
+                          </p:card>
+
+                          <br></br>
+
+                          <p:panelGrid columns="5">
+                            <p:commandButton value="Guardar"
+                                             action="#{parClasificacionCofactor.agregarCofactor}"
+                                             update="ppCofactor-content, tableCofactor"
+                                             process="ppCofactor-content @this"
+                                             rendered="#{parClasificacionCofactor.btnUpdateSaveInt}"/>
+                            <p:commandButton value="Modificar"
+                                             action="#{parClasificacionCofactor.modificaCofactor}"
+                                             rendered="#{!parClasificacionCofactor.btnUpdateSaveInt}"
+                                             update="ppCofactor-content, tableCofactor"
+                                             process="ppCofactor-content @this"/>
+                            <p:commandButton value="Cancelar"
+                                             action="#{parClasificacionCofactor.closePanel}"
+                                             oncomplete="PF('ppCofactorDialog').hide()"/>
+
+                          </p:panelGrid>
+                          <p:outputPanel layout="block" style="text-align:center;">
+                            <p/>
+                            <h:outputText value="Los campos marcados con * son mandatorios"/>
+                          </p:outputPanel>
+                        </fieldset>
+
+                    </p:outputPanel>
+
+                  </p:dialog>
+                </p:tab>
+              </p:tabView>
+            </p:outputPanel>
+          </p:outputPanel>
+        </p:outputPanel>
+      </fieldset>
+
+    </h:form>
+
+  </div>
+</h:body>
+
+</html>

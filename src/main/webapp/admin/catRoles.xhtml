@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : catRoles.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Catálogo Roles</legend>
+        <p:outputPanel layout="block">
+          <h:panelGroup id="pgInfo">
+            <p:dataTable id="dt-roles"
+                         widgetVar="dtRoles"
+                         var="row"
+                         value="#{catRoles.listaRoles}"
+                         reflow="true"
+                         tableStyle="width:auto"
+                         style="position: relative; vertical-align:top"
+                         rows="#{catRoles.defaultRows}"
+                         paginator="#{catRoles.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="ID Rol"
+                        style="text-align:center"
+                        sortBy="#{row.idRol}"
+                        filterBy="#{row.idRol}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtRoles').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.idRol}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Descripción"
+                        sortBy="#{row.descripcion}"
+                        filterBy="#{row.descripcion}"
+                        filterMatchMode="contains"
+                        style="text-align:left">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtRoles').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.descripcion}" style="text-align:center; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Eliminar" style="text-align:center" exportable="false">
+                <p:commandButton title="Eliminar"
+                                 icon="pi pi-trash"
+                                 styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                 oncomplete="PF('borrarRolesDialog').show()"
+                                 process="@this"
+                                 style="height: 20px; width: 15px">
+                  <f:facet name="filter">
+                    <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtRoles').filter()" />
+                  </f:facet>
+                  <f:setPropertyActionListener value="#{row}"
+                                               target="#{catRoles.rolSeleccionado}"/>
+                </p:commandButton>
+              </p:column>
+            </p:dataTable>
+          </h:panelGroup>
+
+          <div style="text-align: -webkit-center; padding: 15px;">
+              <p:commandButton value="Agregar Rol"
+                               actionListener="#{catRoles.abrirPopupAlta}"
+                               oncomplete="PF('rolesDialog').show()"
+                               update=":dialogs:edicion-roles-content">
+                <p:resetInput target=":dialogs:edicion-roles-content"/>
+              </p:commandButton>
+          </div>
+
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+    </h:form>
+
+    <h:form id="dialogs">
+      <p:dialog header="Datos del rol" showEffect="fade" modal="true" widgetVar="rolesDialog"
+                responsive="true">
+        <p:outputPanel id="edicion-roles-content" class="ui-fluid">
+          <p:outputPanel rendered="#{not empty catRoles.rolSeleccionado}">
+            <p:panelGrid columns="3">
+              <p:outputLabel for="id-rol" value="ID del rol"/>
+              <p:inputNumber id="id-rol" required="true" minValue="1" maxValue="999" maxlength="3"
+                             style="width: 350px" thousandSeparator="" decimalPlaces="0"
+                             value="#{catRoles.rolSeleccionado.idRol}">
+              </p:inputNumber>
+              <p:message for="id-rol"/>
+              <p:outputLabel for="description" value="Descripción:"/>
+              <p:inputText id="description" required="true" maxlength="200" style="width: 350px"
+                           value="#{catRoles.rolSeleccionado.descripcion}"/>
+              <p:message for="description"/>
+            </p:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+
+        <div style="text-align: -webkit-center; padding: 15px;">
+          <p:commandButton value="Guardar"
+                           actionListener="#{catRoles.guardarRol}"
+                           update="edicion-roles-content"
+                           process="edicion-roles-content @this"/>
+          <p:commandButton value="Cancelar"
+                           onclick="PF('rolesDialog').hide()"
+                           class="ui-button-secondary" type="button"/>
+        </div>
+
+      </p:dialog>
+
+      <p:confirmDialog widgetVar="borrarRolesDialog"
+                       showEffect="fade"
+                       width="300"
+                       message="¿Desea borrar el rol?"
+                       header="Confirmar"
+                       severity="warn">
+        <p:commandButton value="Si"
+                         actionListener="#{catRoles.eliminarRol}"
+                         process="@this"
+                         oncomplete="PF('borrarRolesDialog').hide()"/>
+        <p:commandButton value="No"
+                         onclick="PF('borrarRolesDialog').hide()"
+                         type="button"/>
+      </p:confirmDialog>
+    </h:form>
+
+  </div>
+</h:body>
+</html>

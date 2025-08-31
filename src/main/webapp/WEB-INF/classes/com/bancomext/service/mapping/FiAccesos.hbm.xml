@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12/11/2013 11:15:16 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiAccesos" schema="FACTIMX" table="FI_ACCESOS">
+    <id name="idPromotor" type="string">
+      <column length="30" name="IDPROMOTOR"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fechaEntrada" type="timestamp">
+      <column length="7" name="FECHA_ENTRADA"/>
+    </property>
+    <property name="fechaSalida" type="timestamp">
+      <column length="7" name="FECHA_SALIDA"/>
+    </property>
+    <property name="email" type="string">
+      <column length="200" name="EMAIL">
+        <comment>correo usuario</comment>
+      </column>
+    </property>
+    <property name="rol" type="string">
+      <column length="200" name="ROL">
+        <comment>Rol asignado en SADID</comment>
+      </column>
+    </property>
+  </class>
+</hibernate-mapping>

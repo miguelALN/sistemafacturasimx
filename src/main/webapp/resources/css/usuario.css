@@ -1,0 +1,173 @@
+
+body .ui-datatable thead th {
+    background: #f8f9fa;
+    color: #495057;
+    padding: 0rem 0rem;
+    border: 1px solid #e9ecef;
+    border-width: 0 0 1px 0;
+    text-align: left;
+    box-sizing: content-box;
+    transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s, opacity .2s;
+}
+
+body .ui-datatable .ui-datatable-data>tr>td {
+    padding: 0rem 0rem 0rem .4rem;
+}
+
+body .ui-inputfield {
+    color: #495057;
+    background: #fff;
+    padding: .5rem .5rem;
+    border: 1px solid #ced4da;
+    outline: 0 none;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s, opacity .2s;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 30px;
+}
+
+
+body .ui-card .ui-card-body {
+    padding: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+    background: #fff !important;
+    color: #495057 !important;
+    font-weight: 700 !important;
+    border-bottom: 0 none !important;
+    padding: .2rem !important;
+}
+
+body .ui-dialog .ui-dialog-content {
+    background: #fff;
+    color: #495057;
+    border: 0 none;
+    padding: .1rem .3rem .1em .3rem;
+    margin: 0px;
+}
+
+.ui-panelgrid {
+    border: none;
+    border-collapse: collapse;
+}
+
+body .ui-dialog .ui-dialog-footer {
+    border-top: 0 none;
+    background: #fff;
+    color: #495057;
+    padding: 0 .1rem .1rem .1rem;;
+    margin: 0;
+    text-align: right;
+}
+
+body .ui-panelgrid .ui-panelgrid-cell {
+    border: 0px solid #dee2e6;
+    background: #fff;
+    color: #495057;
+    padding: 2px;
+}
+
+.ui-fluid .ui-inputtext {
+    height: 26px;
+    width: 100%;
+}
+
+body .ui-fluid .ui-selectonemenu-label {
+    width: calc(100% - 2.357rem);
+    padding: .5rem .5rem;
+    height: 30px;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+    border: 0 none;
+    padding: 0;
+    margin-left: .5rem;
+    width: 1.3rem;
+    height: 1.3rem;
+    background: transparent;
+    color: #6c757d;
+    transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s, opacity .2s;
+    /* border-radius: 50%; */
+    /* border: 0 none; */
+    /* text-align: center; */
+    /* line-height: 2rem; */
+    padding: 0;
+    user-select: none;
+}
+
+.ui-button-text-icon-left .ui-button-text {
+    padding: .3em 1em .3em 2.1em;
+    background-color: #c0c0c0; ;
+}
+
+body .ui-button.ui-button-text-only .ui-button-text {
+    padding: .3rem 1rem;
+    background-color: #c0c0c0;
+    color: black;
+    padding-top: 0px;
+    height: 17px;
+    font-size: 11px;
+}
+
+body .ui-button {
+    background: #000;
+    border: .2px solid #000;
+    margin: 0;
+    outline: 0 none;
+    border-radius: 2px;
+    height: 18px;
+}
+
+body .ui-chkbox .ui-chkbox-box .ui-chkbox-icon.ui-icon-check {
+    font-family: "primeicons" !important;
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    background: none;
+    color: white;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-active {
+    border-color:gray;
+    background: gray;
+    color: #fff;
+}
+
+
+body .ui-message.ui-message-error, body .ui-message.ui-message-fatal {
+    background: #ffcdd2;
+    border: 1px solid #ef5350;
+    border-width: 0 0 0 3px;
+    color: #b71c1c;
+    height: 30px;
+}
+
+.lbl-format {
+    width: 230px !important;
+}
+
+.txt-format {
+    width: 120px !important;
+}
+
+.required-format {
+    height:30px !important;
+    width: 190px !important;
+}
+
+.custom-filter-input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-sizing: border-box;
+    text-align:center;
+    font-style:normal;
+    height: 10px;
+    /* Add other styles as needed */
+}
+
+.txt-style-content {
+    height:17px;font-size:11px;
+}

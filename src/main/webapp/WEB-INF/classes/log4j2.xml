@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="FactIMX" packages="">
+  <Properties>
+    <Property name="LOG_DIR">log/factIMX</Property>
+    <Property name="FILE_NAME">FactIMX</Property>
+    <Property name="FILE_PATTERN">${FILE_NAME}.%d{dd-MMM}.log.gz</Property>
+    <Property name="PATTERN">%highlight{%-5level}|%d{ddMMM HH:mm:ss}| %c{1}:%L | %msg%n</Property>
+    <Property name="CONSOLE_PATTERN">%-5level|%d{ddMMM HH:mm:ss}| ${FILE_NAME}-%c{1}:%L | %msg%n</Property>
+  </Properties>
+  <Appenders>
+    <RollingFile
+        name="rollingFile"
+        fileName="${LOG_DIR}/${FILE_NAME}.log"
+        filePattern="${LOG_DIR}/${FILE_PATTERN}"
+        ignoreExceptions="false"
+        append="true">
+      <PatternLayout pattern="${PATTERN}"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1"/>
+      </Policies>
+      <DefaultRolloverStrategy max="5"/>
+    </RollingFile>
+
+    <Console name="console" target="SYSTEM_OUT" ignoreExceptions="false">
+      <PatternLayout pattern="${CONSOLE_PATTERN}"/>
+    </Console>
+    <Failover name="failover" primary="rollingFile">
+      <Failovers>
+        <AppenderRef ref="console"/>
+      </Failovers>
+    </Failover>
+  </Appenders>
+  <Loggers>
+    <Root level="INFO">
+      <AppenderRef ref="failover"/>
+    </Root>
+  </Loggers>
+</Configuration>

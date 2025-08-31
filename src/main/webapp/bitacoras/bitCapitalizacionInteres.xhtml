@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : bitCapitalizacionInteres.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Bitacora Capitalizacion Intereses</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:outputPanel layout="block" scrollHeight="450px">
+            <p:message for="btnBitacora" id="btnBitacora" style="color:red; font-size:11px;"/>
+            <p:panelGrid columns="6">
+
+              <h:outputText style="text-align:center;" value="Fecha Proceso:"/>
+              <p:selectOneMenu value="#{bitCapitalizacionInteres.filtroCalendar}"
+                               partialSubmit="true">
+                <f:selectItems value="#{bitCapitalizacionInteres.listaCalendar}"/>
+                <p:ajax event="change" listener="#{bitCapitalizacionInteres.llenarClientes()}" update="comboClientes"/>
+              </p:selectOneMenu>
+
+              <h:outputText value="Cliente:"/>
+              <p:selectOneMenu id="comboClientes" partialSubmit="true"
+                               value="#{bitCapitalizacionInteres.filtroCampoA}">
+                <f:selectItems value="#{bitCapitalizacionInteres.listaCampoA}"/>
+              </p:selectOneMenu>
+
+              <p:commandButton style="text-align:center;" value="Filtrar" id="btnFiltrarCifrasControl"
+                               action="#{bitCapitalizacionInteres.filtrarTableBitCapitalizacion}"
+                               update=":form1:pgInfo"/>
+
+              <h:commandButton title="Descargar en Excel"
+                               image="../resources/img/excel.png"
+                               action="#{bitCapitalizacionInteres.descargarArchivo()}"/>
+            </p:panelGrid>
+
+            <p:dataTable id="infoBitacoraCapitalizacion" var="row"
+                         value="#{bitCapitalizacionInteres.listaBitacoraCapitalizacion}"
+                         rows="#{bitCapitalizacionInteres.defaultRows}"
+                         columnWidths="60px,350px,65px,65px,65px,65px,65px"
+                         paginator="#{bitCapitalizacionInteres.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Campo A"
+                        sortBy="#{row.campoA}"
+                        filterBy="#{row.campoA}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <h:outputText value="#{row.campoA}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Nombre Cliente"
+                        sortBy="#{row.nomCliente}"
+                        filterBy="#{row.nomCliente}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.nomCliente}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta Extemporáneo"
+                        sortBy="#{row.cuentaOrigen}"
+                        filterBy="#{row.cuentaOrigen}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.cuentaOrigen}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Extemporáneo"
+                        sortBy="#{row.montoCtaOriFor}"
+                        filterBy="#{row.montoCtaOriFor}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.montoCtaOriFor}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+              <p:column headerText="Moneda"
+                        sortBy="#{row.desMon}"
+                        filterBy="#{row.desMon}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.desMon}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta Destino"
+                        sortBy="#{row.cuentaDestino}"
+                        filterBy="#{row.cuentaDestino}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.cuentaDestino}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta Sustitución"
+                        sortBy="#{row.cuentaSust1}"
+                        filterBy="#{row.cuentaSust1}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.cuentaSust1}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Cuenta Sustitución"
+                        sortBy="#{row.montoSusFor}"
+                        filterBy="#{row.montoSusFor}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.montoSusFor}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+              <p:column headerText="Cuenta Sustitución"
+                        sortBy="#{row.cuentaSust2}"
+                        filterBy="#{row.cuentaSust2}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.cuentaSust2}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Cuenta Sustitución"
+                        sortBy="#{row.montoSust2For}"
+                        filterBy="#{row.montoSust2For}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.montoSust2For}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+
+              <p:column headerText="Mes"
+                        sortBy="#{row.atributo3}"
+                        filterBy="#{row.atributo3}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.atributo3}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+
+              <p:column headerText="Año"
+                        sortBy="#{row.atributo4}"
+                        filterBy="#{row.atributo4}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.atributo4}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+
+
+            </p:dataTable>
+
+          </p:outputPanel>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

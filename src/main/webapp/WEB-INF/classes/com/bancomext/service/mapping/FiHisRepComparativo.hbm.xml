@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 28/11/2013 03:48:37 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiHisRepComparativo" schema="FACTIMX" table="FI_HIS_REP_COMPARATIVO">
+    <composite-id name="id" class="com.bancomext.service.mapping.FiHisRepComparativoId">
+      <key-property name="fechaProceso" type="date">
+        <column name="FECHA_PROCESO" length="7"/>
+      </key-property>
+      <key-property name="campoA" type="string">
+        <column name="CAMPO_A" length="10"/>
+      </key-property>
+      <key-property name="cta" type="string">
+        <column name="CTA" length="4"/>
+      </key-property>
+      <key-property name="scta" type="string">
+        <column name="SCTA" length="2"/>
+      </key-property>
+      <key-property name="sscta" type="string">
+        <column name="SSCTA" length="2"/>
+      </key-property>
+      <key-property name="ssscta" type="string">
+        <column name="SSSCTA" length="2"/>
+      </key-property>
+      <key-property name="contrato" type="string">
+        <column name="CONTRATO" length="20"/>
+      </key-property>
+    </composite-id>
+    <property name="montoImx" type="big_decimal">
+      <column name="MONTO_IMX" precision="18" not-null="true"/>
+    </property>
+    <property name="montoSicav" type="big_decimal">
+      <column name="MONTO_SICAV" precision="18" not-null="true"/>
+    </property>
+    <property name="montoDif" type="big_decimal">
+      <column name="MONTO_DIF" precision="18" not-null="true"/>
+    </property>
+    <property name="nombreCliente" type="string">
+      <column name="NOMBRE_CLIENTE" length="2700"/>
+    </property>
+    <property name="cuenta" type="string">
+      <column name="CUENTA" length="20"/>
+    </property>
+  </class>
+</hibernate-mapping>

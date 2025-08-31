@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : agrupacionPolizas.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Agrupacion Polizas</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:outputPanel layout="block" scrollHeight="450px">
+            <p:message for="btnMensaje" id="btnMensaje" style="color:blue; font-size:11px;"/>
+            <p:message for="btnError" id="btnError" style="color:red; font-size:11px;"/>
+
+            <p:dataTable id="infoAgrupacionPolizas" var="row"
+                         rows="#{agrupacionPolizas.defaultRows}"
+                         value="#{agrupacionPolizas.listaAgrupacionPolizas}"
+                         paginator="#{agrupacionPolizas.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="OPCODE">
+                <h:outputText value="#{row.opCode}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+
+              <p:column headerText="MONEDA">
+                <h:outputText value="#{row.moneda}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+
+              <p:column headerText="CARGO">
+                <h:outputText value="#{row.cargo}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+
+              <p:column headerText="ABONO">
+                <h:outputText value="#{row.abono}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+
+              <p:column headerText="DIFERENCIA">
+                <h:outputText value="#{row.diferencia}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+
+              <p:column headerText="PROCESO ANTES/DESPUES">
+                <h:outputText value="#{row.atributo1}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+
+              <p:column headerText="FECHA PROCESO">
+                <h:outputText value="#{row.fechaProceso}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+            </p:dataTable>
+
+            <!--TODO  REA Review this button-->
+            <p:panelGrid columns="1">
+              <p:commandButton id="agruparPolizar"
+                               value="Agrupar Polizas"
+                               style="text-align:center;"
+                               action="#{agrupacionPolizas.agrupaPolizas}"
+                               update="infoAgrupacionPolizas" />
+            </p:panelGrid>
+
+          </p:outputPanel>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

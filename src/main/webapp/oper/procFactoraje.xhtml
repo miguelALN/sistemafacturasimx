@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : procFactoraje.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <script type="text/javascript" src="../resources/js/PrimeFacesLocale.js"></script>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <br/>
+      <fieldset>
+        <legend>Proceso Manual CFDI</legend>
+        <p:outputPanel layout="block" id="pgResultado">
+          <p:toolbar>
+            <p:toolbarGroup>
+              <h:outputText value="Fecha de Proceso: "
+                            style="font-style:normal; font-size:10px;"/>
+              <p:calendar id="calendario"
+                          value="#{procFactoraje.fecha}"
+                          locale="es"
+                          navigator="true"
+                          showButtonPanel="true"
+                          autocomplete="off"
+                          pattern="MMM d, yyyy">x
+                <p:ajax event="dateSelect"
+                        listener="#{procFactoraje.fechaSeleccionada()}"
+                        update="pgResultado"/>
+              </p:calendar>
+              <p:commandButton id="botonProcesar"
+                               value="Procesar"
+                               icon="pi pi-cog"
+                               oncomplete="PF('confirmarDialog').show()"
+                               styleClass="ui-button-success"
+                               rendered="#{procFactoraje.botonProcesarVisible and procFactoraje.fecha != null}"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <h:commandButton id="botonDescargar"
+                               title="Descargar en Excel"
+                               image="../resources/img/excel.png"
+                               action="#{procFactoraje.descargarArchivo}"/>
+            </p:toolbarGroup>
+          </p:toolbar>
+          <h:panelGroup id="pgInfo">
+            <p:message for="botonProcesar" style="color:blue; font-size:12px;text-align:justify;"/>
+            <p:dataTable id="dt-cifras"
+                         widgetVar="dtCifras"
+                         var="row"
+                         value="#{procFactoraje.listaCifrasControl}"
+                         rendered="#{procFactoraje.tableVisible}"
+                         reflow="true"
+                         tableStyle="width:auto"
+                         style="position: relative; vertical-align:top"
+                         rows="#{procFactoraje.defaultRows}"
+                         paginator="#{procFactoraje.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Fecha Valor"
+                        sortOrder="asc">
+                <h:outputText value="#{row.fechaValor}"
+                              style="text-align:center;">
+                  <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+              </p:column>
+              <p:column headerText="Esperadas IMX"
+                        sortBy="#{row.esperadas}"
+                        filterBy="#{row.esperadas}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.esperadas}"
+                              style="text-align:right;"/>
+              </p:column>
+              <p:column headerText="Verificado"
+                        sortBy="#{row.verificadas}"
+                        filterBy="#{row.verificadas}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.verificadas}"
+                              style="text-align:right;"/>
+              </p:column>
+              <p:column headerText="Enviadas GACD"
+                        sortBy="#{row.gacd}"
+                        filterBy="#{row.gacd}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.gacd}"
+                              style="text-align:right;"/>
+              </p:column>
+              <p:column headerText="Folio SAT"
+                        sortBy="#{row.folioSat}"
+                        filterBy="#{row.folioSat}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.folioSat}"
+                              style="text-align:right;"/>
+              </p:column>
+              <p:column headerText="Enviadas Cliente"
+
+                        sortBy="#{row.enviadoCliente}"
+                        filterBy="#{row.enviadoCliente}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.enviadoCliente}"
+                              style="text-align:right;"/>
+              </p:column>
+              <p:column headerText="Canceladas"
+                        sortBy="#{row.canceladas}"
+                        filterBy="#{row.canceladas}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.canceladas}"
+                              style="text-align:right;"/>
+              </p:column>
+            </p:dataTable>
+          </h:panelGroup>
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+    </h:form>
+
+    <h:form id="dialogs">
+
+      <p:confirmDialog widgetVar="confirmarDialog" showEffect="fade" width="300"
+                       message="Confirme la acción de procesar" header="Procesar" severity="warn">
+        <p:commandButton value="Procesar" icon="pi pi-check"
+                         actionListener="#{procFactoraje.procesar}"
+                         update = ":form1:dt-cifras"
+                         process="@this"
+                         oncomplete="PF('confirmarDialog').hide()"/>
+        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('confirmarDialog').hide()"
+                         styleClass="ui-button-secondary" type="button"/>
+      </p:confirmDialog>
+    </h:form>
+  </div>
+</h:body>
+</html>

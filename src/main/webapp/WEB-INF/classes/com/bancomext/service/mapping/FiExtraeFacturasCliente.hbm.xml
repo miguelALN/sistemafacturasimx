@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12/11/2013 11:15:16 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="com.bancomext.service.mapping.FiExtraeFacturasCliente" schema="FACTIMX" table="FI_EXTRAE_FACTURAS_CLIENTE">
+    <composite-id class="com.bancomext.service.mapping.FiExtraeFacturasClienteId" name="id">
+      <key-property name="posAccDate" type="date">
+        <column length="7" name="POS_ACC_DATE"/>
+      </key-property>
+      <key-property name="postPaperInvoiceNumber" type="string">
+        <column length="90" name="POST_PAPER_INVOICE_NUMBER"/>
+      </key-property>
+      <key-property name="posPostCcy" type="string">
+        <column length="3" name="POS_POST_CCY"/>
+      </key-property>
+      <key-property name="cliClientRefindividu" type="string">
+        <column length="90" name="CLI_CLIENT_REFINDIVIDU"/>
+      </key-property>
+      <key-property name="posPostNum" type="string">
+        <column length="8" name="POS_POST_NUM"/>
+      </key-property>
+      <key-property name="campoA" type="int">
+        <column name="CAMPOA" precision="8" scale="0"/>
+      </key-property>
+    </composite-id>
+    <property name="posPostName" type="string">
+      <column length="5" name="POS_POST_NAME"/>
+    </property>
+    <property name="lciPfLibEs" type="string">
+      <column length="80" name="LCI_PF_LIB_ES"/>
+    </property>
+    <property name="ccpCurrency" type="string">
+      <column length="3" name="CCP_CURRENCY"/>
+    </property>
+    <property name="ccpCapContract" type="string">
+      <column length="200" name="CCP_CAP_CONTRACT"/>
+    </property>
+    <property name="ccpCapCase" type="string">
+      <column length="10" name="CCP_CAP_CASE" not-null="true"/>
+    </property>
+    <property name="posPostStatementCase" type="string">
+      <column length="10" name="POS_POST_STATEMENT_CASE" not-null="true"/>
+    </property>
+    <property name="cliClientAdr1" type="string">
+      <column length="900" name="CLI_CLIENT_ADR1"/>
+    </property>
+    <property name="cliClientAdr2" type="string">
+      <column length="900" name="CLI_CLIENT_ADR2"/>
+    </property>
+    <property name="cliClientAdr3" type="string">
+      <column length="100" name="CLI_CLIENT_ADR3"/>
+    </property>
+    <property name="cliClientAdr4" type="string">
+      <column length="100" name="CLI_CLIENT_ADR4"/>
+    </property>
+    <property name="cliClientBisiness" type="string">
+      <column length="200" name="CLI_CLIENT_BISINESS"/>
+    </property>
+    <property name="cliClientVille" type="string">
+      <column length="100" name="CLI_CLIENT_VILLE"/>
+    </property>
+    <property name="cliClientPrenom" type="string">
+      <column length="360" name="CLI_CLIENT_PRENOM"/>
+    </property>
+    <property name="cliClientNom" type="string">
+      <column length="900" name="CLI_CLIENT_NOM"/>
+    </property>
+    <property name="cliClientPays" type="string">
+      <column length="20" name="CLI_CLIENT_PAYS"/>
+    </property>
+    <property name="cliClientRefext" type="string">
+      <column length="225" name="CLI_CLIENT_REFEXT"/>
+    </property>
+    <property name="cliClientDomaine" type="string">
+      <column length="50" name="CLI_CLIENT_DOMAINE"/>
+    </property>
+    <property name="cliClientRueEnterne" type="string">
+      <column length="20" name="CLI_CLIENT_RUE_ENTERNE"/>
+    </property>
+    <property name="cliClientLangue" type="string">
+      <column length="10" name="CLI_CLIENT_LANGUE"/>
+    </property>
+    <property name="cliClientCp" type="string">
+      <column length="20" name="CLI_CLIENT_CP"/>
+    </property>
+    <property name="cliClientDivision" type="string">
+      <column length="30" name="CLI_CLIENT_DIVISION"/>
+    </property>
+    <property name="cliClientType" type="string">
+      <column length="200" name="CLI_CLIENT_TYPE"/>
+    </property>
+    <property name="cliClientTva" type="string">
+      <column length="40" name="CLI_CLIENT_TVA"/>
+    </property>
+    <property name="lctAbrev" type="string">
+      <column length="45" name="LCT_ABREV"/>
+    </property>
+    <property name="lctValeurTrad" type="string">
+      <column length="600" name="LCT_VALEUR_TRAD"/>
+    </property>
+    <property name="posPostAmtOnlyvat" type="big_decimal">
+      <column name="POS_POST_AMT_ONLYVAT" precision="22" scale="0"/>
+    </property>
+    <property name="posPostAmtNovat" type="big_decimal">
+      <column name="POS_POST_AMT_NOVAT" precision="22" scale="0"/>
+    </property>
+    <property name="posPostAmtWithvatFactor" type="big_decimal">
+      <column name="POS_POST_AMT_WITHVAT_FACTOR" precision="22" scale="0"/>
+    </property>
+    <property name="posPostAmtWithvat" type="big_decimal">
+      <column name="POS_POST_AMT_WITHVAT" precision="22" scale="0"/>
+    </property>
+    <property name="folio" type="big_decimal">
+      <column name="FOLIO" precision="12" scale="0"/>
+    </property>
+  </class>
+</hibernate-mapping>

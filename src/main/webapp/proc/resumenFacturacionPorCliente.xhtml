@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : resumenFacturacionPorCliente.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <fieldset>
+        <legend>Resumen de Facturacion por Cliente</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+
+            <p:message for="btnMensaje" id="btnMensaje" style="color:blue; font-size:11px;"/>
+            <p:message for="btnError" id="btnError" style="color:red; font-size:11px;"/>
+
+            <p:panelGrid id="gridComboBox" columns="2">
+              <h:outputText value="Nombre Cliente"/>
+              <p:selectOneMenu value="#{resumenFacturacionPorCliente.codigoCliente}"
+                               partialSubmit="true" style="width:100%">
+                <f:selectItems value="#{resumenFacturacionPorCliente.listaClientes}"/>
+                <p:ajax event="change"
+                        listener="#{resumenFacturacionPorCliente.updateCalendar()}"
+                        update="@this"/>
+              </p:selectOneMenu>
+            </p:panelGrid>
+
+            <p:panelGrid id="gridFiltro" columns="4">
+
+              <h:outputText style="text-align:center;" value="Fecha Inicial:"/>
+              <p:calendar id="fechaInicial"
+                          value="#{resumenFacturacionPorCliente.fechaInicial}"
+                          locale="es"
+                          navigator="true"
+                          showButtonPanel="true"
+                          autocomplete="off"
+                          pattern="MMM d, yyyy">
+                <p:ajax event="dateSelect"
+                        listener="#{resumenFacturacionPorCliente.updateCalendar()}"
+                        update="gridFiltro"/>
+              </p:calendar>
+
+              <h:outputText style="text-align:center;" value="Fecha Final:"/>
+              <p:calendar id="fechaFinal"
+                          value="#{resumenFacturacionPorCliente.fechaFinal}"
+                          locale="es"
+                          navigator="true"
+                          showButtonPanel="true"
+                          autocomplete="off"
+                          pattern="MMM d, yyyy">
+                <p:ajax event="dateSelect"
+                        listener="#{resumenFacturacionPorCliente.updateCalendar()}"
+                        update="gridFiltro"/>
+              </p:calendar>
+
+            </p:panelGrid>
+
+            <p:panelGrid id="gridTable" columns="1">
+              <p:dataTable id="infoResumenFacturacion" var="row"
+                           value="#{resumenFacturacionPorCliente.listaMensual}"
+                           rows="#{resumenFacturacionPorCliente.defaultRows}"
+                           columnWidths="80px,80px,350px,80px,80px"
+                           paginator="#{resumenFacturacionPorCliente.paginatorVisible}"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                           currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+                <p:column headerText="Fecha Valor">
+                  <h:outputText value="#{row.fechaFor}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+
+                <p:column headerText="Codigo Cliente">
+                  <h:outputText value="#{row.codigoCliente}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+
+                <p:column headerText="Nombre Cliente">
+                  <h:outputText value="#{row.cliente}"
+                                style="font-style:normal; font-size:10px;"/>
+                </p:column>
+
+                <p:column headerText="No Factura">
+                  <h:outputText value="#{row.noFactura}"
+                                style="font-style:normal; font-size:10px; text-align:center"/>
+                </p:column>
+
+                <p:column headerText="Total Importe">
+                  <h:outputText value=" $ #{row.totalFor}"
+                                style="font-style:normal; font-size:10px; text-align:right"/>
+                </p:column>
+                <f:facet name="footer">
+                  <h:outputText
+                      value="Total Importes $  #{resumenFacturacionPorCliente.total}"
+                      rendered="#{resumenFacturacionPorCliente.totalVisible}"
+                      style="background-color:#33FF33"/>
+                </f:facet>
+              </p:dataTable>
+
+              <p:panelGrid columns="1">
+                <p:commandButton id="generaResumen" value="Genera Resumen"
+                                 action="#{resumenFacturacionPorCliente.generaResumen}"
+                                 process="@this"
+                                 update=":form1:gridTable"/>
+              </p:panelGrid>
+
+            </p:panelGrid>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

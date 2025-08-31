@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : restaurarSaldoNeg.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<f:metadata>
+  <f:event type="preRenderView" listener="#{restaurarSaldoNeg.init}" />
+</f:metadata>
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Restaurar Saldo Negativo (FIU)</legend>
+        <h:panelGroup id="pgInfo">
+          <h:panelGroup scrollHeight="500px">
+
+            <p:message for="btnProcedimiento" id="btnProcedimiento" style="color:blue; font-size:11px;"/>
+            <p:message for="btnActualiza" id="btnActualiza" style="color:blue; font-size:11px;"/>
+            <p:message for="btnAgregar" id="btnAgregar" style="color:blue; font-size:11px;"/>
+            <p:message for="btnErrorProc" id="btnErrorProc" style="color:red; font-size:11px;"/>
+            <p:message for="btnElimina" id="btnElimina" style="color:red; font-size:11px;"/>
+
+            <p:dataTable id="infoProcesoReclasificar" var="row"
+                         value="#{restaurarSaldoNeg.listaProcesoRestauracionNeg}"
+                         rows="#{restaurarSaldoNeg.defaultRows}"
+                         columnWidths="60px,350px,65px,65px,65px,65px,65px,65px"
+                         paginator="#{restaurarSaldoNeg.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Campo A"
+                        sortBy="#{row.campoA}"
+                        filterBy="#{row.campoA}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+              <h:outputText value="#{row.campoA}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Nombre Cliente"
+                        sortBy="#{row.nomCliente}"
+                        filterBy="#{row.nomCliente}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.nomCliente}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta Origen"
+                        sortBy="#{row.cuentaOrigen}"
+                        filterBy="#{row.cuentaOrigen}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cuentaOrigen}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Origen"
+                        sortBy="#{row.montoOriFor}"
+                        filterBy="#{row.montoOriFor}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.montoOriFor}"
+                              style="font-style:normal; font-size:10px; text-align: right;"/>
+              </p:column>
+              <p:column headerText="Cuenta Cargo"
+                        sortBy="#{row.cuentaCargo}"
+                        filterBy="#{row.cuentaCargo}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cuentaCargo}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Cargo"
+                        sortBy="#{row.montoCarFor}"
+                        filterBy="#{row.montoCarFor}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.montoCarFor}"
+                              style="font-style:normal; font-size:10px; text-align: right;"/>
+              </p:column>
+              <p:column headerText="Cuenta Abono"
+                        sortBy="#{row.cuentaAbono}"
+                        filterBy="#{row.cuentaAbono}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.cuentaAbono}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Abono"
+                        sortBy="#{row.montoAboFor}"
+                        filterBy="#{row.montoAboFor}"
+                        filterMatchMode="contains">
+              <h:outputText value="#{row.montoAboFor}"
+                              style="font-style:normal; font-size:10px; text-align: right;"/>
+              </p:column>
+
+              <!--TODO REA review this part-->
+              <p:column headerText="">
+                <p:graphicImage rendered="#{row.bandera}" url="../resources/img/incorrecto.jpg"
+                                width="20" height="20" title="Modificar" style="border:none"/>
+                <p:graphicImage rendered="#{!row.bandera}" url="../resources/img/correcto.png"
+                                width="20" height="20" title="Modificar" style="border:none"/>
+              </p:column>
+
+            </p:dataTable>
+
+            <p:confirmDialog acceptLabel="Eliminar" cancelLabel="Cancelar" id="confirmarEli"
+                             message="Confirme Acción Eliminar" rendered="true"
+                             title="Eliminar Canc. de  la Provision Intereses"/>
+
+            <p:dataTable var="rowsS"
+                         value="#{restaurarSaldoNeg.listaSumasMontos}">
+              <p:column headerText="Monto Origen">
+                <h:outputText value="#{rowsS.montoOrigen}"
+                              style="background-color: #B2FF66; text-align: right;"/>
+              </p:column>
+              <p:column headerText="Monto Cargo">
+                <h:outputText value="#{rowsS.montoCargo}"
+                              style="#{restaurarSaldoNeg.styleText} text-align: right;"/>
+              </p:column>
+              <p:column headerText="Monto Abono">
+                <h:outputText value="#{rowsS.montoAbono}"
+                              style="#{restaurarSaldoNeg.styleText} text-align: right;"/>
+              </p:column>
+            </p:dataTable>
+            <h:panelGrid>
+              <p:commandButton value="Ejecutar"
+                               action="#{restaurarSaldoNeg.actualizaExtemporaneas}"
+                               panelConfirmation="confirmarProceso" style="position: relative; left: 20%;"/>
+            </h:panelGrid>
+            <p:confirmDialog acceptLabel="Ejecutar" cancelLabel="Cancelar" id="confirmarProceso"
+                             message="Confirme la ejecucion del proceso" rendered="true"
+                             title="Ejecutar proceso SSivac Extemporaneo"/>
+
+
+            <!-- AQUI INICIA VENTANA MODAL PARA ALTA O MODIFICACION DE LA CANCELACION DE LA PROVISION DE INTERESES -->
+            <p:dialog id="ppCancelacionProvInt" modal="true" autoCentre="true" title="Parametrizacion"
+                      visible="#{restaurarSaldoNeg.popUpAltaEdita}">
+              <f:facet name="header">
+                <h:panelGrid id="pgPCancelacionProvInt" columns="1"
+                             style="display: block; height: 24px; position: relative; text-align: right; width: 100%">
+                  <p:commandButton action="#{restaurarSaldoNeg.closePanel}"
+                                   id="closePopupBtn" alt="Cerrar" image="../resources/img/cerrar.png"
+                                   style="position: relative;" value="submit" title="Cerrar"/>
+                </h:panelGrid>
+              </f:facet>
+              <f:facet name="body">
+                <h:panelGroup>
+                  <fieldset style="width:auto">
+                    <legend>Ajuste Reclasificacion Saldo Negativo.</legend>
+                    <br/>
+                    <p:message for="btnErrorAgregar" style="color:red; font-size:12px;text-align:justify;"/>
+                    <h:panelGrid columns="2">
+
+                      <h:outputText value="* CAMPO A"/>
+                      <h:inputText maxlength="8" value="#{restaurarSaldoNeg.campoA}"
+                                   rendered="#{!restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="8" value="#{restaurarSaldoNeg.campoA}"
+                                   rendered="#{restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* NOMBRE CLIENTE"/>
+                      <h:inputText maxlength="250" value="#{restaurarSaldoNeg.nomCliente}"
+                                   rendered="#{!restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="250" value="#{restaurarSaldoNeg.nomCliente}"
+                                   rendered="#{restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* CUENTA ORIGEN"/>
+                      <h:inputText maxlength="25" value="#{restaurarSaldoNeg.cuentaOrigen}"
+                                   rendered="#{!restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="25" value="#{restaurarSaldoNeg.cuentaOrigen}"
+                                   rendered="#{restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* MONTO ORIGEN"/>
+                      <h:inputText maxlength="21"
+                                   value="#{restaurarSaldoNeg.montoOrigenSSivac}"/>
+
+                      <h:outputText value="* CUENTA CARGO"/>
+                      <h:inputText maxlength="25" value="#{restaurarSaldoNeg.cuentaCargo}"
+                                   rendered="#{!restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="25" value="#{restaurarSaldoNeg.cuentaCargo}"
+                                   rendered="#{restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* MONTO CARGO"/>
+                      <h:inputText maxlength="21"
+                                   value="#{restaurarSaldoNeg.montoCargoSSivac}"
+                                   rendered="#{!restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="21"
+                                   value="#{restaurarSaldoNeg.montoCargoSSivac}"
+                                   rendered="#{restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* CUENTA ABONO"/>
+                      <h:inputText maxlength="25" value="#{restaurarSaldoNeg.cuentaAbono}"
+                                   rendered="#{!restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="25" value="#{restaurarSaldoNeg.cuentaAbono}"
+                                   rendered="#{restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="false"/>
+
+                      <h:outputText value="* MONTO ABONO"/>
+                      <h:inputText maxlength="21"
+                                   value="#{restaurarSaldoNeg.montoAbonoSSivac}"
+                                   rendered="#{!restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="true"/>
+
+                      <h:inputText maxlength="21"
+                                   value="#{restaurarSaldoNeg.montoAbonoSSivac}"
+                                   rendered="#{restaurarSaldoNeg.btnAltaEdita}"
+                                   disabled="false"/>
+
+                    </h:panelGrid>
+                    <h:panelGrid columns="5">
+                      <p:commandButton id="btnErrorAgregar" value="Guardar"
+                                       action="#{restaurarSaldoNeg.agregarAjuste}"
+                                       rendered="#{restaurarSaldoNeg.btnAltaEdita}"/>
+                      <p:commandButton value="Modificar"
+                                       action="#{restaurarSaldoNeg.modificaAjuste}"
+                                       rendered="#{!restaurarSaldoNeg.btnAltaEdita}"/>
+                      <p:commandButton value="Cancelar"
+                                       action="#{restaurarSaldoNeg.closePanel}"/>
+
+                    </h:panelGrid>
+                    <h:panelGroup style="text-align:center;">
+                      <p/>
+                      <h:outputText value="Los campos marcados con * son mandatorios"/>
+                    </h:panelGroup>
+                  </fieldset>
+                </h:panelGroup>
+              </f:facet>
+            </p:dialog>
+          </h:panelGroup>
+        </h:panelGroup>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>
+    
+
+

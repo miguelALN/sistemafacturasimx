@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : bitCancelProvisionInteres.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <fieldset>
+        <legend>Bitácora Cancelación Provisión Intereses</legend>
+        <p:outputPanel layout="block" id="pgInfo">
+          <p:outputPanel layout="block" scrollHeight="450px">
+            <p:message for="btnBitacora" id="btnBitacora" style="color:red; font-size:11px;"/>
+            <p:panelGrid columns="6">
+
+              <h:outputText style="text-align:center;" value="Fecha Proceso:"/>
+              <p:selectOneMenu value="#{bitCancelProvisionInteres.filtroCalendar}"
+                               partialSubmit="true">
+                <f:selectItems value="#{bitCancelProvisionInteres.listaCalendar}"/>
+                <p:ajax event="change" listener="#{bitCancelProvisionInteres.llenarClientes()}" update="comboClientes"/>
+              </p:selectOneMenu>
+
+              <h:outputText value="Cliente:"/>
+              <p:selectOneMenu id="comboClientes" partialSubmit="true"
+                               value="#{bitCancelProvisionInteres.filtroCampoA}">
+                <f:selectItems value="#{bitCancelProvisionInteres.listaCampoA}"/>
+              </p:selectOneMenu>
+
+              <p:commandButton style="text-align:center;" value="Filtrar" id="btnFiltrarCifrasControl"
+                               action="#{bitCancelProvisionInteres.filtrarTableBitCancelacion()}"
+                               update=":form1:pgInfo"/>
+
+              <h:commandButton title="Descargar en Excel"
+                               image="../resources/img/excel.png"
+                               action="#{bitCancelProvisionInteres.descargarArchivo()}"/>
+            </p:panelGrid>
+
+            <p:dataTable id="infoBitacoraCancelacion" var="row"
+                         value="#{bitCancelProvisionInteres.listaBitacoraCancelacion}"
+                         rows="#{bitCancelProvisionInteres.defaultRows}"
+                         columnWidths="60px,350px,65px,65px,65px,65px,65px,65px"
+                         paginator="#{bitCancelProvisionInteres.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Campo A"
+                        sortBy="#{row.campoA}"
+                        filterBy="#{row.campoA}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <h:outputText value="#{row.campoA}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Nombre Cliente"
+                        sortBy="#{row.nomCliente}"
+                        filterBy="#{row.nomCliente}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.nomCliente}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Cuenta de Origen SICAV"
+                        sortBy="#{row.cuentaOrigen}"
+                        filterBy="#{row.cuentaOrigen}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.cuentaOrigen}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto de Origen SICAV"
+                        sortBy="#{row.montoCtaOriFor}"
+                        filterBy="#{row.montoCtaOriFor}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.montoCtaOriFor}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+              <p:column headerText="Cuenta Cargo"
+                        sortBy="#{row.cuentaCargo}"
+                        filterBy="#{row.cuentaCargo}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.cuentaCargo}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Cargo"
+                        sortBy="#{row.montoCtaCarFor}"
+                        filterBy="#{row.montoCtaCarFor}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.montoCtaCarFor}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+              <p:column headerText="Cuenta Abono"
+                        sortBy="#{row.cuentaAbono}"
+                        filterBy="#{row.cuentaAbono}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.cuentaAbono}"
+                              style="font-style:normal; font-size:10px;"/>
+              </p:column>
+              <p:column headerText="Monto Abono"
+                        sortBy="#{row.montoCtaAboFor}"
+                        filterBy="#{row.montoCtaAboFor}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.montoCtaAboFor}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+
+              <p:column headerText="Mes"
+                        sortBy="#{row.atributo3}"
+                        filterBy="#{row.atributo3}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.atributo3}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+
+              <p:column headerText="Año"
+                        sortBy="#{row.atributo4}"
+                        filterBy="#{row.atributo4}"
+                        filterMatchMode="contains">
+                <h:outputText value="#{row.atributo4}"
+                              style="font-style:normal; font-size:10px; text-align:right;"/>
+              </p:column>
+
+
+            </p:dataTable>
+
+          </p:outputPanel>
+        </p:outputPanel>
+      </fieldset>
+    </h:form>
+  </div>
+</h:body>
+</html>

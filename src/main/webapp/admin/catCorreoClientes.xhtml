@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+    Document   : catCorreoClientes.xhtml
+    Created on : Dec 2022
+    Author     : Raul Estrada
+-->
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<h:head>
+  <link rel="stylesheet" type="text/css" href="../resources/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../resources/css/usuario.css"/>
+  <div id="logo"><img src="../resources/img/common/bmxt.jpg" alt=""/><a href="https://www.bancomext.com">
+    <img src="../resources/img/header.png" alt=""/></a>
+  </div>
+</h:head>
+
+<h:body>
+  <ui:include src="../menuBar.xhtml"/>
+  <div style="text-align: -webkit-center">
+    <h:form id="form1">
+      <p:growl id="messages" showDetail="true"/>
+      <br/>
+      <fieldset>
+        <legend>Cuentas de Correo por Cliente</legend>
+        <p:outputPanel layout="block" id="pgResultado">
+          <h:panelGroup id="pgInfo">
+            <p:dataTable id="dt-cuentas"
+                         widgetVar="dtCuentas"
+                         var="row"
+                         value="#{catCorreoClientes.listaFiCorreosPorCliente}"
+                         reflow="true"
+                         tableStyle="width:auto"
+                         style="position: relative; vertical-align:top"
+                         rows="#{catCorreoClientes.defaultRows}"
+                         paginator="#{catCorreoClientes.paginatorVisible}"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros">
+
+              <p:column headerText="Editar" exportable="false">
+                <p:commandButton title="Editar Grupo de Correo"
+                                 action="#{catCorreoClientes.abrirPopupEdicion}"
+                                 icon="pi pi-pencil"
+                                 styleClass="rounded-button edit-button ui-button-outlined"
+                                 oncomplete="PF('cuentasDialog').show()"
+                                 process="@this"
+                                 update=":dialogs:edicion-cuentas-content"
+                                 style="height: 20px; width: 15px" >
+                  <f:setPropertyActionListener value="#{row}"
+                                               target="#{catCorreoClientes.cuentaSeleccionada}"/>
+                  <p:resetInput target=":dialogs:edicion-cuentas-content"/>
+                </p:commandButton>
+              </p:column>
+              <p:column headerText="Código Cliente"
+                        sortBy="#{row.id.codigoCliente}"
+                        filterBy="#{row.id.codigoCliente}"
+                        filterMatchMode="contains"
+                        sortOrder="asc">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.codigoCliente}"/>
+              </p:column>
+              <p:column headerText="Nombre"
+                        sortBy="#{row.descripcionCliente}"
+                        filterBy="#{row.descripcionCliente}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.descripcionCliente}"
+                              style="text-align:left; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Correo Electrónico"
+                        sortBy="#{row.id.email}"
+                        filterBy="#{row.id.email}"
+                        filterMatchMode="contains">
+                <f:facet name="filter">
+                  <p:inputText style="height:17px;font-size:11px;" styleClass="custom-filter-input" onkeyup="PF('dtCuentas').filter()" />
+                </f:facet>
+                <h:outputText value="#{row.id.email}"
+                              style="text-align:left; font-style:normal; font-size:11px;"/>
+              </p:column>
+              <p:column headerText="Eliminar" exportable="false">
+                <p:commandButton title="Borrar Grupo de Correo"
+                                 icon="pi pi-trash"
+                                 styleClass="rounded-button ui-button-danger ui-button-outlined"
+                                 oncomplete="PF('borrarCuentasDialog').show()"
+                                 process="@this"
+                                 style="height: 20px; width: 15px" >
+                  <f:setPropertyActionListener value="#{row}"
+                                               target="#{catCorreoClientes.cuentaSeleccionada}"/>
+                </p:commandButton>
+              </p:column>
+            </p:dataTable>
+          </h:panelGroup>
+
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:commandButton value="Agregar Cuenta de Correo"
+                               actionListener="#{catCorreoClientes.abrirPopupAlta()}"
+                               oncomplete="PF('cuentasDialog').show()"
+                               update=":dialogs:edicion-cuentas-content">
+                <p:resetInput target=":dialogs:edicion-cuentas-content"/>
+              </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <h:commandButton title="Descargar en Excel"
+                               image="../resources/img/excel.png"
+                               rendered="#{not empty catCorreoClientes.listaFiCorreosPorCliente}"
+                               action="#{catCorreoClientes.descargarArchivo}"/>
+            </p:toolbarGroup>
+          </p:toolbar>
+
+        </p:outputPanel>
+        <br/>
+      </fieldset>
+    </h:form>
+
+    <h:form id="dialogs">
+      <p:dialog header="Datos de la cuenta" showEffect="fade" modal="true" widgetVar="cuentasDialog"
+                responsive="true">
+        <p:outputPanel id="edicion-cuentas-content" class="ui-fluid">
+          <p:outputPanel rendered="#{not empty catCorreoClientes.cuentaSeleccionada}">
+            <p:panelGrid columns="3">
+              <p:outputLabel for="clave-cliente" value="Clave del cliente:"/>
+              <p:inputNumber id="clave-cliente" required="true" minValue="1" maxValue="9999999999" maxlength="10"
+                             style="width: 350px" thousandSeparator="" decimalPlaces="0"
+                             value="#{catCorreoClientes.cuentaSeleccionada.id.codigoCliente}"/>
+              <p:message for="clave-cliente"/>
+              <p:outputLabel for="description" value="Descripción:"/>
+              <p:inputText id="description" required="true" maxlength="200" style="width: 350px"
+                           value="#{catCorreoClientes.cuentaSeleccionada.descripcionCliente}"/>
+              <p:message for="description"/>
+              <p:outputLabel for="email" value="Correo Electrónico:"/>
+              <p:inputText id="email" required="true" size="47" maxlength="50" style="width: 350px"
+                           value="#{catCorreoClientes.cuentaSeleccionada.id.email}">
+                <f:validateRegex
+                    pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[\p{L}\p{M}\p{N}.-]*(\.[\p{L}\p{M}]{2,})$)?"/>
+              </p:inputText>
+              <p:message for="email"/>
+            </p:panelGrid>
+          </p:outputPanel>
+        </p:outputPanel>
+
+        <f:facet name="footer">
+          <p:commandButton value="Guardar" icon="pi pi-check"
+                           actionListener="#{catCorreoClientes.guardarGpoCorreo()}"
+                           update="edicion-cuentas-content"
+                           process="edicion-cuentas-content @this"/>
+          <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('cuentasDialog').hide()"
+                           class="ui-button-secondary" type="button"/>
+        </f:facet>
+      </p:dialog>
+
+      <p:confirmDialog widgetVar="borrarCuentasDialog" showEffect="fade" width="300"
+                       message="¿Desea borrar el grupo de correo?" header="Confirmar" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check"
+                         actionListener="#{catCorreoClientes.borrarGpoCorreo()}"
+                         process="@this"
+                         oncomplete="PF('borrarCuentasDialog').hide()"/>
+        <p:commandButton value="No" icon="pi pi-times" onclick="PF('borrarCuentasDialog').hide()"
+                         styleClass="ui-button-secondary" type="button"/>
+      </p:confirmDialog>
+    </h:form>
+  </div>
+</h:body>
+</html>
+
